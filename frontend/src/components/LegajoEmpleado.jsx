@@ -5,6 +5,7 @@ import EvaluacionesPanel from "./EvaluacionesPanel.jsx";
 import SancionesPanel from "./SancionesPanel.jsx";
 import CursosPanel from "./CursosPanel.jsx";
 import { api } from "../api.js";
+import { formatFecha } from "../dateUtils.js";
 
 const TABS = [
   { id: "resumen", label: "Resumen" },
@@ -19,11 +20,6 @@ const RESULTADOS = [
   { value: "EXTENSION", label: "Extensión del período" },
   { value: "BAJA", label: "Baja del empleado" },
 ];
-
-function formatFecha(iso) {
-  if (!iso) return "—";
-  return new Date(iso).toLocaleDateString("es-AR", { day: "2-digit", month: "2-digit", year: "numeric" });
-}
 
 export default function LegajoEmpleado({ empleado, onDecisionRegistrada, usuario, onEliminado }) {
   const [tab, setTab] = useState("resumen");

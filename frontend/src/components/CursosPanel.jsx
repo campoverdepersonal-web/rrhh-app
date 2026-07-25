@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { api } from "../api.js";
+import { formatFecha } from "../dateUtils.js";
 
 const ESTADOS = [
   { value: "PENDIENTE", label: "Pendiente", color: "amber" },
@@ -9,11 +10,6 @@ const ESTADOS = [
 ];
 
 const MODALIDADES = ["Presencial", "Virtual", "Semipresencial"];
-
-function formatFecha(iso) {
-  if (!iso) return "sin fecha";
-  return new Date(iso).toLocaleDateString("es-AR", { day: "2-digit", month: "2-digit", year: "numeric" });
-}
 
 export default function CursosPanel({ employeeId }) {
   const [cursos, setCursos] = useState([]);

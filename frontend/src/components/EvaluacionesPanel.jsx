@@ -1,9 +1,6 @@
 import { useEffect, useState } from "react";
 import { api } from "../api.js";
-
-function formatFecha(iso) {
-  return new Date(iso).toLocaleDateString("es-AR", { day: "2-digit", month: "2-digit", year: "numeric" });
-}
+import { formatFecha } from "../dateUtils.js";
 
 export default function EvaluacionesPanel({ employeeId }) {
   const [evaluaciones, setEvaluaciones] = useState([]);

@@ -83,6 +83,8 @@ export const api = {
 
   listComentarios: (id) => request(`/employees/${id}/comentarios`),
   crearComentario: (id, data) => post(`/employees/${id}/comentarios`, data),
+  actualizarComentario: (employeeId, comentarioId, data) => put(`/employees/${employeeId}/comentarios/${comentarioId}`, data),
+  eliminarComentario: (employeeId, comentarioId) => request(`/employees/${employeeId}/comentarios/${comentarioId}`, { method: "DELETE" }),
 
   listEvaluaciones: (id) => request(`/employees/${id}/evaluaciones`),
   crearEvaluacion: (id, data) => post(`/employees/${id}/evaluaciones`, data),

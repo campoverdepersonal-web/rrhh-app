@@ -46,6 +46,55 @@ comentariosRouter.post("/", async (req, res) => {
   }
 });
 
+// PUT /api/employees/:employeeId/comentarios/:id
+comentariosRouter.put("/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { fecha, lider, tipo, comentario, lugarTrabajo } = req.body;
+
+    if (tipo && !TIPOS_VALIDOS.includes(tipo)) {
+      return res.status(400).json({ error: "tipo inválido" });
+    }
+
+    const { rows } = await pool.query(
+      `UPDATE comentarios_lider SET
+         fecha = COALESCE($1, fecha),
+         lider = COALESCE($2, lider),
+         tipo = COALESCE($3, tipo),
+         comentario = COALESCE($4, comentario),
+         lugar_trabajo = $5
+       WHERE id = $6 RETURNING *`,
+      [fecha || null, lider || null, tipo || null, comentario || null, lugarTrabajo || null, id]
+    );
+
+    if (rows.length === 0) {
+      return res.status(404).json({ error: "Comentario no encontrado" });
+    }
+
+    res.json(serialize(rows[0]));
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Error al editar el comentario" });
+  }
+});
+
+// DELETE /api/employees/:employeeId/comentarios/:id
+comentariosRouter.delete("/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { rows } = await pool.query(`DELETE FROM comentarios_lider WHERE id = $1 RETURNING id`, [id]);
+
+    if (rows.length === 0) {
+      return res.status(404).json({ error: "Comentario no encontrado" });
+    }
+
+    res.json({ ok: true });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Error al eliminar el comentario" });
+  }
+});
+
 function serialize(row) {
   return {
     id: row.id,

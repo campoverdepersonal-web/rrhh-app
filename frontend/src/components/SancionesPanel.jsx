@@ -1,15 +1,12 @@
 import { useEffect, useState } from "react";
 import { api } from "../api.js";
+import { formatFecha } from "../dateUtils.js";
 
 const TIPOS = [
   { value: "APERCIBIMIENTO", label: "Apercibimiento" },
   { value: "LLAMADO_ATENCION", label: "Llamado de atención" },
   { value: "SUSPENSION", label: "Suspensión" },
 ];
-
-function formatFecha(iso) {
-  return new Date(iso).toLocaleDateString("es-AR", { day: "2-digit", month: "2-digit", year: "numeric" });
-}
 
 export default function SancionesPanel({ employeeId }) {
   const [sanciones, setSanciones] = useState([]);
