@@ -85,14 +85,15 @@ authRouter.post("/usuarios", requireAuth, requireRole("ADMIN"), async (req, res)
 authRouter.put("/usuarios/:id", requireAuth, requireRole("ADMIN"), async (req, res) => {
   try {
     const { id } = req.params;
-    const { rol, activo } = req.body;
+    const { rol, activo, nombre } = req.body;
 
     const { rows } = await pool.query(
       `UPDATE usuarios SET
          rol = COALESCE($1, rol),
-         activo = COALESCE($2, activo)
-       WHERE id = $3 RETURNING *`,
-      [rol || null, activo ?? null, id]
+         activo = COALESCE($2, activo),
+         nombre = COALESCE($3, nombre)
+       WHERE id = $4 RETURNING *`,
+      [rol || null, activo ?? null, nombre || null, id]
     );
 
     if (rows.length === 0) {

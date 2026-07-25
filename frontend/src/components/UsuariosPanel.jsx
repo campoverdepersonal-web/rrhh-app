@@ -14,6 +14,8 @@ export default function UsuariosPanel() {
   const [enviando, setEnviando] = useState(false);
   const [error, setError] = useState(null);
   const [form, setForm] = useState({ nombre: "", email: "", password: "", rol: "RRHH" });
+  const [editandoId, setEditandoId] = useState(null);
+  const [nombreEditado, setNombreEditado] = useState("");
 
   function cargar() {
     setCargando(true);
@@ -21,6 +23,16 @@ export default function UsuariosPanel() {
   }
 
   useEffect(() => { cargar(); }, []);
+
+  async function guardarNombre(id) {
+    try {
+      await api.actualizarUsuario(id, { nombre: nombreEditado });
+      setEditandoId(null);
+      cargar();
+    } catch (err) {
+      setError(err.message);
+    }
+  }
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -63,7 +75,30 @@ export default function UsuariosPanel() {
         {!cargando && usuarios.map((u) => (
           <div className="history-row" key={u.id}>
             <span>
-              <strong>{u.nombre}</strong>
+              {editandoId === u.id ? (
+                <span style={{ display: "inline-flex", gap: 6, alignItems: "center" }}>
+                  <input
+                    type="text"
+                    value={nombreEditado}
+                    onChange={(e) => setNombreEditado(e.target.value)}
+                    style={{ padding: "4px 8px", borderRadius: 6, border: "1px solid var(--color-border)", fontSize: "0.85rem" }}
+                    autoFocus
+                  />
+                  <button className="link-button" onClick={() => guardarNombre(u.id)}>Guardar</button>
+                  <button className="link-button" onClick={() => setEditandoId(null)}>Cancelar</button>
+                </span>
+              ) : (
+                <>
+                  <strong>{u.nombre}</strong>{" "}
+                  <button
+                    className="link-button"
+                    style={{ fontSize: "0.72rem" }}
+                    onClick={() => { setEditandoId(u.id); setNombreEditado(u.nombre); }}
+                  >
+                    editar
+                  </button>
+                </>
+              )}
               <span className="muted"> · {u.email} · {ROLES.find((r) => r.value === u.rol)?.label}</span>
             </span>
             <button
