@@ -1,0 +1,14 @@
+# Dependencias (se reinstalan con "npm install", no hace falta subirlas)
+node_modules/
+
+# Variables de entorno con contraseñas y secretos — nunca se suben a git
+.env
+.env.local
+.env.production
+
+# Build del frontend
+dist/
+
+# Archivos del sistema operativo
+.DS_Store
+Thumbs.db
