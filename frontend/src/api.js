@@ -30,6 +30,11 @@ function post(path, data) {
 function put(path, data) {
   return request(path, { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify(data) });
 }
+function importarArchivo(path, file) {
+  const formData = new FormData();
+  formData.append("archivo", file);
+  return request(path, { method: "POST", body: formData });
+}
 
 export const api = {
   // --- Autenticación ---
@@ -70,6 +75,10 @@ export const api = {
     formData.append("archivo", file);
     return request("/employees/importar", { method: "POST", body: formData });
   },
+  importarComentarios: (file) => importarArchivo("/employees/importar-comentarios", file),
+  importarEvaluaciones: (file) => importarArchivo("/employees/importar-evaluaciones", file),
+  importarSanciones: (file) => importarArchivo("/employees/importar-sanciones", file),
+  importarCursos: (file) => importarArchivo("/employees/importar-cursos", file),
   registrarDecisionPeriodoPrueba: (id, data) => post(`/employees/${id}/periodo-prueba`, data),
 
   listComentarios: (id) => request(`/employees/${id}/comentarios`),

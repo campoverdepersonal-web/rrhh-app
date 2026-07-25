@@ -9,6 +9,7 @@ import { cursosRouter } from "./routes/cursos.js";
 import { dashboardRouter } from "./routes/dashboard.js";
 import { comparativosRouter } from "./routes/dashboardComparativos.js";
 import { authRouter } from "./routes/auth.js";
+import { importarMasivoRouter } from "./routes/importarMasivo.js";
 import { requireAuth } from "./middleware/auth.js";
 
 dotenv.config();
@@ -21,6 +22,7 @@ app.get("/api/health", (req, res) => res.json({ ok: true }));
 app.use("/api/auth", authRouter);
 
 app.use("/api/employees", requireAuth, employeesRouter);
+app.use("/api/employees", requireAuth, importarMasivoRouter);
 app.use("/api/employees/:employeeId/comentarios", requireAuth, comentariosRouter);
 app.use("/api/employees/:employeeId/evaluaciones", requireAuth, evaluacionesRouter);
 app.use("/api/employees/:employeeId/sanciones", requireAuth, sancionesRouter);
