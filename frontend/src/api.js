@@ -80,6 +80,8 @@ export const api = {
   importarSanciones: (file) => importarArchivo("/employees/importar-sanciones", file),
   importarCursos: (file) => importarArchivo("/employees/importar-cursos", file),
   registrarDecisionPeriodoPrueba: (id, data) => post(`/employees/${id}/periodo-prueba`, data),
+  registrarCambioPuesto: (id, data) => post(`/employees/${id}/historial-puestos`, data),
+  eliminarHistorialPuesto: (employeeId, historialId) => request(`/employees/${employeeId}/historial-puestos/${historialId}`, { method: "DELETE" }),
 
   listComentarios: (id) => request(`/employees/${id}/comentarios`),
   crearComentario: (id, data) => post(`/employees/${id}/comentarios`, data),

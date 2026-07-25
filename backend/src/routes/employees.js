@@ -228,6 +228,75 @@ employeesRouter.get("/:id", async (req, res) => {
 });
 
 // ---------------------------------------------------------------------------
+// POST /api/employees/:id/historial-puestos — registra un cambio de puesto:
+// cierra el registro anterior "abierto" (fecha_fin) y actualiza los datos
+// actuales del empleado (puesto/sector/lugar de trabajo) para que el legajo
+// siempre refleje su situación vigente.
+// ---------------------------------------------------------------------------
+employeesRouter.post("/:id/historial-puestos", async (req, res) => {
+  const client = await pool.connect();
+  try {
+    const { id } = req.params;
+    const { puesto, sector, lugarTrabajo, fechaInicio, motivo } = req.body;
+
+    if (!puesto || !sector || !lugarTrabajo || !fechaInicio) {
+      return res.status(400).json({ error: "puesto, sector, lugarTrabajo y fechaInicio son obligatorios" });
+    }
+
+    await client.query("BEGIN");
+
+    // Cierra el registro vigente (si existe), un día antes de que empiece el nuevo.
+    await client.query(
+      `UPDATE historial_puestos SET fecha_fin = $1::date - INTERVAL '1 day'
+       WHERE employee_id = $2 AND fecha_fin IS NULL`,
+      [fechaInicio, id]
+    );
+
+    const { rows } = await client.query(
+      `INSERT INTO historial_puestos (employee_id, puesto, sector, lugar_trabajo, fecha_inicio, motivo)
+       VALUES ($1,$2,$3,$4,$5,$6) RETURNING *`,
+      [id, puesto, sector, lugarTrabajo, fechaInicio, motivo || null]
+    );
+
+    await client.query(
+      `UPDATE employees SET puesto = $1, sector = $2, lugar_trabajo = $3, updated_at = now() WHERE id = $4`,
+      [puesto, sector, lugarTrabajo, id]
+    );
+
+    await client.query("COMMIT");
+    res.status(201).json(serializeHistorialPuesto(rows[0]));
+  } catch (err) {
+    await client.query("ROLLBACK");
+    console.error(err);
+    res.status(500).json({ error: "Error al registrar el cambio de puesto" });
+  } finally {
+    client.release();
+  }
+});
+
+// ---------------------------------------------------------------------------
+// DELETE /api/employees/:id/historial-puestos/:historialId — corrige un
+// registro cargado por error. No modifica los datos actuales del empleado
+// (si necesitás corregir el puesto vigente, cargá un nuevo cambio de puesto).
+// ---------------------------------------------------------------------------
+employeesRouter.delete("/:id/historial-puestos/:historialId", async (req, res) => {
+  try {
+    const { historialId } = req.params;
+    const { rows } = await pool.query(
+      `DELETE FROM historial_puestos WHERE id = $1 RETURNING id`,
+      [historialId]
+    );
+    if (rows.length === 0) {
+      return res.status(404).json({ error: "Registro no encontrado" });
+    }
+    res.json({ ok: true });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Error al eliminar el registro" });
+  }
+});
+
+// ---------------------------------------------------------------------------
 // POST /api/employees — alta manual de empleado
 // ---------------------------------------------------------------------------
 employeesRouter.post("/", async (req, res) => {

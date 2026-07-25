@@ -10,6 +10,7 @@ dashboardRouter.get("/rrhh", async (req, res) => {
     const empleadosResult = await pool.query(`SELECT * FROM employees`);
     const empleados = empleadosResult.rows;
     const activos = empleados.filter((e) => e.estado === "ACTIVO");
+    const inactivos = empleados.filter((e) => e.estado === "INACTIVO");
 
     const evaluacionesUltimasPP = await pool.query(
       `SELECT DISTINCT ON (employee_id) employee_id, resultado FROM periodo_prueba_evaluaciones ORDER BY employee_id, fecha DESC`
@@ -110,6 +111,7 @@ dashboardRouter.get("/rrhh", async (req, res) => {
 
     res.json({
       empleadosActivos: activos.length,
+      empleadosInactivos: inactivos.length,
       empleadosEnPeriodoPrueba: enPeriodoPrueba.length,
       proximosAVencer,
       evaluaciones: {

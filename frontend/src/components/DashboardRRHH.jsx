@@ -45,6 +45,7 @@ export default function DashboardRRHH() {
 
       <div className="kpi-grid">
         <KpiCard label="👤 Empleados activos" value={data.empleadosActivos} />
+        <KpiCard label="🚫 Empleados inactivos" value={data.empleadosInactivos} />
         <KpiCard label="🧪 En período de prueba" value={data.empleadosEnPeriodoPrueba} />
         <KpiCard
           label="⚠️ Vencimientos próximos (≤15 días)"

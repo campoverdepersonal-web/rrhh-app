@@ -17,7 +17,7 @@ const TABS = [
 
 const RESULTADOS = [
   { value: "CONFIRMADO", label: "Confirmado como personal efectivo" },
-  { value: "EXTENSION", label: "Extensión del período" },
+  { value: "EXTENSION", label: "En observación" },
   { value: "BAJA", label: "Baja del empleado" },
 ];
 
@@ -27,6 +27,12 @@ export default function LegajoEmpleado({ empleado, onDecisionRegistrada, usuario
   const [enviando, setEnviando] = useState(false);
   const [eliminando, setEliminando] = useState(false);
   const [error, setError] = useState(null);
+  const [formPuestoVisible, setFormPuestoVisible] = useState(false);
+  const [enviandoPuesto, setEnviandoPuesto] = useState(false);
+  const [errorPuesto, setErrorPuesto] = useState(null);
+  const [formPuesto, setFormPuesto] = useState({
+    puesto: "", sector: "", lugarTrabajo: "", fechaInicio: new Date().toISOString().slice(0, 10), motivo: "",
+  });
   const [form, setForm] = useState({
     fecha: new Date().toISOString().slice(0, 10),
     resultado: "CONFIRMADO",
@@ -48,6 +54,32 @@ export default function LegajoEmpleado({ empleado, onDecisionRegistrada, usuario
       setError(err.message);
     } finally {
       setEnviando(false);
+    }
+  }
+
+  async function handleSubmitPuesto(e) {
+    e.preventDefault();
+    setEnviandoPuesto(true);
+    setErrorPuesto(null);
+    try {
+      await api.registrarCambioPuesto(empleado.id, formPuesto);
+      setFormPuestoVisible(false);
+      setFormPuesto({ puesto: "", sector: "", lugarTrabajo: "", fechaInicio: new Date().toISOString().slice(0, 10), motivo: "" });
+      onDecisionRegistrada?.();
+    } catch (err) {
+      setErrorPuesto(err.message);
+    } finally {
+      setEnviandoPuesto(false);
+    }
+  }
+
+  async function handleEliminarHistorialPuesto(historialId) {
+    if (!window.confirm("¿Eliminar este registro del historial de puestos? No se puede deshacer.")) return;
+    try {
+      await api.eliminarHistorialPuesto(empleado.id, historialId);
+      onDecisionRegistrada?.();
+    } catch (err) {
+      setErrorPuesto(err.message);
     }
   }
 
@@ -220,13 +252,64 @@ export default function LegajoEmpleado({ empleado, onDecisionRegistrada, usuario
             empleado.historialPuestos.map((h) => (
               <div className="history-row" key={h.id}>
                 <span>{h.puesto} — {h.sector}</span>
-                <span className="muted">
+                <span className="muted" style={{ display: "flex", alignItems: "center", gap: 8 }}>
                   {formatFecha(h.fechaInicio)} → {h.fechaFin ? formatFecha(h.fechaFin) : "actual"}
+                  <button
+                    className="link-button"
+                    style={{ color: "var(--color-red)" }}
+                    onClick={() => handleEliminarHistorialPuesto(h.id)}
+                  >
+                    eliminar
+                  </button>
                 </span>
               </div>
             ))
           ) : (
             <p className="muted" style={{ fontSize: "0.88rem" }}>Sin cambios de puesto registrados.</p>
+          )}
+
+          {!formPuestoVisible && (
+            <button className="btn-primary" onClick={() => setFormPuestoVisible(true)}>
+              Registrar cambio de puesto
+            </button>
+          )}
+
+          {formPuestoVisible && (
+            <form onSubmit={handleSubmitPuesto} style={{ marginTop: 14 }}>
+              <p className="muted" style={{ fontSize: "0.78rem", marginTop: 0 }}>
+                Esto actualiza el puesto/sector/lugar de trabajo vigente del empleado y cierra
+                automáticamente el registro anterior.
+              </p>
+              <div className="form-grid">
+                <label>
+                  Nuevo puesto
+                  <input type="text" value={formPuesto.puesto} onChange={(e) => setFormPuesto({ ...formPuesto, puesto: e.target.value })} required />
+                </label>
+                <label>
+                  Sector
+                  <input type="text" value={formPuesto.sector} onChange={(e) => setFormPuesto({ ...formPuesto, sector: e.target.value })} required />
+                </label>
+                <label>
+                  Lugar de trabajo
+                  <input type="text" value={formPuesto.lugarTrabajo} onChange={(e) => setFormPuesto({ ...formPuesto, lugarTrabajo: e.target.value })} required />
+                </label>
+                <label>
+                  Fecha de inicio
+                  <input type="date" value={formPuesto.fechaInicio} onChange={(e) => setFormPuesto({ ...formPuesto, fechaInicio: e.target.value })} required />
+                </label>
+                <label style={{ gridColumn: "1 / -1" }}>
+                  Motivo
+                  <input type="text" value={formPuesto.motivo} onChange={(e) => setFormPuesto({ ...formPuesto, motivo: e.target.value })} placeholder="Ej: Promoción, cambio de sucursal, reestructuración" />
+                </label>
+              </div>
+              {errorPuesto && <p style={{ color: "var(--color-red)", fontSize: "0.85rem" }}>{errorPuesto}</p>}
+              <div style={{ display: "flex", gap: 10 }}>
+                <button className="btn-primary" type="submit" disabled={enviandoPuesto}>
+                  {enviandoPuesto ? "Guardando…" : "Guardar cambio de puesto"}
+                </button>
+                <button type="button" className="link-button" onClick={() => setFormPuestoVisible(false)}>Cancelar</button>
+              </div>
+            </form>
           )}
         </div>
       </div>
