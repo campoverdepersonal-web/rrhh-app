@@ -43,32 +43,38 @@ dashboardRouter.get("/rrhh", async (req, res) => {
     const destacados = await pool.query(`
       SELECT e.id, e.nombre, e.apellido, e.puesto,
              avg(ed.puntaje_total)::numeric(4,2) AS promedio,
-             count(cl.id) FILTER (WHERE cl.tipo IN ('POSITIVO', 'FELICITACION'))::int AS "comentariosPositivos"
+             count(DISTINCT cl.id) FILTER (WHERE cl.tipo IN ('POSITIVO', 'FELICITACION'))::int AS "comentariosPositivos"
       FROM employees e
       LEFT JOIN evaluaciones_desempeno ed ON ed.employee_id = e.id AND ed.puntaje_total IS NOT NULL
       LEFT JOIN comentarios_lider cl ON cl.employee_id = e.id
       WHERE e.estado = 'ACTIVO'
       GROUP BY e.id, e.nombre, e.apellido, e.puesto
-      HAVING avg(ed.puntaje_total) IS NOT NULL
-          OR count(cl.id) FILTER (WHERE cl.tipo IN ('POSITIVO', 'FELICITACION')) >= 3
+        HAVING avg(ed.puntaje_total) IS NOT NULL
+          OR count(DISTINCT cl.id) FILTER (WHERE cl.tipo IN ('POSITIVO', 'FELICITACION')) >= 3
       ORDER BY promedio DESC NULLS LAST, "comentariosPositivos" DESC
       LIMIT 5
     `);
 
     const enRiesgo = await pool.query(`
-      SELECT e.id, e.nombre, e.apellido, e.puesto,
-             avg(ed.puntaje_total)::numeric(4,2) AS promedio,
-             (SELECT count(*) FROM sanciones s WHERE s.employee_id = e.id)::int AS sanciones,
-             count(cl.id) FILTER (WHERE cl.tipo IN ('NEGATIVO', 'CORRECTIVO'))::int AS "comentariosNegativos"
-      FROM employees e
-      LEFT JOIN evaluaciones_desempeno ed ON ed.employee_id = e.id AND ed.puntaje_total IS NOT NULL
-      LEFT JOIN comentarios_lider cl ON cl.employee_id = e.id
-      WHERE e.estado = 'ACTIVO'
-      GROUP BY e.id, e.nombre, e.apellido, e.puesto
-      HAVING avg(ed.puntaje_total) < 6
-          OR (SELECT count(*) FROM sanciones s WHERE s.employee_id = e.id) >= 2
-          OR count(cl.id) FILTER (WHERE cl.tipo IN ('NEGATIVO', 'CORRECTIVO')) >= 2
-      ORDER BY sanciones DESC, "comentariosNegativos" DESC, promedio ASC NULLS LAST
+      WITH datos AS (
+        SELECT e.id, e.nombre, e.apellido, e.puesto,
+               avg(ed.puntaje_total)::numeric(4,2) AS promedio,
+               (SELECT count(*) FROM sanciones s WHERE s.employee_id = e.id)::int AS sanciones,
+               (SELECT count(*) FROM sanciones s WHERE s.employee_id = e.id
+                  AND s.fecha >= CURRENT_DATE - INTERVAL '3 months')::int AS sanciones_recientes,
+               count(DISTINCT cl.id) FILTER (WHERE cl.tipo IN ('NEGATIVO', 'CORRECTIVO'))::int AS comentarios_negativos
+        FROM employees e
+        LEFT JOIN evaluaciones_desempeno ed ON ed.employee_id = e.id AND ed.puntaje_total IS NOT NULL
+        LEFT JOIN comentarios_lider cl ON cl.employee_id = e.id
+        WHERE e.estado = 'ACTIVO'
+        GROUP BY e.id, e.nombre, e.apellido, e.puesto
+      )
+      SELECT id, nombre, apellido, puesto, promedio, sanciones,
+             sanciones_recientes AS "sancionesRecientes",
+             comentarios_negativos AS "comentariosNegativos"
+      FROM datos
+      WHERE promedio < 6 OR sanciones_recientes >= 1 OR comentarios_negativos >= 2
+      ORDER BY (sanciones_recientes + comentarios_negativos) DESC, promedio ASC NULLS LAST
       LIMIT 5
     `);
 
