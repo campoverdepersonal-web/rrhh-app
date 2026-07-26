@@ -150,12 +150,21 @@ export default function DashboardRRHH() {
         <div className="panel">
           <h2>Colaboradores destacados</h2>
           {data.colaboradoresDestacados.length === 0 ? (
-            <p className="muted" style={{ fontSize: "0.85rem" }}>Sin evaluaciones registradas.</p>
+            <p className="muted" style={{ fontSize: "0.85rem" }}>Sin evaluaciones ni comentarios positivos registrados.</p>
           ) : (
             data.colaboradoresDestacados.map((c) => (
-              <div className="history-row" key={c.id}>
-                <span>{c.nombre} {c.apellido} — {c.puesto}</span>
-                <span className="status-pill teal" style={{ fontSize: "0.78rem", padding: "3px 10px" }}>{c.promedio}</span>
+              <div className="history-row" key={c.id} style={{ alignItems: "flex-start" }}>
+                <div>
+                  <div>{c.nombre} {c.apellido} — {c.puesto}</div>
+                  {c.comentariosPositivos > 0 && (
+                    <div className="muted" style={{ fontSize: "0.78rem", marginTop: 2 }}>
+                      💬 {c.comentariosPositivos} comentario{c.comentariosPositivos !== 1 ? "s" : ""} positivo{c.comentariosPositivos !== 1 ? "s" : ""}
+                    </div>
+                  )}
+                </div>
+                <span className="status-pill teal" style={{ fontSize: "0.78rem", padding: "3px 10px", whiteSpace: "nowrap" }}>
+                  {c.promedio ?? "s/eval"}
+                </span>
               </div>
             ))
           )}
@@ -167,9 +176,16 @@ export default function DashboardRRHH() {
             <p className="muted" style={{ fontSize: "0.85rem" }}>No hay colaboradores en riesgo por ahora.</p>
           ) : (
             data.colaboradoresEnRiesgo.map((c) => (
-              <div className="history-row" key={c.id}>
-                <span>{c.nombre} {c.apellido} — {c.puesto}</span>
-                <span className="status-pill red" style={{ fontSize: "0.78rem", padding: "3px 10px" }}>
+              <div className="history-row" key={c.id} style={{ alignItems: "flex-start" }}>
+                <div>
+                  <div>{c.nombre} {c.apellido} — {c.puesto}</div>
+                  {c.comentariosNegativos > 0 && (
+                    <div className="muted" style={{ fontSize: "0.78rem", marginTop: 2 }}>
+                      💬 {c.comentariosNegativos} comentario{c.comentariosNegativos !== 1 ? "s" : ""} negativo{c.comentariosNegativos !== 1 ? "s" : ""}/correctivo{c.comentariosNegativos !== 1 ? "s" : ""}
+                    </div>
+                  )}
+                </div>
+                <span className="status-pill red" style={{ fontSize: "0.78rem", padding: "3px 10px", whiteSpace: "nowrap" }}>
                   {c.promedio ?? "s/eval"} · {c.sanciones} sanción(es)
                 </span>
               </div>
