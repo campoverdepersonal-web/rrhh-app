@@ -50,6 +50,49 @@ evaluacionesRouter.post("/", async (req, res) => {
   }
 });
 
+// PUT /api/employees/:employeeId/evaluaciones/:id
+evaluacionesRouter.put("/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { fecha, evaluador, puntajeTotal, observaciones, resultado } = req.body;
+
+    const { rows } = await pool.query(
+      `UPDATE evaluaciones_desempeno SET
+         fecha = COALESCE($1, fecha),
+         evaluador = COALESCE($2, evaluador),
+         puntaje_total = $3,
+         observaciones = $4,
+         resultado = $5
+       WHERE id = $6 RETURNING *`,
+      [fecha || null, evaluador || null, puntajeTotal ?? null, observaciones || null, resultado || null, id]
+    );
+
+    if (rows.length === 0) {
+      return res.status(404).json({ error: "Evaluación no encontrada" });
+    }
+
+    res.json(serialize(rows[0]));
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Error al editar la evaluación" });
+  }
+});
+
+// DELETE /api/employees/:employeeId/evaluaciones/:id
+evaluacionesRouter.delete("/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { rows } = await pool.query(`DELETE FROM evaluaciones_desempeno WHERE id = $1 RETURNING id`, [id]);
+    if (rows.length === 0) {
+      return res.status(404).json({ error: "Evaluación no encontrada" });
+    }
+    res.json({ ok: true });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Error al eliminar la evaluación" });
+  }
+});
+
 function serialize(row) {
   return {
     id: row.id,

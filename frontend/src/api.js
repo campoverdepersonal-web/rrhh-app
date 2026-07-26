@@ -90,13 +90,18 @@ export const api = {
 
   listEvaluaciones: (id) => request(`/employees/${id}/evaluaciones`),
   crearEvaluacion: (id, data) => post(`/employees/${id}/evaluaciones`, data),
+  actualizarEvaluacion: (employeeId, evaluacionId, data) => put(`/employees/${employeeId}/evaluaciones/${evaluacionId}`, data),
+  eliminarEvaluacion: (employeeId, evaluacionId) => request(`/employees/${employeeId}/evaluaciones/${evaluacionId}`, { method: "DELETE" }),
 
   listSanciones: (id) => request(`/employees/${id}/sanciones`),
   crearSancion: (id, data) => post(`/employees/${id}/sanciones`, data),
+  actualizarSancion: (employeeId, sancionId, data) => put(`/employees/${employeeId}/sanciones/${sancionId}`, data),
+  eliminarSancion: (employeeId, sancionId) => request(`/employees/${employeeId}/sanciones/${sancionId}`, { method: "DELETE" }),
 
   listCursos: (id) => request(`/employees/${id}/cursos`),
   crearCurso: (id, data) => post(`/employees/${id}/cursos`, data),
   actualizarCurso: (employeeId, cursoId, data) => put(`/employees/${employeeId}/cursos/${cursoId}`, data),
+  eliminarCurso: (employeeId, cursoId) => request(`/employees/${employeeId}/cursos/${cursoId}`, { method: "DELETE" }),
 
   // --- Dashboards ---
   getDashboardRRHH: () => request("/dashboard/rrhh"),

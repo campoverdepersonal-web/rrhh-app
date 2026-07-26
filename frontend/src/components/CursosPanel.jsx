@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { api } from "../api.js";
-import { formatFecha } from "../dateUtils.js";
+import { formatFecha, toInputDate } from "../dateUtils.js";
 
 const ESTADOS = [
   { value: "PENDIENTE", label: "Pendiente", color: "amber" },
@@ -11,20 +11,19 @@ const ESTADOS = [
 
 const MODALIDADES = ["Presencial", "Virtual", "Semipresencial"];
 
+const FORM_VACIO = {
+  curso: "", modalidad: MODALIDADES[0], fecha: new Date().toISOString().slice(0, 10),
+  estado: "PENDIENTE", capacitador: "", observaciones: "",
+};
+
 export default function CursosPanel({ employeeId }) {
   const [cursos, setCursos] = useState([]);
   const [cargando, setCargando] = useState(true);
   const [formVisible, setFormVisible] = useState(false);
+  const [editandoId, setEditandoId] = useState(null);
   const [enviando, setEnviando] = useState(false);
   const [error, setError] = useState(null);
-  const [form, setForm] = useState({
-    curso: "",
-    modalidad: MODALIDADES[0],
-    fecha: new Date().toISOString().slice(0, 10),
-    estado: "PENDIENTE",
-    capacitador: "",
-    observaciones: "",
-  });
+  const [form, setForm] = useState(FORM_VACIO);
 
   function cargar() {
     setCargando(true);
@@ -33,19 +32,53 @@ export default function CursosPanel({ employeeId }) {
 
   useEffect(() => { cargar(); }, [employeeId]);
 
+  function abrirNuevo() {
+    setForm(FORM_VACIO);
+    setEditandoId(null);
+    setFormVisible(true);
+  }
+
+  function abrirEdicion(c) {
+    setForm({
+      curso: c.curso,
+      modalidad: c.modalidad || MODALIDADES[0],
+      fecha: toInputDate(c.fecha),
+      estado: c.estado,
+      capacitador: c.capacitador || "",
+      observaciones: c.observaciones || "",
+    });
+    setEditandoId(c.id);
+    setFormVisible(true);
+  }
+
   async function handleSubmit(e) {
     e.preventDefault();
     setEnviando(true);
     setError(null);
     try {
-      await api.crearCurso(employeeId, form);
-      setForm({ curso: "", modalidad: MODALIDADES[0], fecha: new Date().toISOString().slice(0, 10), estado: "PENDIENTE", capacitador: "", observaciones: "" });
+      if (editandoId) {
+        await api.actualizarCurso(employeeId, editandoId, form);
+      } else {
+        await api.crearCurso(employeeId, form);
+      }
+      setForm(FORM_VACIO);
       setFormVisible(false);
+      setEditandoId(null);
       cargar();
     } catch (err) {
       setError(err.message);
     } finally {
       setEnviando(false);
+    }
+  }
+
+  async function handleEliminar(id) {
+    if (!window.confirm("¿Eliminar este curso? No se puede deshacer.")) return;
+    try {
+      await api.eliminarCurso(employeeId, id);
+      cargar();
+    } catch (err) {
+      setError(err.message);
     }
   }
 
@@ -75,7 +108,7 @@ export default function CursosPanel({ employeeId }) {
         <p className="muted" style={{ fontSize: "0.88rem" }}>Todavía no hay cursos registrados.</p>
       )}
       {!cargando && cursos.map((c) => (
-        <div className="history-row" key={c.id} style={{ alignItems: "center" }}>
+        <div className="history-row" key={c.id} style={{ alignItems: "flex-start" }}>
           <div>
             <strong>{c.curso}</strong>
             <div className="muted" style={{ fontSize: "0.8rem" }}>
@@ -85,6 +118,10 @@ export default function CursosPanel({ employeeId }) {
             {c.observaciones && (
               <div className="muted" style={{ fontSize: "0.78rem", marginTop: 3 }}>📝 {c.observaciones}</div>
             )}
+            <div style={{ display: "flex", gap: 8, marginTop: 4 }}>
+              <button className="link-button" onClick={() => abrirEdicion(c)}>editar</button>
+              <button className="link-button" style={{ color: "var(--color-red)" }} onClick={() => handleEliminar(c.id)}>eliminar</button>
+            </div>
           </div>
           <select
             value={c.estado}
@@ -98,7 +135,7 @@ export default function CursosPanel({ employeeId }) {
       ))}
 
       {!formVisible && (
-        <button className="btn-primary" onClick={() => setFormVisible(true)}>
+        <button className="btn-primary" onClick={abrirNuevo}>
           Agregar curso
         </button>
       )}
@@ -136,9 +173,12 @@ export default function CursosPanel({ employeeId }) {
             </label>
           </div>
           {error && <p style={{ color: "var(--color-red)", fontSize: "0.85rem" }}>{error}</p>}
-          <button className="btn-primary" type="submit" disabled={enviando}>
-            {enviando ? "Guardando…" : "Guardar curso"}
-          </button>
+          <div style={{ display: "flex", gap: 10 }}>
+            <button className="btn-primary" type="submit" disabled={enviando}>
+              {enviando ? "Guardando…" : editandoId ? "Guardar cambios" : "Guardar curso"}
+            </button>
+            <button type="button" className="link-button" onClick={() => { setFormVisible(false); setEditandoId(null); }}>Cancelar</button>
+          </div>
         </form>
       )}
     </div>

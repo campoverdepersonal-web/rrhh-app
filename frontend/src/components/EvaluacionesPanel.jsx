@@ -1,20 +1,17 @@
 import { useEffect, useState } from "react";
 import { api } from "../api.js";
-import { formatFecha } from "../dateUtils.js";
+import { formatFecha, toInputDate } from "../dateUtils.js";
+
+const FORM_VACIO = { fecha: new Date().toISOString().slice(0, 10), evaluador: "", puntajeTotal: "", resultado: "", observaciones: "" };
 
 export default function EvaluacionesPanel({ employeeId }) {
   const [evaluaciones, setEvaluaciones] = useState([]);
   const [cargando, setCargando] = useState(true);
   const [formVisible, setFormVisible] = useState(false);
+  const [editandoId, setEditandoId] = useState(null);
   const [enviando, setEnviando] = useState(false);
   const [error, setError] = useState(null);
-  const [form, setForm] = useState({
-    fecha: new Date().toISOString().slice(0, 10),
-    evaluador: "",
-    puntajeTotal: "",
-    resultado: "",
-    observaciones: "",
-  });
+  const [form, setForm] = useState(FORM_VACIO);
 
   function cargar() {
     setCargando(true);
@@ -23,22 +20,53 @@ export default function EvaluacionesPanel({ employeeId }) {
 
   useEffect(() => { cargar(); }, [employeeId]);
 
+  function abrirNueva() {
+    setForm(FORM_VACIO);
+    setEditandoId(null);
+    setFormVisible(true);
+  }
+
+  function abrirEdicion(ev) {
+    setForm({
+      fecha: toInputDate(ev.fecha),
+      evaluador: ev.evaluador,
+      puntajeTotal: ev.puntajeTotal ?? "",
+      resultado: ev.resultado || "",
+      observaciones: ev.observaciones || "",
+    });
+    setEditandoId(ev.id);
+    setFormVisible(true);
+  }
+
   async function handleSubmit(e) {
     e.preventDefault();
     setEnviando(true);
     setError(null);
     try {
-      await api.crearEvaluacion(employeeId, {
-        ...form,
-        puntajeTotal: form.puntajeTotal ? Number(form.puntajeTotal) : null,
-      });
-      setForm({ fecha: new Date().toISOString().slice(0, 10), evaluador: "", puntajeTotal: "", resultado: "", observaciones: "" });
+      const payload = { ...form, puntajeTotal: form.puntajeTotal ? Number(form.puntajeTotal) : null };
+      if (editandoId) {
+        await api.actualizarEvaluacion(employeeId, editandoId, payload);
+      } else {
+        await api.crearEvaluacion(employeeId, payload);
+      }
+      setForm(FORM_VACIO);
       setFormVisible(false);
+      setEditandoId(null);
       cargar();
     } catch (err) {
       setError(err.message);
     } finally {
       setEnviando(false);
+    }
+  }
+
+  async function handleEliminar(id) {
+    if (!window.confirm("¿Eliminar esta evaluación? No se puede deshacer.")) return;
+    try {
+      await api.eliminarEvaluacion(employeeId, id);
+      cargar();
+    } catch (err) {
+      setError(err.message);
     }
   }
 
@@ -60,12 +88,18 @@ export default function EvaluacionesPanel({ employeeId }) {
             <strong>{ev.puntajeTotal ?? "—"}</strong>{ev.resultado ? ` · ${ev.resultado}` : ""}
             {ev.observaciones && <div className="muted" style={{ marginTop: 4, fontSize: "0.82rem" }}>{ev.observaciones}</div>}
           </div>
-          <span className="muted" style={{ whiteSpace: "nowrap" }}>{formatFecha(ev.fecha)} · {ev.evaluador}</span>
+          <span className="muted" style={{ whiteSpace: "nowrap", display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 4 }}>
+            <span>{formatFecha(ev.fecha)} · {ev.evaluador}</span>
+            <span style={{ display: "flex", gap: 8 }}>
+              <button className="link-button" onClick={() => abrirEdicion(ev)}>editar</button>
+              <button className="link-button" style={{ color: "var(--color-red)" }} onClick={() => handleEliminar(ev.id)}>eliminar</button>
+            </span>
+          </span>
         </div>
       ))}
 
       {!formVisible && (
-        <button className="btn-primary" onClick={() => setFormVisible(true)}>
+        <button className="btn-primary" onClick={abrirNueva}>
           Agregar evaluación
         </button>
       )}
@@ -95,9 +129,12 @@ export default function EvaluacionesPanel({ employeeId }) {
             </label>
           </div>
           {error && <p style={{ color: "var(--color-red)", fontSize: "0.85rem" }}>{error}</p>}
-          <button className="btn-primary" type="submit" disabled={enviando}>
-            {enviando ? "Guardando…" : "Guardar evaluación"}
-          </button>
+          <div style={{ display: "flex", gap: 10 }}>
+            <button className="btn-primary" type="submit" disabled={enviando}>
+              {enviando ? "Guardando…" : editandoId ? "Guardar cambios" : "Guardar evaluación"}
+            </button>
+            <button type="button" className="link-button" onClick={() => { setFormVisible(false); setEditandoId(null); }}>Cancelar</button>
+          </div>
         </form>
       )}
 

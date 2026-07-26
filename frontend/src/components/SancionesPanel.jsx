@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { api } from "../api.js";
-import { formatFecha } from "../dateUtils.js";
+import { formatFecha, toInputDate } from "../dateUtils.js";
 
 const TIPOS = [
   { value: "APERCIBIMIENTO", label: "Apercibimiento" },
@@ -8,18 +8,16 @@ const TIPOS = [
   { value: "SUSPENSION", label: "Suspensión" },
 ];
 
+const FORM_VACIO = { fecha: new Date().toISOString().slice(0, 10), motivo: "", tipo: "APERCIBIMIENTO", responsable: "" };
+
 export default function SancionesPanel({ employeeId }) {
   const [sanciones, setSanciones] = useState([]);
   const [cargando, setCargando] = useState(true);
   const [formVisible, setFormVisible] = useState(false);
+  const [editandoId, setEditandoId] = useState(null);
   const [enviando, setEnviando] = useState(false);
   const [error, setError] = useState(null);
-  const [form, setForm] = useState({
-    fecha: new Date().toISOString().slice(0, 10),
-    motivo: "",
-    tipo: "APERCIBIMIENTO",
-    responsable: "",
-  });
+  const [form, setForm] = useState(FORM_VACIO);
 
   function cargar() {
     setCargando(true);
@@ -28,19 +26,46 @@ export default function SancionesPanel({ employeeId }) {
 
   useEffect(() => { cargar(); }, [employeeId]);
 
+  function abrirNueva() {
+    setForm(FORM_VACIO);
+    setEditandoId(null);
+    setFormVisible(true);
+  }
+
+  function abrirEdicion(s) {
+    setForm({ fecha: toInputDate(s.fecha), motivo: s.motivo, tipo: s.tipo, responsable: s.responsable });
+    setEditandoId(s.id);
+    setFormVisible(true);
+  }
+
   async function handleSubmit(e) {
     e.preventDefault();
     setEnviando(true);
     setError(null);
     try {
-      await api.crearSancion(employeeId, form);
-      setForm({ fecha: new Date().toISOString().slice(0, 10), motivo: "", tipo: "APERCIBIMIENTO", responsable: "" });
+      if (editandoId) {
+        await api.actualizarSancion(employeeId, editandoId, form);
+      } else {
+        await api.crearSancion(employeeId, form);
+      }
+      setForm(FORM_VACIO);
       setFormVisible(false);
+      setEditandoId(null);
       cargar();
     } catch (err) {
       setError(err.message);
     } finally {
       setEnviando(false);
+    }
+  }
+
+  async function handleEliminar(id) {
+    if (!window.confirm("¿Eliminar esta sanción? No se puede deshacer.")) return;
+    try {
+      await api.eliminarSancion(employeeId, id);
+      cargar();
+    } catch (err) {
+      setError(err.message);
     }
   }
 
@@ -60,12 +85,18 @@ export default function SancionesPanel({ employeeId }) {
             </span>
             <div style={{ marginTop: 6 }}>{s.motivo}</div>
           </div>
-          <span className="muted" style={{ whiteSpace: "nowrap" }}>{formatFecha(s.fecha)} · {s.responsable}</span>
+          <span className="muted" style={{ whiteSpace: "nowrap", display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 4 }}>
+            <span>{formatFecha(s.fecha)} · {s.responsable}</span>
+            <span style={{ display: "flex", gap: 8 }}>
+              <button className="link-button" onClick={() => abrirEdicion(s)}>editar</button>
+              <button className="link-button" style={{ color: "var(--color-red)" }} onClick={() => handleEliminar(s.id)}>eliminar</button>
+            </span>
+          </span>
         </div>
       ))}
 
       {!formVisible && (
-        <button className="btn-primary" onClick={() => setFormVisible(true)}>
+        <button className="btn-primary" onClick={abrirNueva}>
           Registrar sanción
         </button>
       )}
@@ -93,9 +124,12 @@ export default function SancionesPanel({ employeeId }) {
             </label>
           </div>
           {error && <p style={{ color: "var(--color-red)", fontSize: "0.85rem" }}>{error}</p>}
-          <button className="btn-primary" type="submit" disabled={enviando}>
-            {enviando ? "Guardando…" : "Guardar sanción"}
-          </button>
+          <div style={{ display: "flex", gap: 10 }}>
+            <button className="btn-primary" type="submit" disabled={enviando}>
+              {enviando ? "Guardando…" : editandoId ? "Guardar cambios" : "Guardar sanción"}
+            </button>
+            <button type="button" className="link-button" onClick={() => { setFormVisible(false); setEditandoId(null); }}>Cancelar</button>
+          </div>
         </form>
       )}
     </div>

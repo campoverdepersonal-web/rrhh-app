@@ -46,6 +46,52 @@ sancionesRouter.post("/", async (req, res) => {
   }
 });
 
+// PUT /api/employees/:employeeId/sanciones/:id
+sancionesRouter.put("/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { fecha, motivo, tipo, responsable } = req.body;
+
+    if (tipo && !TIPOS_VALIDOS.includes(tipo)) {
+      return res.status(400).json({ error: "tipo inválido" });
+    }
+
+    const { rows } = await pool.query(
+      `UPDATE sanciones SET
+         fecha = COALESCE($1, fecha),
+         motivo = COALESCE($2, motivo),
+         tipo = COALESCE($3, tipo),
+         responsable = COALESCE($4, responsable)
+       WHERE id = $5 RETURNING *`,
+      [fecha || null, motivo || null, tipo || null, responsable || null, id]
+    );
+
+    if (rows.length === 0) {
+      return res.status(404).json({ error: "Sanción no encontrada" });
+    }
+
+    res.json(serialize(rows[0]));
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Error al editar la sanción" });
+  }
+});
+
+// DELETE /api/employees/:employeeId/sanciones/:id
+sancionesRouter.delete("/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { rows } = await pool.query(`DELETE FROM sanciones WHERE id = $1 RETURNING id`, [id]);
+    if (rows.length === 0) {
+      return res.status(404).json({ error: "Sanción no encontrada" });
+    }
+    res.json({ ok: true });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Error al eliminar la sanción" });
+  }
+});
+
 function serialize(row) {
   return {
     id: row.id,
