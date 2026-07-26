@@ -177,7 +177,7 @@ importarMasivoRouter.post("/importar-sanciones", upload.single("archivo"), async
 
 // ---------------------------------------------------------------------------
 // POST /api/employees/importar-cursos
-// Columnas: Legajo, Curso, Modalidad, Fecha, Estado
+// Columnas: Legajo, Curso, Modalidad, Fecha, Estado, Capacitador, Observaciones
 // ---------------------------------------------------------------------------
 importarMasivoRouter.post("/importar-cursos", upload.single("archivo"), async (req, res) => {
   try {
@@ -195,6 +195,8 @@ importarMasivoRouter.post("/importar-cursos", upload.single("archivo"), async (r
       const fecha = parsearFecha(buscarColumnaCruda(raw, "fecha")) || null;
       const estadoTexto = buscarColumna(raw, "estado");
       const estado = mapearValor(estadoTexto, ESTADOS_CURSO);
+      const capacitador = buscarColumna(raw, "capacitador") || null;
+      const observaciones = buscarColumna(raw, "observaciones") || null;
 
       const motivo = !employeeId ? `No existe ningún empleado con legajo "${buscarColumna(raw, "legajo")}"`
         : !curso ? "Falta el Curso"
@@ -204,8 +206,8 @@ importarMasivoRouter.post("/importar-cursos", upload.single("archivo"), async (r
       if (motivo) { resultado.errores.push({ fila: numeroFila, motivo }); continue; }
 
       await pool.query(
-        `INSERT INTO cursos_capacitaciones (employee_id, curso, modalidad, fecha, estado) VALUES ($1,$2,$3,$4,$5)`,
-        [employeeId, curso, modalidad, fecha, estado]
+        `INSERT INTO cursos_capacitaciones (employee_id, curso, modalidad, fecha, estado, capacitador, observaciones) VALUES ($1,$2,$3,$4,$5,$6,$7)`,
+        [employeeId, curso, modalidad, fecha, estado, capacitador, observaciones]
       );
       resultado.insertados++;
     }

@@ -61,10 +61,10 @@ const TIPOS = [
     label: "Cursos",
     titulo: "Importar cursos y capacitaciones",
     descripcion: "Cada fila agrega un curso nuevo al historial del empleado.",
-    columnas: ["Legajo — debe existir en el sistema", "Curso — obligatorio", "Modalidad, Fecha — opcionales (fecha en DD/MM/AAAA)", "Estado — Pendiente, En curso, Completado o No completado (opcional, por defecto Pendiente)"],
+    columnas: ["Legajo — debe existir en el sistema", "Curso — obligatorio", "Modalidad, Fecha — opcionales (fecha en DD/MM/AAAA)", "Estado — Pendiente, En curso, Completado o No completado (opcional, por defecto Pendiente)", "Capacitador, Observaciones — opcionales"],
     plantilla: () => descargarPlantilla("plantilla-cursos.xlsx", "Cursos", [
-      { "Legajo": "L-0003", "Curso": "Atención al cliente", "Modalidad": "Virtual", "Fecha": "01/04/2026", "Estado": "Completado" },
-    ], [10, 30, 16, 14, 16]),
+      { "Legajo": "L-0003", "Curso": "Atención al cliente", "Modalidad": "Virtual", "Fecha": "01/04/2026", "Estado": "Completado", "Capacitador": "Instituto XYZ", "Observaciones": "Muy buena participación" },
+    ], [10, 30, 16, 14, 16, 20, 30]),
     importar: api.importarCursos,
   },
 ];

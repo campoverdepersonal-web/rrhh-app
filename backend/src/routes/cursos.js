@@ -24,7 +24,7 @@ cursosRouter.get("/", async (req, res) => {
 cursosRouter.post("/", async (req, res) => {
   try {
     const { employeeId } = req.params;
-    const { curso, modalidad, fecha, estado } = req.body;
+    const { curso, modalidad, fecha, estado, capacitador, observaciones } = req.body;
 
     if (!curso || !estado) {
       return res.status(400).json({ error: "curso y estado son obligatorios" });
@@ -34,9 +34,9 @@ cursosRouter.post("/", async (req, res) => {
     }
 
     const { rows } = await pool.query(
-      `INSERT INTO cursos_capacitaciones (employee_id, curso, modalidad, fecha, estado)
-       VALUES ($1, $2, $3, $4, $5) RETURNING *`,
-      [employeeId, curso, modalidad || null, fecha || null, estado]
+      `INSERT INTO cursos_capacitaciones (employee_id, curso, modalidad, fecha, estado, capacitador, observaciones)
+       VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *`,
+      [employeeId, curso, modalidad || null, fecha || null, estado, capacitador || null, observaciones || null]
     );
 
     res.status(201).json(serialize(rows[0]));
@@ -46,11 +46,11 @@ cursosRouter.post("/", async (req, res) => {
   }
 });
 
-// PUT /api/employees/:employeeId/cursos/:id — para actualizar el estado (ej: marcar como completado)
+// PUT /api/employees/:employeeId/cursos/:id — edición completa o rápida (ej: solo cambiar estado)
 cursosRouter.put("/:id", async (req, res) => {
   try {
     const { id } = req.params;
-    const { estado, fecha } = req.body;
+    const { curso, modalidad, fecha, estado, capacitador, observaciones } = req.body;
 
     if (estado && !ESTADOS_VALIDOS.includes(estado)) {
       return res.status(400).json({ error: "estado inválido" });
@@ -58,10 +58,14 @@ cursosRouter.put("/:id", async (req, res) => {
 
     const { rows } = await pool.query(
       `UPDATE cursos_capacitaciones SET
-         estado = COALESCE($1, estado),
-         fecha = COALESCE($2, fecha)
-       WHERE id = $3 RETURNING *`,
-      [estado || null, fecha || null, id]
+         curso = COALESCE($1, curso),
+         modalidad = COALESCE($2, modalidad),
+         fecha = COALESCE($3, fecha),
+         estado = COALESCE($4, estado),
+         capacitador = COALESCE($5, capacitador),
+         observaciones = COALESCE($6, observaciones)
+       WHERE id = $7 RETURNING *`,
+      [curso || null, modalidad || null, fecha || null, estado || null, capacitador || null, observaciones || null, id]
     );
 
     if (rows.length === 0) {
@@ -75,6 +79,21 @@ cursosRouter.put("/:id", async (req, res) => {
   }
 });
 
+// DELETE /api/employees/:employeeId/cursos/:id
+cursosRouter.delete("/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { rows } = await pool.query(`DELETE FROM cursos_capacitaciones WHERE id = $1 RETURNING id`, [id]);
+    if (rows.length === 0) {
+      return res.status(404).json({ error: "Curso no encontrado" });
+    }
+    res.json({ ok: true });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Error al eliminar el curso" });
+  }
+});
+
 function serialize(row) {
   return {
     id: row.id,
@@ -82,5 +101,7 @@ function serialize(row) {
     modalidad: row.modalidad,
     fecha: row.fecha,
     estado: row.estado,
+    capacitador: row.capacitador,
+    observaciones: row.observaciones,
   };
 }

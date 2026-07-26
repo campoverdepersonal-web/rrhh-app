@@ -22,6 +22,8 @@ export default function CursosPanel({ employeeId }) {
     modalidad: MODALIDADES[0],
     fecha: new Date().toISOString().slice(0, 10),
     estado: "PENDIENTE",
+    capacitador: "",
+    observaciones: "",
   });
 
   function cargar() {
@@ -37,7 +39,7 @@ export default function CursosPanel({ employeeId }) {
     setError(null);
     try {
       await api.crearCurso(employeeId, form);
-      setForm({ curso: "", modalidad: MODALIDADES[0], fecha: new Date().toISOString().slice(0, 10), estado: "PENDIENTE" });
+      setForm({ curso: "", modalidad: MODALIDADES[0], fecha: new Date().toISOString().slice(0, 10), estado: "PENDIENTE", capacitador: "", observaciones: "" });
       setFormVisible(false);
       cargar();
     } catch (err) {
@@ -76,7 +78,13 @@ export default function CursosPanel({ employeeId }) {
         <div className="history-row" key={c.id} style={{ alignItems: "center" }}>
           <div>
             <strong>{c.curso}</strong>
-            <div className="muted" style={{ fontSize: "0.8rem" }}>{c.modalidad || "Modalidad no especificada"} · {formatFecha(c.fecha)}</div>
+            <div className="muted" style={{ fontSize: "0.8rem" }}>
+              {c.modalidad || "Modalidad no especificada"} · {formatFecha(c.fecha)}
+              {c.capacitador && ` · Capacitador: ${c.capacitador}`}
+            </div>
+            {c.observaciones && (
+              <div className="muted" style={{ fontSize: "0.78rem", marginTop: 3 }}>📝 {c.observaciones}</div>
+            )}
           </div>
           <select
             value={c.estado}
@@ -117,6 +125,14 @@ export default function CursosPanel({ employeeId }) {
               <select value={form.estado} onChange={(e) => setForm({ ...form, estado: e.target.value })}>
                 {ESTADOS.map((e) => <option key={e.value} value={e.value}>{e.label}</option>)}
               </select>
+            </label>
+            <label>
+              Capacitador
+              <input type="text" value={form.capacitador} onChange={(e) => setForm({ ...form, capacitador: e.target.value })} placeholder="Nombre del capacitador (opcional)" />
+            </label>
+            <label style={{ gridColumn: "1 / -1" }}>
+              Observaciones
+              <textarea value={form.observaciones} onChange={(e) => setForm({ ...form, observaciones: e.target.value })} placeholder="Comentarios o detalles del curso y/o la persona (opcional)" />
             </label>
           </div>
           {error && <p style={{ color: "var(--color-red)", fontSize: "0.85rem" }}>{error}</p>}

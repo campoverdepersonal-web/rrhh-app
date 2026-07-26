@@ -12,7 +12,7 @@ const TABS = [
   { id: "comentarios", label: "Comentarios" },
   { id: "evaluaciones", label: "Evaluaciones" },
   { id: "sanciones", label: "Sanciones" },
-  { id: "cursos", label: "Cursos" },
+  { id: "cursos", label: "Cursos y capacitaciones" },
 ];
 
 const RESULTADOS = [

@@ -111,15 +111,21 @@ CREATE TABLE IF NOT EXISTS evaluaciones_teoricas (                -- SCAFFOLD
   created_at         TIMESTAMP NOT NULL DEFAULT now()
 );
 
-CREATE TABLE IF NOT EXISTS cursos_capacitaciones (                -- SCAFFOLD
+CREATE TABLE IF NOT EXISTS cursos_capacitaciones (                -- ACTIVO
   id                 SERIAL PRIMARY KEY,
   employee_id        INTEGER NOT NULL REFERENCES employees(id) ON DELETE CASCADE,
   curso              VARCHAR(160) NOT NULL,
   modalidad          VARCHAR(60),
   fecha              DATE,
   estado             VARCHAR(30),
+  capacitador        VARCHAR(160),
+  observaciones      TEXT,
   created_at         TIMESTAMP NOT NULL DEFAULT now()
 );
+
+-- Migración segura para bases de datos creadas antes de agregar estas columnas.
+ALTER TABLE cursos_capacitaciones ADD COLUMN IF NOT EXISTS capacitador VARCHAR(160);
+ALTER TABLE cursos_capacitaciones ADD COLUMN IF NOT EXISTS observaciones TEXT;
 
 CREATE TABLE IF NOT EXISTS criterios_evaluacion_puesto (          -- SCAFFOLD (panel admin de criterios configurables)
   id                 SERIAL PRIMARY KEY,
