@@ -109,4 +109,10 @@ export const api = {
   getPuesto: (puesto) => request(`/dashboard/puestos/${encodeURIComponent(puesto)}`),
   listLugares: () => request("/dashboard/lugares"),
   getLugar: (lugar) => request(`/dashboard/lugares/${encodeURIComponent(lugar)}`),
+
+  // --- Competencias ---
+  listCompetencias: () => request("/competencias"),
+  getCompetencia: (id) => request(`/competencias/${id}`),
+  listPuestosConMatriz: () => request("/competencias/puestos"),
+  getCompetenciasDePuesto: (puesto) => request(`/competencias/puestos/${encodeURIComponent(puesto)}`),
 };

@@ -127,6 +127,35 @@ CREATE TABLE IF NOT EXISTS cursos_capacitaciones (                -- ACTIVO
 ALTER TABLE cursos_capacitaciones ADD COLUMN IF NOT EXISTS capacitador VARCHAR(160);
 ALTER TABLE cursos_capacitaciones ADD COLUMN IF NOT EXISTS observaciones TEXT;
 
+CREATE TABLE IF NOT EXISTS competencias (                         -- ACTIVO (diccionario de competencias)
+  id                     SERIAL PRIMARY KEY,
+  nombre                 VARCHAR(160) UNIQUE NOT NULL,
+  tipo                   VARCHAR(10) NOT NULL CHECK (tipo IN ('BLANDA', 'TECNICA')),
+  clasificacion          VARCHAR(30) CHECK (clasificacion IN ('ORGANIZACIONAL', 'ESPECIFICA_DE_PUESTO')),
+  justificacion_clasificacion TEXT,
+  definicion             TEXT,
+  importancia            TEXT,
+  conductas_esperadas    JSONB,
+  conductas_no_esperadas JSONB,
+  nivel_1_desc           TEXT,
+  nivel_2_desc           TEXT,
+  nivel_3_desc           TEXT,
+  nivel_4_desc           TEXT,
+  ejemplos_aplicacion    JSONB,
+  created_at             TIMESTAMP NOT NULL DEFAULT now()
+);
+
+CREATE TABLE IF NOT EXISTS puesto_competencias (                  -- ACTIVO (matriz de asignación por puesto)
+  id                 SERIAL PRIMARY KEY,
+  puesto             VARCHAR(160) NOT NULL,
+  competencia_id     INTEGER NOT NULL REFERENCES competencias(id) ON DELETE CASCADE,
+  tipo_requerimiento VARCHAR(15) NOT NULL CHECK (tipo_requerimiento IN ('OBLIGATORIA', 'DESEABLE')),
+  nivel_requerido    INTEGER NOT NULL CHECK (nivel_requerido BETWEEN 1 AND 4),
+  UNIQUE (puesto, competencia_id)
+);
+
+CREATE INDEX IF NOT EXISTS idx_puesto_competencias_puesto ON puesto_competencias(puesto);
+
 CREATE TABLE IF NOT EXISTS criterios_evaluacion_puesto (          -- SCAFFOLD (panel admin de criterios configurables)
   id                 SERIAL PRIMARY KEY,
   puesto             VARCHAR(120) NOT NULL,
