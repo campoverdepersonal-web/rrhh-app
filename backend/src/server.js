@@ -11,6 +11,7 @@ import { comparativosRouter } from "./routes/dashboardComparativos.js";
 import { authRouter } from "./routes/auth.js";
 import { importarMasivoRouter } from "./routes/importarMasivo.js";
 import { competenciasRouter } from "./routes/competencias.js";
+import { importarEvaluacionesCompetenciasRouter } from "./routes/importarEvaluacionesCompetencias.js";
 import { requireAuth } from "./middleware/auth.js";
 
 dotenv.config();
@@ -31,6 +32,7 @@ app.use("/api/employees/:employeeId/cursos", requireAuth, cursosRouter);
 app.use("/api/dashboard", requireAuth, dashboardRouter);
 app.use("/api/dashboard", requireAuth, comparativosRouter);
 app.use("/api/competencias", requireAuth, competenciasRouter);
+app.use("/api/employees", requireAuth, importarEvaluacionesCompetenciasRouter);
 
 app.use((req, res) => res.status(404).json({ error: "No encontrado" }));
 

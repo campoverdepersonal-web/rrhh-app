@@ -129,7 +129,7 @@ export default function LegajoEmpleado({ empleado, onDecisionRegistrada, usuario
       </div>
 
       {tab === "comentarios" && <ComentariosPanel employeeId={empleado.id} />}
-      {tab === "evaluaciones" && <EvaluacionesPanel employeeId={empleado.id} />}
+      {tab === "evaluaciones" && <EvaluacionesPanel employeeId={empleado.id} puesto={empleado.puesto} />}
       {tab === "sanciones" && <SancionesPanel employeeId={empleado.id} />}
       {tab === "cursos" && <CursosPanel employeeId={empleado.id} />}
 

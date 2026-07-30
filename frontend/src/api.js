@@ -77,6 +77,7 @@ export const api = {
   },
   importarComentarios: (file) => importarArchivo("/employees/importar-comentarios", file),
   importarEvaluaciones: (file) => importarArchivo("/employees/importar-evaluaciones", file),
+  importarEvaluacionesCompetencias: (file) => importarArchivo("/employees/importar-evaluaciones-competencias", file),
   importarSanciones: (file) => importarArchivo("/employees/importar-sanciones", file),
   importarCursos: (file) => importarArchivo("/employees/importar-cursos", file),
   registrarDecisionPeriodoPrueba: (id, data) => post(`/employees/${id}/periodo-prueba`, data),

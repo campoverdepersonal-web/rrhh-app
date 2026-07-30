@@ -46,6 +46,19 @@ const TIPOS = [
     importar: api.importarEvaluaciones,
   },
   {
+    id: "evaluaciones-competencias",
+    label: "Evaluaciones por competencia",
+    titulo: "Importar evaluaciones por competencia",
+    descripcion: "Para reportes con una fila por cada competencia evaluada (ej. exportados de una encuesta). Las filas que compartan Legajo + Fecha + Evaluador se agrupan como una sola evaluación con todas sus competencias.",
+    columnas: ["Legajo — debe existir en el sistema", "Fecha de respuesta, Evaluador — obligatorios", "Título de la competencia — nombre + \"nivel N\" (ej: \"Orientación al cliente nivel 2\")", "Categoría — Competencia blanda o técnica (informativo)", "Respuesta — Malo, Regular, Bueno o Muy Bueno/Excelente", "Puntaje — opcional, numérico"],
+    plantilla: () => descargarPlantilla("plantilla-evaluaciones-competencias.xlsx", "Competencias evaluadas", [
+      { "Legajo": "L-0001", "Fecha de respuesta": "01/06/2026", "Evaluador": "Ana Torres", "Título de la competencia": "Orientación al Cliente nivel 2", "Categoría": "Competencia blanda", "Respuesta": "Bueno", "Puntaje": 0.63 },
+      { "Legajo": "L-0001", "Fecha de respuesta": "01/06/2026", "Evaluador": "Ana Torres", "Título de la competencia": "Trabajo en Equipo y Colaboración nivel 2", "Categoría": "Competencia blanda", "Respuesta": "Regular", "Puntaje": 0.31 },
+    ], [10, 16, 16, 40, 20, 14, 12]),
+    importar: api.importarEvaluacionesCompetencias,
+    resultadoCustom: true,
+  },
+  {
     id: "sanciones",
     label: "Sanciones",
     titulo: "Importar sanciones",
@@ -149,7 +162,7 @@ export default function ImportarPanel({ onImportado }) {
 
           {error && <p style={{ color: "var(--color-red)", fontSize: "0.85rem", marginTop: 12 }}>{error}</p>}
 
-          {resultado && (
+          {resultado && !tipo.resultadoCustom && (
             <div style={{ marginTop: 18 }}>
               <div className="badge-facts" style={{ marginBottom: 14 }}>
                 <div>
@@ -182,6 +195,47 @@ export default function ImportarPanel({ onImportado }) {
                   <p className="muted" style={{ fontSize: "0.78rem", marginTop: 10 }}>
                     Corregí esas filas en tu archivo y volvé a subirlo — las que ya se cargaron
                     bien no se van a duplicar.
+                  </p>
+                </>
+              )}
+            </div>
+          )}
+
+          {resultado && tipo.resultadoCustom && (
+            <div style={{ marginTop: 18 }}>
+              <div className="badge-facts" style={{ marginBottom: 14 }}>
+                <div>
+                  <div className="fact-label">Evaluaciones creadas</div>
+                  <div className="fact-value" style={{ color: "var(--color-teal)" }}>{resultado.evaluacionesCreadas}</div>
+                </div>
+                <div>
+                  <div className="fact-label">Evaluaciones actualizadas</div>
+                  <div className="fact-value" style={{ color: "var(--color-primary)" }}>{resultado.evaluacionesActualizadas}</div>
+                </div>
+                <div>
+                  <div className="fact-label">Competencias cargadas</div>
+                  <div className="fact-value">{resultado.totalCompetenciasCargadas}</div>
+                </div>
+                <div>
+                  <div className="fact-label">Con errores</div>
+                  <div className="fact-value" style={{ color: resultado.errores.length ? "var(--color-red)" : "inherit" }}>
+                    {resultado.errores.length}
+                  </div>
+                </div>
+              </div>
+
+              {resultado.errores.length > 0 && (
+                <>
+                  <h2 style={{ fontSize: "0.85rem" }}>Filas que no se pudieron cargar</h2>
+                  {resultado.errores.map((e, i) => (
+                    <div className="history-row" key={i}>
+                      <span>Fila {e.fila}</span>
+                      <span className="muted">{e.motivo}</span>
+                    </div>
+                  ))}
+                  <p className="muted" style={{ fontSize: "0.78rem", marginTop: 10 }}>
+                    Corregí esas filas y volvé a subir el archivo completo — la evaluación se
+                    vuelve a armar entera, así que no hace falta separar lo que ya cargó bien.
                   </p>
                 </>
               )}

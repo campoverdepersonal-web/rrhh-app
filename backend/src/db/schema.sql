@@ -156,6 +156,18 @@ CREATE TABLE IF NOT EXISTS puesto_competencias (                  -- ACTIVO (mat
 
 CREATE INDEX IF NOT EXISTS idx_puesto_competencias_puesto ON puesto_competencias(puesto);
 
+CREATE TABLE IF NOT EXISTS evaluacion_competencias (              -- ACTIVO (puntaje por competencia dentro de una evaluación)
+  id                 SERIAL PRIMARY KEY,
+  evaluacion_id      INTEGER NOT NULL REFERENCES evaluaciones_desempeno(id) ON DELETE CASCADE,
+  competencia_id     INTEGER NOT NULL REFERENCES competencias(id) ON DELETE CASCADE,
+  nivel_alcanzado    INTEGER NOT NULL CHECK (nivel_alcanzado BETWEEN 1 AND 4),
+  nivel_evaluado     INTEGER,                                     -- nivel de la afirmación testeada (si viene de import)
+  respuesta          VARCHAR(30),                                 -- Malo/Regular/Bueno/Muy Bueno (si viene de import)
+  puntaje            NUMERIC(4,2),                                -- puntaje original de la fuente (si viene de import)
+  observaciones      TEXT,
+  UNIQUE (evaluacion_id, competencia_id)
+);
+
 CREATE TABLE IF NOT EXISTS criterios_evaluacion_puesto (          -- SCAFFOLD (panel admin de criterios configurables)
   id                 SERIAL PRIMARY KEY,
   puesto             VARCHAR(120) NOT NULL,
@@ -182,3 +194,9 @@ CREATE INDEX IF NOT EXISTS idx_employees_lugar ON employees(lugar_trabajo);
 CREATE INDEX IF NOT EXISTS idx_employees_estado ON employees(estado);
 CREATE INDEX IF NOT EXISTS idx_historial_puestos_employee ON historial_puestos(employee_id);
 CREATE INDEX IF NOT EXISTS idx_periodo_prueba_employee ON periodo_prueba_evaluaciones(employee_id);
+
+-- Migración: campos de trazabilidad para importación de evaluaciones por
+-- competencia (seguro tanto en bases nuevas como existentes).
+ALTER TABLE evaluacion_competencias ADD COLUMN IF NOT EXISTS nivel_evaluado INTEGER;
+ALTER TABLE evaluacion_competencias ADD COLUMN IF NOT EXISTS respuesta VARCHAR(30);
+ALTER TABLE evaluacion_competencias ADD COLUMN IF NOT EXISTS puntaje NUMERIC(4,2);
