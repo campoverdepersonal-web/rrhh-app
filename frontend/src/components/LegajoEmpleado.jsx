@@ -4,6 +4,7 @@ import ComentariosPanel from "./ComentariosPanel.jsx";
 import EvaluacionesPanel from "./EvaluacionesPanel.jsx";
 import SancionesPanel from "./SancionesPanel.jsx";
 import CursosPanel from "./CursosPanel.jsx";
+import UniformesPanel from "./UniformesPanel.jsx";
 import { api } from "../api.js";
 import { formatFecha } from "../dateUtils.js";
 
@@ -13,6 +14,7 @@ const TABS = [
   { id: "evaluaciones", label: "Evaluaciones" },
   { id: "sanciones", label: "Sanciones" },
   { id: "cursos", label: "Cursos y capacitaciones" },
+  { id: "uniformes", label: "Uniformes" },
 ];
 
 const RESULTADOS = [
@@ -132,6 +134,7 @@ export default function LegajoEmpleado({ empleado, onDecisionRegistrada, usuario
       {tab === "evaluaciones" && <EvaluacionesPanel employeeId={empleado.id} puesto={empleado.puesto} />}
       {tab === "sanciones" && <SancionesPanel employeeId={empleado.id} />}
       {tab === "cursos" && <CursosPanel employeeId={empleado.id} />}
+      {tab === "uniformes" && <UniformesPanel employeeId={empleado.id} />}
 
       {tab === "resumen" && (
       <>

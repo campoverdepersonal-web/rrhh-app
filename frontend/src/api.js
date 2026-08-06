@@ -75,6 +75,16 @@ export const api = {
     formData.append("archivo", file);
     return request("/employees/importar", { method: "POST", body: formData });
   },
+  actualizarPuestosMasivo: (file) => importarArchivo("/employees/importar-actualizar-puesto", file),
+
+  // --- Uniformes ---
+  getCatalogoUniformes: () => request("/uniformes/catalogo"),
+  getTallesUniforme: (employeeId) => request(`/employees/${employeeId}/talles-uniforme`),
+  guardarTallesUniforme: (employeeId, data) => put(`/employees/${employeeId}/talles-uniforme`, data),
+  listEntregasUniforme: (employeeId) => request(`/employees/${employeeId}/entregas-uniforme`),
+  crearEntregaUniforme: (employeeId, data) => post(`/employees/${employeeId}/entregas-uniforme`, data),
+  actualizarEntregaUniforme: (employeeId, entregaId, data) => put(`/employees/${employeeId}/entregas-uniforme/${entregaId}`, data),
+  eliminarEntregaUniforme: (employeeId, entregaId) => request(`/employees/${employeeId}/entregas-uniforme/${entregaId}`, { method: "DELETE" }),
   importarComentarios: (file) => importarArchivo("/employees/importar-comentarios", file),
   importarEvaluaciones: (file) => importarArchivo("/employees/importar-evaluaciones", file),
   importarEvaluacionesCompetencias: (file) => importarArchivo("/employees/importar-evaluaciones-competencias", file),

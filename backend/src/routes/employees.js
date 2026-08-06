@@ -129,6 +129,60 @@ function parsearFecha(valor) {
   return null;
 }
 
+// ---------------------------------------------------------------------------
+// POST /api/employees/importar-actualizar-puesto — actualiza SOLO el campo
+// puesto de empleados existentes (por Legajo). No toca ningún otro dato.
+// ---------------------------------------------------------------------------
+employeesRouter.post("/importar-actualizar-puesto", upload.single("archivo"), async (req, res) => {
+  try {
+    if (!req.file) return res.status(400).json({ error: "No se recibió ningún archivo" });
+
+    let filas;
+    try {
+      const workbook = XLSX.read(req.file.buffer, { type: "buffer", cellDates: true });
+      const hoja = workbook.Sheets[workbook.SheetNames[0]];
+      filas = XLSX.utils.sheet_to_json(hoja, { defval: "" });
+    } catch {
+      return res.status(400).json({ error: "No se pudo leer el archivo. ¿Es un Excel (.xlsx) o CSV válido?" });
+    }
+    if (filas.length === 0) return res.status(400).json({ error: "El archivo no tiene filas de datos" });
+
+    const buscarCol = (raw, ...nombres) => {
+      for (const key of Object.keys(raw)) {
+        if (nombres.includes(key.trim().toLowerCase())) return String(raw[key]).trim();
+      }
+      return "";
+    };
+
+    const resultado = { actualizados: 0, errores: [] };
+
+    for (let i = 0; i < filas.length; i++) {
+      const numeroFila = i + 2;
+      const legajo = buscarCol(filas[i], "legajo");
+      const puesto = buscarCol(filas[i], "puesto");
+
+      if (!legajo) { resultado.errores.push({ fila: numeroFila, motivo: "Falta el Legajo" }); continue; }
+      if (!puesto) { resultado.errores.push({ fila: numeroFila, legajo, motivo: "Falta el Puesto" }); continue; }
+
+      const { rowCount } = await pool.query(
+        `UPDATE employees SET puesto = $1, updated_at = now() WHERE legajo = $2`,
+        [puesto, legajo]
+      );
+
+      if (rowCount === 0) {
+        resultado.errores.push({ fila: numeroFila, legajo, motivo: `No existe ningún empleado con legajo "${legajo}"` });
+      } else {
+        resultado.actualizados++;
+      }
+    }
+
+    res.json(resultado);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Error al actualizar los puestos" });
+  }
+});
+
 function validarFila(fila) {
   if (!fila.legajo) return "Falta el Legajo";
   if (!fila.nombre) return "Falta el Nombre";

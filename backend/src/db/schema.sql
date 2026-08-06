@@ -200,3 +200,34 @@ CREATE INDEX IF NOT EXISTS idx_periodo_prueba_employee ON periodo_prueba_evaluac
 ALTER TABLE evaluacion_competencias ADD COLUMN IF NOT EXISTS nivel_evaluado INTEGER;
 ALTER TABLE evaluacion_competencias ADD COLUMN IF NOT EXISTS respuesta VARCHAR(30);
 ALTER TABLE evaluacion_competencias ADD COLUMN IF NOT EXISTS puntaje NUMERIC(4,2);
+
+-- ---------------------------------------------------------------------------
+-- Uniformes — talles fijos por empleado + historial de entregas
+-- ---------------------------------------------------------------------------
+
+CREATE TABLE IF NOT EXISTS talles_uniforme (                      -- ACTIVO
+  id                 SERIAL PRIMARY KEY,
+  employee_id        INTEGER UNIQUE NOT NULL REFERENCES employees(id) ON DELETE CASCADE,
+  remera             VARCHAR(10),
+  buzo               VARCHAR(10),
+  pantalon_nautico   VARCHAR(10),
+  pantalon_cargo     VARCHAR(10),
+  calzado            VARCHAR(10),
+  faja               VARCHAR(10),
+  updated_at         TIMESTAMP NOT NULL DEFAULT now()
+);
+
+CREATE TABLE IF NOT EXISTS entregas_uniforme (                    -- ACTIVO
+  id                 SERIAL PRIMARY KEY,
+  employee_id        INTEGER NOT NULL REFERENCES employees(id) ON DELETE CASCADE,
+  fecha_entrega      DATE NOT NULL,
+  tipo_prenda        VARCHAR(40) NOT NULL,
+  color_detalle      VARCHAR(30),
+  marca              VARCHAR(30),
+  talle              VARCHAR(10),
+  cantidad           INTEGER NOT NULL DEFAULT 1,
+  estado             VARCHAR(10) NOT NULL CHECK (estado IN ('NUEVA', 'USADA')),
+  created_at         TIMESTAMP NOT NULL DEFAULT now()
+);
+
+CREATE INDEX IF NOT EXISTS idx_entregas_uniforme_employee ON entregas_uniforme(employee_id);

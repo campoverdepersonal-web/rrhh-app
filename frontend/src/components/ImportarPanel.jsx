@@ -24,6 +24,18 @@ const TIPOS = [
     muestraActualizados: true,
   },
   {
+    id: "actualizar-puesto",
+    label: "Actualizar puesto",
+    titulo: "Actualizar puesto de empleados existentes",
+    descripcion: "Actualiza SOLO el puesto de empleados que ya existen (por Legajo). No toca ningún otro dato del legajo.",
+    columnas: ["Legajo — debe existir en el sistema", "Puesto — nombre nuevo (ideal: que coincida con la matriz de competencias)"],
+    plantilla: () => descargarPlantilla("plantilla-actualizar-puesto.xlsx", "Puestos", [
+      { "Legajo": "L-0001", "Puesto": "Encargado Fresco" },
+    ], [10, 30]),
+    importar: api.actualizarPuestosMasivo,
+    resultadoActualizarPuesto: true,
+  },
+  {
     id: "comentarios",
     label: "Comentarios",
     titulo: "Importar comentarios de líderes",
@@ -165,11 +177,13 @@ export default function ImportarPanel({ onImportado }) {
           {resultado && !tipo.resultadoCustom && (
             <div style={{ marginTop: 18 }}>
               <div className="badge-facts" style={{ marginBottom: 14 }}>
-                <div>
-                  <div className="fact-label">{tipo.muestraActualizados ? "Creados" : "Cargados"}</div>
-                  <div className="fact-value" style={{ color: "var(--color-teal)" }}>{resultado.insertados}</div>
-                </div>
-                {tipo.muestraActualizados && (
+                {!tipo.resultadoActualizarPuesto && (
+                  <div>
+                    <div className="fact-label">{tipo.muestraActualizados ? "Creados" : "Cargados"}</div>
+                    <div className="fact-value" style={{ color: "var(--color-teal)" }}>{resultado.insertados}</div>
+                  </div>
+                )}
+                {(tipo.muestraActualizados || tipo.resultadoActualizarPuesto) && (
                   <div>
                     <div className="fact-label">Actualizados</div>
                     <div className="fact-value" style={{ color: "var(--color-primary)" }}>{resultado.actualizados}</div>
