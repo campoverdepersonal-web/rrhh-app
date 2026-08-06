@@ -92,6 +92,38 @@ const TIPOS = [
     ], [10, 30, 16, 14, 16, 20, 30]),
     importar: api.importarCursos,
   },
+  {
+    id: "talles-uniforme",
+    label: "Talles de uniforme",
+    titulo: "Importar talles de uniforme",
+    descripcion: "Una fila por empleado. Si el Legajo ya tiene talles cargados, se actualizan.",
+    columnas: ["Legajo — debe existir en el sistema", "Remera, Buzo, Pantalón náutico, Pantalón cargo, Calzado, Faja — usar \"N/C\" si no corresponde"],
+    plantilla: () => descargarPlantilla("plantilla-talles-uniforme.xlsx", "Talles", [
+      { "Legajo": "L-0001", "Remera": "M", "Buzo": "L", "Pantalón náutico": "42", "Pantalón cargo": "42", "Calzado": "39", "Faja": "N/C" },
+    ], [10, 10, 10, 16, 16, 10, 10]),
+    importar: api.importarTallesUniforme,
+    resultadoActualizarPuesto: true,
+  },
+  {
+    id: "entregas-uniforme",
+    label: "Entregas de uniforme",
+    titulo: "Importar historial de entregas de uniforme",
+    descripcion: "Una fila por cada prenda entregada. Se agregan como entregas nuevas al historial.",
+    columnas: [
+      "Legajo — debe existir en el sistema",
+      "Fecha de entrega — formato DD/MM/AAAA",
+      "Tipo de prenda — ver lista exacta en la pestaña Uniformes de cualquier legajo",
+      "Color/Detalle — debe ser una opción válida para esa prenda (o vacío si la prenda no tiene)",
+      "Marca, Talle — opcionales",
+      "Cantidad — opcional (por defecto 1)",
+      "Estado — Nueva o Usada",
+    ],
+    plantilla: () => descargarPlantilla("plantilla-entregas-uniforme.xlsx", "Entregas", [
+      { "Legajo": "L-0001", "Fecha de entrega": "01/06/2026", "Tipo de prenda": "Remera", "Color/Detalle": "Blanca", "Marca": "OMBU", "Talle": "M", "Cantidad": 2, "Estado": "Nueva" },
+      { "Legajo": "L-0001", "Fecha de entrega": "01/06/2026", "Tipo de prenda": "Faja Lumbar", "Color/Detalle": "", "Marca": "BX", "Talle": "M", "Cantidad": 1, "Estado": "Nueva" },
+    ], [10, 16, 18, 16, 12, 10, 10, 10]),
+    importar: api.importarEntregasUniforme,
+  },
 ];
 
 export default function ImportarPanel({ onImportado }) {
