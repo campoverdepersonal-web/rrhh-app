@@ -21,7 +21,6 @@ function AlertaPill({ dias, diasApto, diasPosibilidadCambio }) {
 }
 
 export default function UniformesPanel({ employeeId }) {
-  const [sub, setSub] = useState("talles"); // "talles" | "vigente" | "historial"
   const [catalogo, setCatalogo] = useState(null);
   const [talles, setTalles] = useState(null);
   const [entregas, setEntregas] = useState([]);
@@ -52,17 +51,12 @@ export default function UniformesPanel({ employeeId }) {
 
   return (
     <div>
-      <div className="nav-tabs" style={{ maxWidth: 460, marginBottom: 16 }}>
-        <button className="nav-tab" aria-current={sub === "talles"} onClick={() => setSub("talles")}>Talles</button>
-        <button className="nav-tab" aria-current={sub === "vigente"} onClick={() => setSub("vigente")}>Uniforme vigente</button>
-        <button className="nav-tab" aria-current={sub === "historial"} onClick={() => setSub("historial")}>Historial de entrega</button>
+      <div className="grid-2" style={{ alignItems: "start", marginBottom: 20 }}>
+        <TallesPanel employeeId={employeeId} talles={talles} onGuardado={cargar} />
+        <UniformeVigentePanel vigentes={vigentes} catalogo={catalogo} />
       </div>
 
-      {sub === "talles" && <TallesPanel employeeId={employeeId} talles={talles} onGuardado={cargar} />}
-      {sub === "vigente" && <UniformeVigentePanel vigentes={vigentes} catalogo={catalogo} />}
-      {sub === "historial" && (
-        <HistorialEntregaPanel employeeId={employeeId} entregas={entregas} catalogo={catalogo} onCambio={cargar} />
-      )}
+      <HistorialEntregaPanel employeeId={employeeId} entregas={entregas} catalogo={catalogo} onCambio={cargar} />
     </div>
   );
 }
