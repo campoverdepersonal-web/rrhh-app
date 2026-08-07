@@ -69,6 +69,7 @@ export const api = {
   },
   getEmployee: (id) => request(`/employees/${id}`),
   createEmployee: (data) => post("/employees", data),
+  actualizarEmpleado: (id, data) => put(`/employees/${id}`, data),
   eliminarEmpleado: (id) => request(`/employees/${id}`, { method: "DELETE" }),
   importarEmpleados: (file) => {
     const formData = new FormData();
@@ -76,6 +77,7 @@ export const api = {
     return request("/employees/importar", { method: "POST", body: formData });
   },
   actualizarPuestosMasivo: (file) => importarArchivo("/employees/importar-actualizar-puesto", file),
+  actualizarLegajosMasivo: (file) => importarArchivo("/employees/importar-actualizar-legajo", file),
 
   // --- Uniformes ---
   getCatalogoUniformes: () => request("/uniformes/catalogo"),

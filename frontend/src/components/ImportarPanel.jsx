@@ -36,6 +36,18 @@ const TIPOS = [
     resultadoActualizarPuesto: true,
   },
   {
+    id: "actualizar-legajo",
+    label: "Renumerar legajo",
+    titulo: "Actualizar N° de legajo de empleados existentes",
+    descripcion: "Actualiza SOLO el número de legajo, buscando a la persona por su CUIL (útil cuando cargaste legajos provisorios y ya tenés el definitivo). Valida que el legajo nuevo no esté repetido.",
+    columnas: ["CUIL — debe existir en el sistema", "Legajo nuevo"],
+    plantilla: () => descargarPlantilla("plantilla-actualizar-legajo.xlsx", "Legajos", [
+      { "CUIL": "20-12345678-3", "Legajo nuevo": "554" },
+    ], [18, 14]),
+    importar: api.actualizarLegajosMasivo,
+    resultadoActualizarPuesto: true,
+  },
+  {
     id: "comentarios",
     label: "Comentarios",
     titulo: "Importar comentarios de líderes",

@@ -28,6 +28,10 @@ export default function LegajoEmpleado({ empleado, onDecisionRegistrada, usuario
   const [formVisible, setFormVisible] = useState(false);
   const [enviando, setEnviando] = useState(false);
   const [eliminando, setEliminando] = useState(false);
+  const [editandoLegajo, setEditandoLegajo] = useState(false);
+  const [legajoEditado, setLegajoEditado] = useState(empleado.legajo);
+  const [enviandoLegajo, setEnviandoLegajo] = useState(false);
+  const [errorLegajo, setErrorLegajo] = useState(null);
   const [error, setError] = useState(null);
   const [formPuestoVisible, setFormPuestoVisible] = useState(false);
   const [enviandoPuesto, setEnviandoPuesto] = useState(false);
@@ -85,6 +89,20 @@ export default function LegajoEmpleado({ empleado, onDecisionRegistrada, usuario
     }
   }
 
+  async function handleGuardarLegajo() {
+    setEnviandoLegajo(true);
+    setErrorLegajo(null);
+    try {
+      await api.actualizarEmpleado(empleado.id, { legajo: legajoEditado });
+      setEditandoLegajo(false);
+      onDecisionRegistrada?.();
+    } catch (err) {
+      setErrorLegajo(err.message);
+    } finally {
+      setEnviandoLegajo(false);
+    }
+  }
+
   async function handleEliminar() {
     const confirmado = window.confirm(
       `¿Seguro que querés eliminar a ${empleado.nombre} ${empleado.apellido}?\n\nEsto borra también todo su historial (comentarios, evaluaciones, sanciones, cursos). Esta acción no se puede deshacer.`
@@ -108,7 +126,35 @@ export default function LegajoEmpleado({ empleado, onDecisionRegistrada, usuario
           <p className="legajo-sub">{empleado.puesto} · {empleado.sector} · {empleado.lugarTrabajo}</p>
         </div>
         <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 6 }}>
-          <span className="legajo-code">Legajo {empleado.legajo} · CUIL {empleado.cuil}</span>
+          {!editandoLegajo ? (
+            <span className="legajo-code">
+              Legajo {empleado.legajo} · CUIL {empleado.cuil}
+              {usuario?.rol === "ADMIN" && (
+                <button
+                  className="link-button"
+                  style={{ marginLeft: 8, fontSize: "0.72rem" }}
+                  onClick={() => { setLegajoEditado(empleado.legajo); setEditandoLegajo(true); }}
+                >
+                  editar
+                </button>
+              )}
+            </span>
+          ) : (
+            <span style={{ display: "flex", gap: 6, alignItems: "center" }}>
+              <input
+                type="text"
+                value={legajoEditado}
+                onChange={(e) => setLegajoEditado(e.target.value)}
+                style={{ padding: "4px 8px", borderRadius: 6, border: "1px solid var(--color-border)", fontSize: "0.85rem", width: 100 }}
+                autoFocus
+              />
+              <button className="link-button" onClick={handleGuardarLegajo} disabled={enviandoLegajo}>
+                {enviandoLegajo ? "Guardando…" : "Guardar"}
+              </button>
+              <button className="link-button" onClick={() => setEditandoLegajo(false)}>Cancelar</button>
+            </span>
+          )}
+          {errorLegajo && <span style={{ color: "var(--color-red)", fontSize: "0.76rem" }}>{errorLegajo}</span>}
           {usuario?.rol === "ADMIN" && (
             <button className="link-button" style={{ color: "var(--color-red)" }} onClick={handleEliminar} disabled={eliminando}>
               {eliminando ? "Eliminando…" : "Eliminar empleado"}

@@ -183,6 +183,67 @@ employeesRouter.post("/importar-actualizar-puesto", upload.single("archivo"), as
   }
 });
 
+// ---------------------------------------------------------------------------
+// POST /api/employees/importar-actualizar-legajo — renumera el Legajo de
+// empleados existentes, buscándolos por CUIL (no por Legajo, ya que
+// justamente eso es lo que cambia). Valida que el legajo nuevo no esté
+// repetido antes de aplicar el cambio.
+// ---------------------------------------------------------------------------
+employeesRouter.post("/importar-actualizar-legajo", upload.single("archivo"), async (req, res) => {
+  try {
+    if (!req.file) return res.status(400).json({ error: "No se recibió ningún archivo" });
+
+    let filas;
+    try {
+      const workbook = XLSX.read(req.file.buffer, { type: "buffer", cellDates: true });
+      const hoja = workbook.Sheets[workbook.SheetNames[0]];
+      filas = XLSX.utils.sheet_to_json(hoja, { defval: "" });
+    } catch {
+      return res.status(400).json({ error: "No se pudo leer el archivo. ¿Es un Excel (.xlsx) o CSV válido?" });
+    }
+    if (filas.length === 0) return res.status(400).json({ error: "El archivo no tiene filas de datos" });
+
+    const buscarCol = (raw, ...nombres) => {
+      for (const key of Object.keys(raw)) {
+        if (nombres.includes(key.trim().toLowerCase())) return String(raw[key]).trim();
+      }
+      return "";
+    };
+
+    const resultado = { actualizados: 0, errores: [] };
+
+    for (let i = 0; i < filas.length; i++) {
+      const numeroFila = i + 2;
+      const cuil = buscarCol(filas[i], "cuil");
+      const legajoNuevo = buscarCol(filas[i], "legajo nuevo", "nuevo legajo", "legajo");
+
+      if (!cuil) { resultado.errores.push({ fila: numeroFila, motivo: "Falta el CUIL" }); continue; }
+      if (!legajoNuevo) { resultado.errores.push({ fila: numeroFila, motivo: "Falta el Legajo nuevo" }); continue; }
+
+      const empleado = await pool.query(`SELECT id FROM employees WHERE cuil = $1`, [cuil]);
+      if (empleado.rows.length === 0) {
+        resultado.errores.push({ fila: numeroFila, motivo: `No existe ningún empleado con CUIL "${cuil}"` });
+        continue;
+      }
+      const employeeId = empleado.rows[0].id;
+
+      const enUso = await pool.query(`SELECT id FROM employees WHERE legajo = $1 AND id != $2`, [legajoNuevo, employeeId]);
+      if (enUso.rows.length > 0) {
+        resultado.errores.push({ fila: numeroFila, motivo: `El legajo "${legajoNuevo}" ya está en uso por otro empleado` });
+        continue;
+      }
+
+      await pool.query(`UPDATE employees SET legajo = $1, updated_at = now() WHERE id = $2`, [legajoNuevo, employeeId]);
+      resultado.actualizados++;
+    }
+
+    res.json(resultado);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Error al actualizar los legajos" });
+  }
+});
+
 function validarFila(fila) {
   if (!fila.legajo) return "Falta el Legajo";
   if (!fila.nombre) return "Falta el Nombre";
@@ -383,21 +444,29 @@ employeesRouter.post("/", async (req, res) => {
 employeesRouter.put("/:id", async (req, res) => {
   try {
     const { id } = req.params;
-    const { nombre, apellido, cuil, puesto, sector, lugarTrabajo, estado } = req.body;
+    const { legajo, nombre, apellido, cuil, puesto, sector, lugarTrabajo, estado } = req.body;
+
+    if (legajo) {
+      const enUso = await pool.query(`SELECT id FROM employees WHERE legajo = $1 AND id != $2`, [legajo, id]);
+      if (enUso.rows.length > 0) {
+        return res.status(409).json({ error: `El legajo "${legajo}" ya está en uso por otro empleado` });
+      }
+    }
 
     const { rows } = await pool.query(
       `UPDATE employees SET
-         nombre = COALESCE($1, nombre),
-         apellido = COALESCE($2, apellido),
-         cuil = COALESCE($3, cuil),
-         puesto = COALESCE($4, puesto),
-         sector = COALESCE($5, sector),
-         lugar_trabajo = COALESCE($6, lugar_trabajo),
-         estado = COALESCE($7, estado),
+         legajo = COALESCE($1, legajo),
+         nombre = COALESCE($2, nombre),
+         apellido = COALESCE($3, apellido),
+         cuil = COALESCE($4, cuil),
+         puesto = COALESCE($5, puesto),
+         sector = COALESCE($6, sector),
+         lugar_trabajo = COALESCE($7, lugar_trabajo),
+         estado = COALESCE($8, estado),
          updated_at = now()
-       WHERE id = $8
+       WHERE id = $9
        RETURNING *`,
-      [nombre, apellido, cuil, puesto, sector, lugarTrabajo, estado, id]
+      [legajo, nombre, apellido, cuil, puesto, sector, lugarTrabajo, estado, id]
     );
 
     if (rows.length === 0) {
@@ -406,6 +475,9 @@ employeesRouter.put("/:id", async (req, res) => {
 
     res.json(serializeEmployee(rows[0]));
   } catch (err) {
+    if (err.code === "23505") {
+      return res.status(409).json({ error: "Ya existe otro empleado con ese legajo o CUIL" });
+    }
     console.error(err);
     res.status(500).json({ error: "Error al actualizar el empleado" });
   }
