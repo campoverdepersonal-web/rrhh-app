@@ -1576,6 +1576,7 @@
     "Responsable de Logística",
     "Responsable de Compras",
     "Responsable de Recursos Humanos",
+    "Responsable de Pricing",
     "Responsable de Procesos, Stock y Mejora Continua",
     "Tesorería",
     "Analista de Cuentas a Pagar",
@@ -1585,10 +1586,12 @@
     "Analista de Capacitación y Desarrollo",
     "Auxiliar de Recursos Humanos",
     "Analista de Compras",
-    "Auxiliar de Precios",
-    "Responsable de Pricing",
+    "Analista de Precios",
     "Ayudante de Reparto - Verdulería",
-    "Operador de Recepción y Control de Mercadería",
+    "Recepción y Control de Mercadería",
+    "Encargado de Depósito Central",
+    "Armador de Depósito",
+    "Armador de Pedidos",
     "Reparto Fresco y Congelado",
     "Reparto Seco",
     "Reparto Verdulería",
@@ -1601,20 +1604,24 @@
     "Envasador",
     "Limpieza en Planta Productiva",
     "Limpieza Espacios Comunes",
-    "Control de Calidad",
+    "Responsable de Calidad",
     "Planificador Fábrica",
     "Planificador Frescos",
-    "Planificador de Almacén",
+    "Planificador de productos secos",
     "Encargado Fresco",
     "Encargado Congelados",
     "Encargado Expedición y Pedidos",
-    "Encargados de Sucursal (genérico)",
+    "Encargado de Sucursal",
     "Referente de Caja",
-    "Repositores (genérico)",
-    "Carniceros (genérico)",
-    "Verduleros (genérico)",
+    "Cajero",
+    "Repositor",
+    "Carnicero",
+    "Verdulero",
     "Referente Granja y Fiambrería",
-    "Responsable de Recepción y Depósito"
+    "Vendedor Market",
+    "Vendedor Granja",
+    "Responsable de Recepción y Depósito",
+    "Auxiliar de Operaciones"
   ],
   "puestoCompetencias": [
     {
@@ -1639,7 +1646,7 @@
       "puesto": "Responsable de Logística",
       "competencia": "Orientación al Cliente",
       "tipoRequerimiento": "OBLIGATORIA",
-      "nivelRequerido": 3
+      "nivelRequerido": 4
     },
     {
       "puesto": "Responsable de Compras",
@@ -1651,13 +1658,19 @@
       "puesto": "Responsable de Recursos Humanos",
       "competencia": "Orientación al Cliente",
       "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 4
+    },
+    {
+      "puesto": "Responsable de Pricing",
+      "competencia": "Orientación al Cliente",
+      "tipoRequerimiento": "OBLIGATORIA",
       "nivelRequerido": 3
     },
     {
       "puesto": "Responsable de Procesos, Stock y Mejora Continua",
       "competencia": "Orientación al Cliente",
       "tipoRequerimiento": "OBLIGATORIA",
-      "nivelRequerido": 3
+      "nivelRequerido": 4
     },
     {
       "puesto": "Tesorería",
@@ -1708,13 +1721,7 @@
       "nivelRequerido": 3
     },
     {
-      "puesto": "Auxiliar de Precios",
-      "competencia": "Orientación al Cliente",
-      "tipoRequerimiento": "OBLIGATORIA",
-      "nivelRequerido": 3
-    },
-    {
-      "puesto": "Responsable de Pricing",
+      "puesto": "Analista de Precios",
       "competencia": "Orientación al Cliente",
       "tipoRequerimiento": "OBLIGATORIA",
       "nivelRequerido": 3
@@ -1723,25 +1730,43 @@
       "puesto": "Ayudante de Reparto - Verdulería",
       "competencia": "Orientación al Cliente",
       "tipoRequerimiento": "OBLIGATORIA",
-      "nivelRequerido": 3
+      "nivelRequerido": 2
     },
     {
-      "puesto": "Operador de Recepción y Control de Mercadería",
+      "puesto": "Recepción y Control de Mercadería",
+      "competencia": "Orientación al Cliente",
+      "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 2
+    },
+    {
+      "puesto": "Encargado de Depósito Central",
       "competencia": "Orientación al Cliente",
       "tipoRequerimiento": "OBLIGATORIA",
       "nivelRequerido": 3
+    },
+    {
+      "puesto": "Armador de Depósito",
+      "competencia": "Orientación al Cliente",
+      "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 2
+    },
+    {
+      "puesto": "Armador de Pedidos",
+      "competencia": "Orientación al Cliente",
+      "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 2
     },
     {
       "puesto": "Reparto Fresco y Congelado",
       "competencia": "Orientación al Cliente",
       "tipoRequerimiento": "OBLIGATORIA",
-      "nivelRequerido": 3
+      "nivelRequerido": 2
     },
     {
       "puesto": "Reparto Seco",
       "competencia": "Orientación al Cliente",
       "tipoRequerimiento": "OBLIGATORIA",
-      "nivelRequerido": 3
+      "nivelRequerido": 2
     },
     {
       "puesto": "Reparto Verdulería",
@@ -1804,7 +1829,7 @@
       "nivelRequerido": 2
     },
     {
-      "puesto": "Control de Calidad",
+      "puesto": "Responsable de Calidad",
       "competencia": "Orientación al Cliente",
       "tipoRequerimiento": "OBLIGATORIA",
       "nivelRequerido": 3
@@ -1822,7 +1847,7 @@
       "nivelRequerido": 3
     },
     {
-      "puesto": "Planificador de Almacén",
+      "puesto": "Planificador de productos secos",
       "competencia": "Orientación al Cliente",
       "tipoRequerimiento": "OBLIGATORIA",
       "nivelRequerido": 3
@@ -1846,31 +1871,37 @@
       "nivelRequerido": 3
     },
     {
-      "puesto": "Encargados de Sucursal (genérico)",
+      "puesto": "Encargado de Sucursal",
       "competencia": "Orientación al Cliente",
       "tipoRequerimiento": "OBLIGATORIA",
-      "nivelRequerido": 3
+      "nivelRequerido": 4
     },
     {
       "puesto": "Referente de Caja",
       "competencia": "Orientación al Cliente",
       "tipoRequerimiento": "OBLIGATORIA",
-      "nivelRequerido": 2
+      "nivelRequerido": 4
     },
     {
-      "puesto": "Repositores (genérico)",
+      "puesto": "Cajero",
       "competencia": "Orientación al Cliente",
       "tipoRequerimiento": "OBLIGATORIA",
       "nivelRequerido": 2
     },
     {
-      "puesto": "Carniceros (genérico)",
+      "puesto": "Repositor",
       "competencia": "Orientación al Cliente",
       "tipoRequerimiento": "OBLIGATORIA",
       "nivelRequerido": 2
     },
     {
-      "puesto": "Verduleros (genérico)",
+      "puesto": "Carnicero",
+      "competencia": "Orientación al Cliente",
+      "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 2
+    },
+    {
+      "puesto": "Verdulero",
       "competencia": "Orientación al Cliente",
       "tipoRequerimiento": "OBLIGATORIA",
       "nivelRequerido": 2
@@ -1882,7 +1913,25 @@
       "nivelRequerido": 4
     },
     {
+      "puesto": "Vendedor Market",
+      "competencia": "Orientación al Cliente",
+      "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 2
+    },
+    {
+      "puesto": "Vendedor Granja",
+      "competencia": "Orientación al Cliente",
+      "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 2
+    },
+    {
       "puesto": "Responsable de Recepción y Depósito",
+      "competencia": "Orientación al Cliente",
+      "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 2
+    },
+    {
+      "puesto": "Auxiliar de Operaciones",
       "competencia": "Orientación al Cliente",
       "tipoRequerimiento": "OBLIGATORIA",
       "nivelRequerido": 2
@@ -1909,7 +1958,7 @@
       "puesto": "Responsable de Logística",
       "competencia": "Orientación a Resultados",
       "tipoRequerimiento": "OBLIGATORIA",
-      "nivelRequerido": 3
+      "nivelRequerido": 4
     },
     {
       "puesto": "Responsable de Compras",
@@ -1921,13 +1970,19 @@
       "puesto": "Responsable de Recursos Humanos",
       "competencia": "Orientación a Resultados",
       "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 4
+    },
+    {
+      "puesto": "Responsable de Pricing",
+      "competencia": "Orientación a Resultados",
+      "tipoRequerimiento": "OBLIGATORIA",
       "nivelRequerido": 3
     },
     {
       "puesto": "Responsable de Procesos, Stock y Mejora Continua",
       "competencia": "Orientación a Resultados",
       "tipoRequerimiento": "OBLIGATORIA",
-      "nivelRequerido": 3
+      "nivelRequerido": 4
     },
     {
       "puesto": "Tesorería",
@@ -1969,7 +2024,7 @@
       "puesto": "Auxiliar de Recursos Humanos",
       "competencia": "Orientación a Resultados",
       "tipoRequerimiento": "OBLIGATORIA",
-      "nivelRequerido": 3
+      "nivelRequerido": 2
     },
     {
       "puesto": "Analista de Compras",
@@ -1978,13 +2033,7 @@
       "nivelRequerido": 3
     },
     {
-      "puesto": "Auxiliar de Precios",
-      "competencia": "Orientación a Resultados",
-      "tipoRequerimiento": "OBLIGATORIA",
-      "nivelRequerido": 3
-    },
-    {
-      "puesto": "Responsable de Pricing",
+      "puesto": "Analista de Precios",
       "competencia": "Orientación a Resultados",
       "tipoRequerimiento": "OBLIGATORIA",
       "nivelRequerido": 3
@@ -1993,31 +2042,49 @@
       "puesto": "Ayudante de Reparto - Verdulería",
       "competencia": "Orientación a Resultados",
       "tipoRequerimiento": "OBLIGATORIA",
-      "nivelRequerido": 3
+      "nivelRequerido": 2
     },
     {
-      "puesto": "Operador de Recepción y Control de Mercadería",
+      "puesto": "Recepción y Control de Mercadería",
+      "competencia": "Orientación a Resultados",
+      "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 2
+    },
+    {
+      "puesto": "Encargado de Depósito Central",
       "competencia": "Orientación a Resultados",
       "tipoRequerimiento": "OBLIGATORIA",
       "nivelRequerido": 3
+    },
+    {
+      "puesto": "Armador de Depósito",
+      "competencia": "Orientación a Resultados",
+      "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 2
+    },
+    {
+      "puesto": "Armador de Pedidos",
+      "competencia": "Orientación a Resultados",
+      "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 2
     },
     {
       "puesto": "Reparto Fresco y Congelado",
       "competencia": "Orientación a Resultados",
       "tipoRequerimiento": "OBLIGATORIA",
-      "nivelRequerido": 3
+      "nivelRequerido": 2
     },
     {
       "puesto": "Reparto Seco",
       "competencia": "Orientación a Resultados",
       "tipoRequerimiento": "OBLIGATORIA",
-      "nivelRequerido": 3
+      "nivelRequerido": 2
     },
     {
       "puesto": "Reparto Verdulería",
       "competencia": "Orientación a Resultados",
       "tipoRequerimiento": "OBLIGATORIA",
-      "nivelRequerido": 3
+      "nivelRequerido": 2
     },
     {
       "puesto": "Operario Fresco - Elaborados",
@@ -2074,7 +2141,7 @@
       "nivelRequerido": 2
     },
     {
-      "puesto": "Control de Calidad",
+      "puesto": "Responsable de Calidad",
       "competencia": "Orientación a Resultados",
       "tipoRequerimiento": "OBLIGATORIA",
       "nivelRequerido": 3
@@ -2092,7 +2159,7 @@
       "nivelRequerido": 3
     },
     {
-      "puesto": "Planificador de Almacén",
+      "puesto": "Planificador de productos secos",
       "competencia": "Orientación a Resultados",
       "tipoRequerimiento": "OBLIGATORIA",
       "nivelRequerido": 3
@@ -2116,7 +2183,7 @@
       "nivelRequerido": 3
     },
     {
-      "puesto": "Encargados de Sucursal (genérico)",
+      "puesto": "Encargado de Sucursal",
       "competencia": "Orientación a Resultados",
       "tipoRequerimiento": "OBLIGATORIA",
       "nivelRequerido": 3
@@ -2128,19 +2195,25 @@
       "nivelRequerido": 2
     },
     {
-      "puesto": "Repositores (genérico)",
+      "puesto": "Cajero",
       "competencia": "Orientación a Resultados",
       "tipoRequerimiento": "OBLIGATORIA",
       "nivelRequerido": 2
     },
     {
-      "puesto": "Carniceros (genérico)",
+      "puesto": "Repositor",
       "competencia": "Orientación a Resultados",
       "tipoRequerimiento": "OBLIGATORIA",
       "nivelRequerido": 2
     },
     {
-      "puesto": "Verduleros (genérico)",
+      "puesto": "Carnicero",
+      "competencia": "Orientación a Resultados",
+      "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 2
+    },
+    {
+      "puesto": "Verdulero",
       "competencia": "Orientación a Resultados",
       "tipoRequerimiento": "OBLIGATORIA",
       "nivelRequerido": 2
@@ -2152,7 +2225,25 @@
       "nivelRequerido": 2
     },
     {
+      "puesto": "Vendedor Market",
+      "competencia": "Orientación a Resultados",
+      "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 2
+    },
+    {
+      "puesto": "Vendedor Granja",
+      "competencia": "Orientación a Resultados",
+      "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 2
+    },
+    {
       "puesto": "Responsable de Recepción y Depósito",
+      "competencia": "Orientación a Resultados",
+      "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 2
+    },
+    {
+      "puesto": "Auxiliar de Operaciones",
       "competencia": "Orientación a Resultados",
       "tipoRequerimiento": "OBLIGATORIA",
       "nivelRequerido": 2
@@ -2179,16 +2270,22 @@
       "puesto": "Responsable de Logística",
       "competencia": "Trabajo en Equipo y Colaboración",
       "tipoRequerimiento": "OBLIGATORIA",
-      "nivelRequerido": 3
+      "nivelRequerido": 4
     },
     {
       "puesto": "Responsable de Compras",
       "competencia": "Trabajo en Equipo y Colaboración",
       "tipoRequerimiento": "OBLIGATORIA",
-      "nivelRequerido": 3
+      "nivelRequerido": 4
     },
     {
       "puesto": "Responsable de Recursos Humanos",
+      "competencia": "Trabajo en Equipo y Colaboración",
+      "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 4
+    },
+    {
+      "puesto": "Responsable de Pricing",
       "competencia": "Trabajo en Equipo y Colaboración",
       "tipoRequerimiento": "OBLIGATORIA",
       "nivelRequerido": 3
@@ -2197,7 +2294,7 @@
       "puesto": "Responsable de Procesos, Stock y Mejora Continua",
       "competencia": "Trabajo en Equipo y Colaboración",
       "tipoRequerimiento": "OBLIGATORIA",
-      "nivelRequerido": 3
+      "nivelRequerido": 4
     },
     {
       "puesto": "Tesorería",
@@ -2239,7 +2336,7 @@
       "puesto": "Auxiliar de Recursos Humanos",
       "competencia": "Trabajo en Equipo y Colaboración",
       "tipoRequerimiento": "OBLIGATORIA",
-      "nivelRequerido": 3
+      "nivelRequerido": 2
     },
     {
       "puesto": "Analista de Compras",
@@ -2248,13 +2345,7 @@
       "nivelRequerido": 3
     },
     {
-      "puesto": "Auxiliar de Precios",
-      "competencia": "Trabajo en Equipo y Colaboración",
-      "tipoRequerimiento": "OBLIGATORIA",
-      "nivelRequerido": 3
-    },
-    {
-      "puesto": "Responsable de Pricing",
+      "puesto": "Analista de Precios",
       "competencia": "Trabajo en Equipo y Colaboración",
       "tipoRequerimiento": "OBLIGATORIA",
       "nivelRequerido": 3
@@ -2266,10 +2357,28 @@
       "nivelRequerido": 3
     },
     {
-      "puesto": "Operador de Recepción y Control de Mercadería",
+      "puesto": "Recepción y Control de Mercadería",
       "competencia": "Trabajo en Equipo y Colaboración",
       "tipoRequerimiento": "OBLIGATORIA",
       "nivelRequerido": 3
+    },
+    {
+      "puesto": "Encargado de Depósito Central",
+      "competencia": "Trabajo en Equipo y Colaboración",
+      "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 2
+    },
+    {
+      "puesto": "Armador de Depósito",
+      "competencia": "Trabajo en Equipo y Colaboración",
+      "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 2
+    },
+    {
+      "puesto": "Armador de Pedidos",
+      "competencia": "Trabajo en Equipo y Colaboración",
+      "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 2
     },
     {
       "puesto": "Reparto Fresco y Congelado",
@@ -2344,7 +2453,7 @@
       "nivelRequerido": 2
     },
     {
-      "puesto": "Control de Calidad",
+      "puesto": "Responsable de Calidad",
       "competencia": "Trabajo en Equipo y Colaboración",
       "tipoRequerimiento": "OBLIGATORIA",
       "nivelRequerido": 3
@@ -2362,10 +2471,10 @@
       "nivelRequerido": 3
     },
     {
-      "puesto": "Planificador de Almacén",
+      "puesto": "Planificador de productos secos",
       "competencia": "Trabajo en Equipo y Colaboración",
       "tipoRequerimiento": "OBLIGATORIA",
-      "nivelRequerido": 3
+      "nivelRequerido": 4
     },
     {
       "puesto": "Encargado Fresco",
@@ -2386,7 +2495,7 @@
       "nivelRequerido": 3
     },
     {
-      "puesto": "Encargados de Sucursal (genérico)",
+      "puesto": "Encargado de Sucursal",
       "competencia": "Trabajo en Equipo y Colaboración",
       "tipoRequerimiento": "OBLIGATORIA",
       "nivelRequerido": 3
@@ -2398,19 +2507,25 @@
       "nivelRequerido": 2
     },
     {
-      "puesto": "Repositores (genérico)",
+      "puesto": "Cajero",
       "competencia": "Trabajo en Equipo y Colaboración",
       "tipoRequerimiento": "OBLIGATORIA",
       "nivelRequerido": 2
     },
     {
-      "puesto": "Carniceros (genérico)",
+      "puesto": "Repositor",
       "competencia": "Trabajo en Equipo y Colaboración",
       "tipoRequerimiento": "OBLIGATORIA",
       "nivelRequerido": 2
     },
     {
-      "puesto": "Verduleros (genérico)",
+      "puesto": "Carnicero",
+      "competencia": "Trabajo en Equipo y Colaboración",
+      "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 2
+    },
+    {
+      "puesto": "Verdulero",
       "competencia": "Trabajo en Equipo y Colaboración",
       "tipoRequerimiento": "OBLIGATORIA",
       "nivelRequerido": 2
@@ -2422,7 +2537,19 @@
       "nivelRequerido": 3
     },
     {
+      "puesto": "Vendedor Granja",
+      "competencia": "Trabajo en Equipo y Colaboración",
+      "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 2
+    },
+    {
       "puesto": "Responsable de Recepción y Depósito",
+      "competencia": "Trabajo en Equipo y Colaboración",
+      "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 2
+    },
+    {
+      "puesto": "Auxiliar de Operaciones",
       "competencia": "Trabajo en Equipo y Colaboración",
       "tipoRequerimiento": "OBLIGATORIA",
       "nivelRequerido": 2
@@ -2449,7 +2576,7 @@
       "puesto": "Responsable de Logística",
       "competencia": "Comunicación Efectiva",
       "tipoRequerimiento": "OBLIGATORIA",
-      "nivelRequerido": 3
+      "nivelRequerido": 4
     },
     {
       "puesto": "Responsable de Compras",
@@ -2461,13 +2588,19 @@
       "puesto": "Responsable de Recursos Humanos",
       "competencia": "Comunicación Efectiva",
       "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 4
+    },
+    {
+      "puesto": "Responsable de Pricing",
+      "competencia": "Comunicación Efectiva",
+      "tipoRequerimiento": "OBLIGATORIA",
       "nivelRequerido": 3
     },
     {
       "puesto": "Responsable de Procesos, Stock y Mejora Continua",
       "competencia": "Comunicación Efectiva",
       "tipoRequerimiento": "OBLIGATORIA",
-      "nivelRequerido": 3
+      "nivelRequerido": 4
     },
     {
       "puesto": "Tesorería",
@@ -2518,13 +2651,7 @@
       "nivelRequerido": 3
     },
     {
-      "puesto": "Auxiliar de Precios",
-      "competencia": "Comunicación Efectiva",
-      "tipoRequerimiento": "OBLIGATORIA",
-      "nivelRequerido": 3
-    },
-    {
-      "puesto": "Responsable de Pricing",
+      "puesto": "Analista de Precios",
       "competencia": "Comunicación Efectiva",
       "tipoRequerimiento": "OBLIGATORIA",
       "nivelRequerido": 3
@@ -2533,25 +2660,43 @@
       "puesto": "Ayudante de Reparto - Verdulería",
       "competencia": "Comunicación Efectiva",
       "tipoRequerimiento": "OBLIGATORIA",
-      "nivelRequerido": 3
+      "nivelRequerido": 2
     },
     {
-      "puesto": "Operador de Recepción y Control de Mercadería",
+      "puesto": "Recepción y Control de Mercadería",
+      "competencia": "Comunicación Efectiva",
+      "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 2
+    },
+    {
+      "puesto": "Encargado de Depósito Central",
       "competencia": "Comunicación Efectiva",
       "tipoRequerimiento": "OBLIGATORIA",
       "nivelRequerido": 3
+    },
+    {
+      "puesto": "Armador de Depósito",
+      "competencia": "Comunicación Efectiva",
+      "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 2
+    },
+    {
+      "puesto": "Armador de Pedidos",
+      "competencia": "Comunicación Efectiva",
+      "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 2
     },
     {
       "puesto": "Reparto Fresco y Congelado",
       "competencia": "Comunicación Efectiva",
       "tipoRequerimiento": "OBLIGATORIA",
-      "nivelRequerido": 3
+      "nivelRequerido": 2
     },
     {
       "puesto": "Reparto Seco",
       "competencia": "Comunicación Efectiva",
       "tipoRequerimiento": "OBLIGATORIA",
-      "nivelRequerido": 3
+      "nivelRequerido": 2
     },
     {
       "puesto": "Reparto Verdulería",
@@ -2614,7 +2759,7 @@
       "nivelRequerido": 2
     },
     {
-      "puesto": "Control de Calidad",
+      "puesto": "Responsable de Calidad",
       "competencia": "Comunicación Efectiva",
       "tipoRequerimiento": "OBLIGATORIA",
       "nivelRequerido": 3
@@ -2623,16 +2768,16 @@
       "puesto": "Planificador Fábrica",
       "competencia": "Comunicación Efectiva",
       "tipoRequerimiento": "OBLIGATORIA",
-      "nivelRequerido": 3
+      "nivelRequerido": 4
     },
     {
       "puesto": "Planificador Frescos",
       "competencia": "Comunicación Efectiva",
       "tipoRequerimiento": "OBLIGATORIA",
-      "nivelRequerido": 3
+      "nivelRequerido": 4
     },
     {
-      "puesto": "Planificador de Almacén",
+      "puesto": "Planificador de productos secos",
       "competencia": "Comunicación Efectiva",
       "tipoRequerimiento": "OBLIGATORIA",
       "nivelRequerido": 3
@@ -2656,7 +2801,7 @@
       "nivelRequerido": 3
     },
     {
-      "puesto": "Encargados de Sucursal (genérico)",
+      "puesto": "Encargado de Sucursal",
       "competencia": "Comunicación Efectiva",
       "tipoRequerimiento": "OBLIGATORIA",
       "nivelRequerido": 3
@@ -2668,19 +2813,25 @@
       "nivelRequerido": 2
     },
     {
-      "puesto": "Repositores (genérico)",
+      "puesto": "Cajero",
       "competencia": "Comunicación Efectiva",
       "tipoRequerimiento": "OBLIGATORIA",
       "nivelRequerido": 2
     },
     {
-      "puesto": "Carniceros (genérico)",
+      "puesto": "Repositor",
       "competencia": "Comunicación Efectiva",
       "tipoRequerimiento": "OBLIGATORIA",
       "nivelRequerido": 2
     },
     {
-      "puesto": "Verduleros (genérico)",
+      "puesto": "Carnicero",
+      "competencia": "Comunicación Efectiva",
+      "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 2
+    },
+    {
+      "puesto": "Verdulero",
       "competencia": "Comunicación Efectiva",
       "tipoRequerimiento": "OBLIGATORIA",
       "nivelRequerido": 2
@@ -2692,7 +2843,25 @@
       "nivelRequerido": 2
     },
     {
+      "puesto": "Vendedor Market",
+      "competencia": "Comunicación Efectiva",
+      "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 2
+    },
+    {
+      "puesto": "Vendedor Granja",
+      "competencia": "Comunicación Efectiva",
+      "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 2
+    },
+    {
       "puesto": "Responsable de Recepción y Depósito",
+      "competencia": "Comunicación Efectiva",
+      "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 2
+    },
+    {
+      "puesto": "Auxiliar de Operaciones",
       "competencia": "Comunicación Efectiva",
       "tipoRequerimiento": "OBLIGATORIA",
       "nivelRequerido": 2
@@ -2719,16 +2888,22 @@
       "puesto": "Responsable de Logística",
       "competencia": "Adaptabilidad y Flexibilidad",
       "tipoRequerimiento": "OBLIGATORIA",
-      "nivelRequerido": 3
+      "nivelRequerido": 4
     },
     {
       "puesto": "Responsable de Compras",
       "competencia": "Adaptabilidad y Flexibilidad",
       "tipoRequerimiento": "OBLIGATORIA",
-      "nivelRequerido": 3
+      "nivelRequerido": 4
     },
     {
       "puesto": "Responsable de Recursos Humanos",
+      "competencia": "Adaptabilidad y Flexibilidad",
+      "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 4
+    },
+    {
+      "puesto": "Responsable de Pricing",
       "competencia": "Adaptabilidad y Flexibilidad",
       "tipoRequerimiento": "OBLIGATORIA",
       "nivelRequerido": 3
@@ -2737,7 +2912,7 @@
       "puesto": "Responsable de Procesos, Stock y Mejora Continua",
       "competencia": "Adaptabilidad y Flexibilidad",
       "tipoRequerimiento": "OBLIGATORIA",
-      "nivelRequerido": 3
+      "nivelRequerido": 4
     },
     {
       "puesto": "Tesorería",
@@ -2779,7 +2954,7 @@
       "puesto": "Auxiliar de Recursos Humanos",
       "competencia": "Adaptabilidad y Flexibilidad",
       "tipoRequerimiento": "OBLIGATORIA",
-      "nivelRequerido": 3
+      "nivelRequerido": 2
     },
     {
       "puesto": "Analista de Compras",
@@ -2788,13 +2963,7 @@
       "nivelRequerido": 3
     },
     {
-      "puesto": "Auxiliar de Precios",
-      "competencia": "Adaptabilidad y Flexibilidad",
-      "tipoRequerimiento": "OBLIGATORIA",
-      "nivelRequerido": 3
-    },
-    {
-      "puesto": "Responsable de Pricing",
+      "puesto": "Analista de Precios",
       "competencia": "Adaptabilidad y Flexibilidad",
       "tipoRequerimiento": "OBLIGATORIA",
       "nivelRequerido": 3
@@ -2803,31 +2972,49 @@
       "puesto": "Ayudante de Reparto - Verdulería",
       "competencia": "Adaptabilidad y Flexibilidad",
       "tipoRequerimiento": "OBLIGATORIA",
-      "nivelRequerido": 3
+      "nivelRequerido": 2
     },
     {
-      "puesto": "Operador de Recepción y Control de Mercadería",
+      "puesto": "Recepción y Control de Mercadería",
+      "competencia": "Adaptabilidad y Flexibilidad",
+      "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 2
+    },
+    {
+      "puesto": "Encargado de Depósito Central",
       "competencia": "Adaptabilidad y Flexibilidad",
       "tipoRequerimiento": "OBLIGATORIA",
       "nivelRequerido": 3
+    },
+    {
+      "puesto": "Armador de Depósito",
+      "competencia": "Adaptabilidad y Flexibilidad",
+      "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 2
+    },
+    {
+      "puesto": "Armador de Pedidos",
+      "competencia": "Adaptabilidad y Flexibilidad",
+      "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 2
     },
     {
       "puesto": "Reparto Fresco y Congelado",
       "competencia": "Adaptabilidad y Flexibilidad",
       "tipoRequerimiento": "OBLIGATORIA",
-      "nivelRequerido": 3
+      "nivelRequerido": 2
     },
     {
       "puesto": "Reparto Seco",
       "competencia": "Adaptabilidad y Flexibilidad",
       "tipoRequerimiento": "OBLIGATORIA",
-      "nivelRequerido": 3
+      "nivelRequerido": 2
     },
     {
       "puesto": "Reparto Verdulería",
       "competencia": "Adaptabilidad y Flexibilidad",
       "tipoRequerimiento": "OBLIGATORIA",
-      "nivelRequerido": 3
+      "nivelRequerido": 2
     },
     {
       "puesto": "Operario Fresco - Elaborados",
@@ -2884,7 +3071,7 @@
       "nivelRequerido": 2
     },
     {
-      "puesto": "Control de Calidad",
+      "puesto": "Responsable de Calidad",
       "competencia": "Adaptabilidad y Flexibilidad",
       "tipoRequerimiento": "OBLIGATORIA",
       "nivelRequerido": 3
@@ -2902,7 +3089,7 @@
       "nivelRequerido": 3
     },
     {
-      "puesto": "Planificador de Almacén",
+      "puesto": "Planificador de productos secos",
       "competencia": "Adaptabilidad y Flexibilidad",
       "tipoRequerimiento": "OBLIGATORIA",
       "nivelRequerido": 3
@@ -2926,7 +3113,7 @@
       "nivelRequerido": 3
     },
     {
-      "puesto": "Encargados de Sucursal (genérico)",
+      "puesto": "Encargado de Sucursal",
       "competencia": "Adaptabilidad y Flexibilidad",
       "tipoRequerimiento": "OBLIGATORIA",
       "nivelRequerido": 3
@@ -2935,22 +3122,28 @@
       "puesto": "Referente de Caja",
       "competencia": "Adaptabilidad y Flexibilidad",
       "tipoRequerimiento": "OBLIGATORIA",
-      "nivelRequerido": 2
+      "nivelRequerido": 3
     },
     {
-      "puesto": "Repositores (genérico)",
+      "puesto": "Cajero",
       "competencia": "Adaptabilidad y Flexibilidad",
       "tipoRequerimiento": "OBLIGATORIA",
       "nivelRequerido": 2
     },
     {
-      "puesto": "Carniceros (genérico)",
+      "puesto": "Repositor",
       "competencia": "Adaptabilidad y Flexibilidad",
       "tipoRequerimiento": "OBLIGATORIA",
       "nivelRequerido": 2
     },
     {
-      "puesto": "Verduleros (genérico)",
+      "puesto": "Carnicero",
+      "competencia": "Adaptabilidad y Flexibilidad",
+      "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 2
+    },
+    {
+      "puesto": "Verdulero",
       "competencia": "Adaptabilidad y Flexibilidad",
       "tipoRequerimiento": "OBLIGATORIA",
       "nivelRequerido": 2
@@ -2962,7 +3155,25 @@
       "nivelRequerido": 3
     },
     {
+      "puesto": "Vendedor Market",
+      "competencia": "Adaptabilidad y Flexibilidad",
+      "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 2
+    },
+    {
+      "puesto": "Vendedor Granja",
+      "competencia": "Adaptabilidad y Flexibilidad",
+      "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 2
+    },
+    {
       "puesto": "Responsable de Recepción y Depósito",
+      "competencia": "Adaptabilidad y Flexibilidad",
+      "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 2
+    },
+    {
+      "puesto": "Auxiliar de Operaciones",
       "competencia": "Adaptabilidad y Flexibilidad",
       "tipoRequerimiento": "OBLIGATORIA",
       "nivelRequerido": 2
@@ -2980,7 +3191,7 @@
       "nivelRequerido": 3
     },
     {
-      "puesto": "Operador de Recepción y Control de Mercadería",
+      "puesto": "Recepción y Control de Mercadería",
       "competencia": "Iniciativa y Proactividad",
       "tipoRequerimiento": "DESEABLE",
       "nivelRequerido": 2
@@ -2998,6 +3209,12 @@
       "nivelRequerido": 2
     },
     {
+      "puesto": "Encargado de Sucursal",
+      "competencia": "Iniciativa y Proactividad",
+      "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 3
+    },
+    {
       "puesto": "Referente de Caja",
       "competencia": "Iniciativa y Proactividad",
       "tipoRequerimiento": "OBLIGATORIA",
@@ -3013,13 +3230,25 @@
       "puesto": "Responsable de Recepción y Depósito",
       "competencia": "Iniciativa y Proactividad",
       "tipoRequerimiento": "OBLIGATORIA",
-      "nivelRequerido": 3
+      "nivelRequerido": 2
+    },
+    {
+      "puesto": "Auxiliar de Operaciones",
+      "competencia": "Iniciativa y Proactividad",
+      "tipoRequerimiento": "DESEABLE",
+      "nivelRequerido": 2
     },
     {
       "puesto": "Responsable de Producción",
       "competencia": "Resolución de Problemas",
       "tipoRequerimiento": "OBLIGATORIA",
       "nivelRequerido": 4
+    },
+    {
+      "puesto": "Encargado de Depósito Central",
+      "competencia": "Resolución de Problemas",
+      "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 3
     },
     {
       "puesto": "Reparto Fresco y Congelado",
@@ -3044,6 +3273,12 @@
       "competencia": "Resolución de Problemas",
       "tipoRequerimiento": "DESEABLE",
       "nivelRequerido": 2
+    },
+    {
+      "puesto": "Encargado de Sucursal",
+      "competencia": "Resolución de Problemas",
+      "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 3
     },
     {
       "puesto": "Responsable de Administración y Tesorería",
@@ -3067,16 +3302,22 @@
       "puesto": "Responsable de Logística",
       "competencia": "Responsabilidad y Compromiso",
       "tipoRequerimiento": "OBLIGATORIA",
-      "nivelRequerido": 3
+      "nivelRequerido": 4
     },
     {
       "puesto": "Responsable de Compras",
       "competencia": "Responsabilidad y Compromiso",
       "tipoRequerimiento": "OBLIGATORIA",
-      "nivelRequerido": 3
+      "nivelRequerido": 4
     },
     {
       "puesto": "Responsable de Recursos Humanos",
+      "competencia": "Responsabilidad y Compromiso",
+      "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 4
+    },
+    {
+      "puesto": "Responsable de Pricing",
       "competencia": "Responsabilidad y Compromiso",
       "tipoRequerimiento": "OBLIGATORIA",
       "nivelRequerido": 3
@@ -3127,7 +3368,7 @@
       "puesto": "Auxiliar de Recursos Humanos",
       "competencia": "Responsabilidad y Compromiso",
       "tipoRequerimiento": "OBLIGATORIA",
-      "nivelRequerido": 3
+      "nivelRequerido": 2
     },
     {
       "puesto": "Analista de Compras",
@@ -3136,13 +3377,7 @@
       "nivelRequerido": 3
     },
     {
-      "puesto": "Auxiliar de Precios",
-      "competencia": "Responsabilidad y Compromiso",
-      "tipoRequerimiento": "OBLIGATORIA",
-      "nivelRequerido": 3
-    },
-    {
-      "puesto": "Responsable de Pricing",
+      "puesto": "Analista de Precios",
       "competencia": "Responsabilidad y Compromiso",
       "tipoRequerimiento": "OBLIGATORIA",
       "nivelRequerido": 3
@@ -3151,25 +3386,43 @@
       "puesto": "Ayudante de Reparto - Verdulería",
       "competencia": "Responsabilidad y Compromiso",
       "tipoRequerimiento": "OBLIGATORIA",
-      "nivelRequerido": 3
+      "nivelRequerido": 2
     },
     {
-      "puesto": "Operador de Recepción y Control de Mercadería",
+      "puesto": "Recepción y Control de Mercadería",
+      "competencia": "Responsabilidad y Compromiso",
+      "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 2
+    },
+    {
+      "puesto": "Encargado de Depósito Central",
       "competencia": "Responsabilidad y Compromiso",
       "tipoRequerimiento": "OBLIGATORIA",
       "nivelRequerido": 3
+    },
+    {
+      "puesto": "Armador de Depósito",
+      "competencia": "Responsabilidad y Compromiso",
+      "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 2
+    },
+    {
+      "puesto": "Armador de Pedidos",
+      "competencia": "Responsabilidad y Compromiso",
+      "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 2
     },
     {
       "puesto": "Reparto Fresco y Congelado",
       "competencia": "Responsabilidad y Compromiso",
       "tipoRequerimiento": "OBLIGATORIA",
-      "nivelRequerido": 3
+      "nivelRequerido": 2
     },
     {
       "puesto": "Reparto Seco",
       "competencia": "Responsabilidad y Compromiso",
       "tipoRequerimiento": "OBLIGATORIA",
-      "nivelRequerido": 3
+      "nivelRequerido": 2
     },
     {
       "puesto": "Reparto Verdulería",
@@ -3232,7 +3485,7 @@
       "nivelRequerido": 2
     },
     {
-      "puesto": "Control de Calidad",
+      "puesto": "Responsable de Calidad",
       "competencia": "Responsabilidad y Compromiso",
       "tipoRequerimiento": "OBLIGATORIA",
       "nivelRequerido": 4
@@ -3250,7 +3503,7 @@
       "nivelRequerido": 3
     },
     {
-      "puesto": "Planificador de Almacén",
+      "puesto": "Planificador de productos secos",
       "competencia": "Responsabilidad y Compromiso",
       "tipoRequerimiento": "OBLIGATORIA",
       "nivelRequerido": 3
@@ -3274,7 +3527,7 @@
       "nivelRequerido": 3
     },
     {
-      "puesto": "Encargados de Sucursal (genérico)",
+      "puesto": "Encargado de Sucursal",
       "competencia": "Responsabilidad y Compromiso",
       "tipoRequerimiento": "OBLIGATORIA",
       "nivelRequerido": 3
@@ -3283,22 +3536,28 @@
       "puesto": "Referente de Caja",
       "competencia": "Responsabilidad y Compromiso",
       "tipoRequerimiento": "OBLIGATORIA",
-      "nivelRequerido": 2
+      "nivelRequerido": 3
     },
     {
-      "puesto": "Repositores (genérico)",
+      "puesto": "Cajero",
       "competencia": "Responsabilidad y Compromiso",
       "tipoRequerimiento": "OBLIGATORIA",
       "nivelRequerido": 2
     },
     {
-      "puesto": "Carniceros (genérico)",
+      "puesto": "Repositor",
       "competencia": "Responsabilidad y Compromiso",
       "tipoRequerimiento": "OBLIGATORIA",
       "nivelRequerido": 2
     },
     {
-      "puesto": "Verduleros (genérico)",
+      "puesto": "Carnicero",
+      "competencia": "Responsabilidad y Compromiso",
+      "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 2
+    },
+    {
+      "puesto": "Verdulero",
       "competencia": "Responsabilidad y Compromiso",
       "tipoRequerimiento": "OBLIGATORIA",
       "nivelRequerido": 2
@@ -3310,7 +3569,25 @@
       "nivelRequerido": 2
     },
     {
+      "puesto": "Vendedor Market",
+      "competencia": "Responsabilidad y Compromiso",
+      "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 2
+    },
+    {
+      "puesto": "Vendedor Granja",
+      "competencia": "Responsabilidad y Compromiso",
+      "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 2
+    },
+    {
       "puesto": "Responsable de Recepción y Depósito",
+      "competencia": "Responsabilidad y Compromiso",
+      "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 2
+    },
+    {
+      "puesto": "Auxiliar de Operaciones",
       "competencia": "Responsabilidad y Compromiso",
       "tipoRequerimiento": "OBLIGATORIA",
       "nivelRequerido": 2
@@ -3322,6 +3599,18 @@
       "nivelRequerido": 2
     },
     {
+      "puesto": "Encargado de Sucursal",
+      "competencia": "Tolerancia a la Presión",
+      "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 3
+    },
+    {
+      "puesto": "Cajero",
+      "competencia": "Tolerancia a la Presión",
+      "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 2
+    },
+    {
       "puesto": "Responsable de Administración y Tesorería",
       "competencia": "Integridad y Ética Profesional",
       "tipoRequerimiento": "OBLIGATORIA",
@@ -3353,6 +3642,12 @@
     },
     {
       "puesto": "Responsable de Recursos Humanos",
+      "competencia": "Integridad y Ética Profesional",
+      "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 3
+    },
+    {
+      "puesto": "Responsable de Pricing",
       "competencia": "Integridad y Ética Profesional",
       "tipoRequerimiento": "OBLIGATORIA",
       "nivelRequerido": 3
@@ -3397,13 +3692,13 @@
       "puesto": "Analista de Capacitación y Desarrollo",
       "competencia": "Integridad y Ética Profesional",
       "tipoRequerimiento": "OBLIGATORIA",
-      "nivelRequerido": 3
+      "nivelRequerido": 2
     },
     {
       "puesto": "Auxiliar de Recursos Humanos",
       "competencia": "Integridad y Ética Profesional",
       "tipoRequerimiento": "OBLIGATORIA",
-      "nivelRequerido": 3
+      "nivelRequerido": 2
     },
     {
       "puesto": "Analista de Compras",
@@ -3412,13 +3707,7 @@
       "nivelRequerido": 3
     },
     {
-      "puesto": "Auxiliar de Precios",
-      "competencia": "Integridad y Ética Profesional",
-      "tipoRequerimiento": "OBLIGATORIA",
-      "nivelRequerido": 3
-    },
-    {
-      "puesto": "Responsable de Pricing",
+      "puesto": "Analista de Precios",
       "competencia": "Integridad y Ética Profesional",
       "tipoRequerimiento": "OBLIGATORIA",
       "nivelRequerido": 3
@@ -3427,13 +3716,31 @@
       "puesto": "Ayudante de Reparto - Verdulería",
       "competencia": "Integridad y Ética Profesional",
       "tipoRequerimiento": "OBLIGATORIA",
-      "nivelRequerido": 3
+      "nivelRequerido": 2
     },
     {
-      "puesto": "Operador de Recepción y Control de Mercadería",
+      "puesto": "Recepción y Control de Mercadería",
       "competencia": "Integridad y Ética Profesional",
       "tipoRequerimiento": "OBLIGATORIA",
-      "nivelRequerido": 3
+      "nivelRequerido": 2
+    },
+    {
+      "puesto": "Encargado de Depósito Central",
+      "competencia": "Integridad y Ética Profesional",
+      "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 2
+    },
+    {
+      "puesto": "Armador de Depósito",
+      "competencia": "Integridad y Ética Profesional",
+      "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 2
+    },
+    {
+      "puesto": "Armador de Pedidos",
+      "competencia": "Integridad y Ética Profesional",
+      "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 2
     },
     {
       "puesto": "Reparto Fresco y Congelado",
@@ -3508,7 +3815,7 @@
       "nivelRequerido": 2
     },
     {
-      "puesto": "Control de Calidad",
+      "puesto": "Responsable de Calidad",
       "competencia": "Integridad y Ética Profesional",
       "tipoRequerimiento": "OBLIGATORIA",
       "nivelRequerido": 3
@@ -3526,7 +3833,7 @@
       "nivelRequerido": 3
     },
     {
-      "puesto": "Planificador de Almacén",
+      "puesto": "Planificador de productos secos",
       "competencia": "Integridad y Ética Profesional",
       "tipoRequerimiento": "OBLIGATORIA",
       "nivelRequerido": 3
@@ -3550,7 +3857,7 @@
       "nivelRequerido": 3
     },
     {
-      "puesto": "Encargados de Sucursal (genérico)",
+      "puesto": "Encargado de Sucursal",
       "competencia": "Integridad y Ética Profesional",
       "tipoRequerimiento": "OBLIGATORIA",
       "nivelRequerido": 3
@@ -3562,19 +3869,25 @@
       "nivelRequerido": 2
     },
     {
-      "puesto": "Repositores (genérico)",
+      "puesto": "Cajero",
       "competencia": "Integridad y Ética Profesional",
       "tipoRequerimiento": "OBLIGATORIA",
       "nivelRequerido": 2
     },
     {
-      "puesto": "Carniceros (genérico)",
+      "puesto": "Repositor",
       "competencia": "Integridad y Ética Profesional",
       "tipoRequerimiento": "OBLIGATORIA",
       "nivelRequerido": 2
     },
     {
-      "puesto": "Verduleros (genérico)",
+      "puesto": "Carnicero",
+      "competencia": "Integridad y Ética Profesional",
+      "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 2
+    },
+    {
+      "puesto": "Verdulero",
       "competencia": "Integridad y Ética Profesional",
       "tipoRequerimiento": "OBLIGATORIA",
       "nivelRequerido": 2
@@ -3586,7 +3899,25 @@
       "nivelRequerido": 2
     },
     {
+      "puesto": "Vendedor Market",
+      "competencia": "Integridad y Ética Profesional",
+      "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 2
+    },
+    {
+      "puesto": "Vendedor Granja",
+      "competencia": "Integridad y Ética Profesional",
+      "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 2
+    },
+    {
       "puesto": "Responsable de Recepción y Depósito",
+      "competencia": "Integridad y Ética Profesional",
+      "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 2
+    },
+    {
+      "puesto": "Auxiliar de Operaciones",
       "competencia": "Integridad y Ética Profesional",
       "tipoRequerimiento": "OBLIGATORIA",
       "nivelRequerido": 2
@@ -3613,16 +3944,22 @@
       "puesto": "Responsable de Logística",
       "competencia": "Aprendizaje Continuo",
       "tipoRequerimiento": "OBLIGATORIA",
-      "nivelRequerido": 3
+      "nivelRequerido": 4
     },
     {
       "puesto": "Responsable de Compras",
       "competencia": "Aprendizaje Continuo",
       "tipoRequerimiento": "OBLIGATORIA",
-      "nivelRequerido": 3
+      "nivelRequerido": 4
     },
     {
       "puesto": "Responsable de Recursos Humanos",
+      "competencia": "Aprendizaje Continuo",
+      "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 4
+    },
+    {
+      "puesto": "Responsable de Pricing",
       "competencia": "Aprendizaje Continuo",
       "tipoRequerimiento": "OBLIGATORIA",
       "nivelRequerido": 3
@@ -3631,7 +3968,7 @@
       "puesto": "Responsable de Procesos, Stock y Mejora Continua",
       "competencia": "Aprendizaje Continuo",
       "tipoRequerimiento": "OBLIGATORIA",
-      "nivelRequerido": 3
+      "nivelRequerido": 4
     },
     {
       "puesto": "Tesorería",
@@ -3667,7 +4004,7 @@
       "puesto": "Analista de Capacitación y Desarrollo",
       "competencia": "Aprendizaje Continuo",
       "tipoRequerimiento": "OBLIGATORIA",
-      "nivelRequerido": 3
+      "nivelRequerido": 4
     },
     {
       "puesto": "Auxiliar de Recursos Humanos",
@@ -3682,13 +4019,7 @@
       "nivelRequerido": 3
     },
     {
-      "puesto": "Auxiliar de Precios",
-      "competencia": "Aprendizaje Continuo",
-      "tipoRequerimiento": "OBLIGATORIA",
-      "nivelRequerido": 3
-    },
-    {
-      "puesto": "Responsable de Pricing",
+      "puesto": "Analista de Precios",
       "competencia": "Aprendizaje Continuo",
       "tipoRequerimiento": "OBLIGATORIA",
       "nivelRequerido": 3
@@ -3697,31 +4028,49 @@
       "puesto": "Ayudante de Reparto - Verdulería",
       "competencia": "Aprendizaje Continuo",
       "tipoRequerimiento": "OBLIGATORIA",
-      "nivelRequerido": 3
+      "nivelRequerido": 2
     },
     {
-      "puesto": "Operador de Recepción y Control de Mercadería",
+      "puesto": "Recepción y Control de Mercadería",
       "competencia": "Aprendizaje Continuo",
       "tipoRequerimiento": "OBLIGATORIA",
-      "nivelRequerido": 3
+      "nivelRequerido": 2
+    },
+    {
+      "puesto": "Encargado de Depósito Central",
+      "competencia": "Aprendizaje Continuo",
+      "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 2
+    },
+    {
+      "puesto": "Armador de Depósito",
+      "competencia": "Aprendizaje Continuo",
+      "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 2
+    },
+    {
+      "puesto": "Armador de Pedidos",
+      "competencia": "Aprendizaje Continuo",
+      "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 2
     },
     {
       "puesto": "Reparto Fresco y Congelado",
       "competencia": "Aprendizaje Continuo",
       "tipoRequerimiento": "OBLIGATORIA",
-      "nivelRequerido": 3
+      "nivelRequerido": 2
     },
     {
       "puesto": "Reparto Seco",
       "competencia": "Aprendizaje Continuo",
       "tipoRequerimiento": "OBLIGATORIA",
-      "nivelRequerido": 3
+      "nivelRequerido": 2
     },
     {
       "puesto": "Reparto Verdulería",
       "competencia": "Aprendizaje Continuo",
       "tipoRequerimiento": "OBLIGATORIA",
-      "nivelRequerido": 3
+      "nivelRequerido": 2
     },
     {
       "puesto": "Operario Fresco - Elaborados",
@@ -3778,7 +4127,7 @@
       "nivelRequerido": 2
     },
     {
-      "puesto": "Control de Calidad",
+      "puesto": "Responsable de Calidad",
       "competencia": "Aprendizaje Continuo",
       "tipoRequerimiento": "OBLIGATORIA",
       "nivelRequerido": 4
@@ -3796,7 +4145,7 @@
       "nivelRequerido": 3
     },
     {
-      "puesto": "Planificador de Almacén",
+      "puesto": "Planificador de productos secos",
       "competencia": "Aprendizaje Continuo",
       "tipoRequerimiento": "OBLIGATORIA",
       "nivelRequerido": 3
@@ -3817,10 +4166,10 @@
       "puesto": "Encargado Expedición y Pedidos",
       "competencia": "Aprendizaje Continuo",
       "tipoRequerimiento": "OBLIGATORIA",
-      "nivelRequerido": 3
+      "nivelRequerido": 2
     },
     {
-      "puesto": "Encargados de Sucursal (genérico)",
+      "puesto": "Encargado de Sucursal",
       "competencia": "Aprendizaje Continuo",
       "tipoRequerimiento": "OBLIGATORIA",
       "nivelRequerido": 3
@@ -3832,19 +4181,25 @@
       "nivelRequerido": 2
     },
     {
-      "puesto": "Repositores (genérico)",
+      "puesto": "Cajero",
       "competencia": "Aprendizaje Continuo",
       "tipoRequerimiento": "OBLIGATORIA",
       "nivelRequerido": 2
     },
     {
-      "puesto": "Carniceros (genérico)",
+      "puesto": "Repositor",
       "competencia": "Aprendizaje Continuo",
       "tipoRequerimiento": "OBLIGATORIA",
       "nivelRequerido": 2
     },
     {
-      "puesto": "Verduleros (genérico)",
+      "puesto": "Carnicero",
+      "competencia": "Aprendizaje Continuo",
+      "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 2
+    },
+    {
+      "puesto": "Verdulero",
       "competencia": "Aprendizaje Continuo",
       "tipoRequerimiento": "OBLIGATORIA",
       "nivelRequerido": 2
@@ -3856,7 +4211,25 @@
       "nivelRequerido": 2
     },
     {
+      "puesto": "Vendedor Market",
+      "competencia": "Aprendizaje Continuo",
+      "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 2
+    },
+    {
+      "puesto": "Vendedor Granja",
+      "competencia": "Aprendizaje Continuo",
+      "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 2
+    },
+    {
       "puesto": "Responsable de Recepción y Depósito",
+      "competencia": "Aprendizaje Continuo",
+      "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 2
+    },
+    {
+      "puesto": "Auxiliar de Operaciones",
       "competencia": "Aprendizaje Continuo",
       "tipoRequerimiento": "OBLIGATORIA",
       "nivelRequerido": 2
@@ -3904,13 +4277,25 @@
       "nivelRequerido": 2
     },
     {
-      "puesto": "Auxiliar de Precios",
+      "puesto": "Analista de Precios",
       "competencia": "Atención al Detalle",
       "tipoRequerimiento": "OBLIGATORIA",
       "nivelRequerido": 3
     },
     {
-      "puesto": "Operador de Recepción y Control de Mercadería",
+      "puesto": "Recepción y Control de Mercadería",
+      "competencia": "Atención al Detalle",
+      "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 3
+    },
+    {
+      "puesto": "Armador de Depósito",
+      "competencia": "Atención al Detalle",
+      "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 3
+    },
+    {
+      "puesto": "Armador de Pedidos",
       "competencia": "Atención al Detalle",
       "tipoRequerimiento": "OBLIGATORIA",
       "nivelRequerido": 3
@@ -3988,10 +4373,10 @@
       "nivelRequerido": 2
     },
     {
-      "puesto": "Planificador de Almacén",
+      "puesto": "Planificador de productos secos",
       "competencia": "Atención al Detalle",
       "tipoRequerimiento": "OBLIGATORIA",
-      "nivelRequerido": 3
+      "nivelRequerido": 4
     },
     {
       "puesto": "Encargado Fresco",
@@ -4018,6 +4403,30 @@
       "nivelRequerido": 3
     },
     {
+      "puesto": "Cajero",
+      "competencia": "Atención al Detalle",
+      "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 2
+    },
+    {
+      "puesto": "Repositor",
+      "competencia": "Atención al Detalle",
+      "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 2
+    },
+    {
+      "puesto": "Carnicero",
+      "competencia": "Atención al Detalle",
+      "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 2
+    },
+    {
+      "puesto": "Verdulero",
+      "competencia": "Atención al Detalle",
+      "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 2
+    },
+    {
       "puesto": "Referente Granja y Fiambrería",
       "competencia": "Atención al Detalle",
       "tipoRequerimiento": "OBLIGATORIA",
@@ -4027,7 +4436,13 @@
       "puesto": "Responsable de Recepción y Depósito",
       "competencia": "Atención al Detalle",
       "tipoRequerimiento": "OBLIGATORIA",
-      "nivelRequerido": 4
+      "nivelRequerido": 2
+    },
+    {
+      "puesto": "Auxiliar de Operaciones",
+      "competencia": "Atención al Detalle",
+      "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 3
     },
     {
       "puesto": "Responsable de Administración y Tesorería",
@@ -4063,7 +4478,7 @@
       "puesto": "Responsable de Procesos, Stock y Mejora Continua",
       "competencia": "Organización y Gestión del Tiempo",
       "tipoRequerimiento": "OBLIGATORIA",
-      "nivelRequerido": 3
+      "nivelRequerido": 4
     },
     {
       "puesto": "Tesorería",
@@ -4108,7 +4523,25 @@
       "nivelRequerido": 3
     },
     {
-      "puesto": "Auxiliar de Precios",
+      "puesto": "Analista de Precios",
+      "competencia": "Organización y Gestión del Tiempo",
+      "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 2
+    },
+    {
+      "puesto": "Encargado de Depósito Central",
+      "competencia": "Organización y Gestión del Tiempo",
+      "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 3
+    },
+    {
+      "puesto": "Armador de Depósito",
+      "competencia": "Organización y Gestión del Tiempo",
+      "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 2
+    },
+    {
+      "puesto": "Armador de Pedidos",
       "competencia": "Organización y Gestión del Tiempo",
       "tipoRequerimiento": "OBLIGATORIA",
       "nivelRequerido": 2
@@ -4117,22 +4550,22 @@
       "puesto": "Reparto Fresco y Congelado",
       "competencia": "Organización y Gestión del Tiempo",
       "tipoRequerimiento": "OBLIGATORIA",
-      "nivelRequerido": 3
+      "nivelRequerido": 2
     },
     {
       "puesto": "Reparto Seco",
       "competencia": "Organización y Gestión del Tiempo",
       "tipoRequerimiento": "OBLIGATORIA",
-      "nivelRequerido": 3
+      "nivelRequerido": 2
     },
     {
       "puesto": "Reparto Verdulería",
       "competencia": "Organización y Gestión del Tiempo",
       "tipoRequerimiento": "OBLIGATORIA",
-      "nivelRequerido": 3
+      "nivelRequerido": 2
     },
     {
-      "puesto": "Control de Calidad",
+      "puesto": "Responsable de Calidad",
       "competencia": "Organización y Gestión del Tiempo",
       "tipoRequerimiento": "OBLIGATORIA",
       "nivelRequerido": 3
@@ -4150,7 +4583,7 @@
       "nivelRequerido": 3
     },
     {
-      "puesto": "Planificador de Almacén",
+      "puesto": "Planificador de productos secos",
       "competencia": "Organización y Gestión del Tiempo",
       "tipoRequerimiento": "OBLIGATORIA",
       "nivelRequerido": 4
@@ -4174,10 +4607,16 @@
       "nivelRequerido": 3
     },
     {
+      "puesto": "Encargado de Sucursal",
+      "competencia": "Organización y Gestión del Tiempo",
+      "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 2
+    },
+    {
       "puesto": "Referente de Caja",
       "competencia": "Organización y Gestión del Tiempo",
       "tipoRequerimiento": "OBLIGATORIA",
-      "nivelRequerido": 3
+      "nivelRequerido": 4
     },
     {
       "puesto": "Referente Granja y Fiambrería",
@@ -4190,6 +4629,18 @@
       "competencia": "Organización y Gestión del Tiempo",
       "tipoRequerimiento": "OBLIGATORIA",
       "nivelRequerido": 3
+    },
+    {
+      "puesto": "Auxiliar de Operaciones",
+      "competencia": "Organización y Gestión del Tiempo",
+      "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 2
+    },
+    {
+      "puesto": "Encargado de Sucursal",
+      "competencia": "Autocontrol Emocional",
+      "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 2
     },
     {
       "puesto": "Responsable de Administración y Tesorería",
@@ -4216,6 +4667,12 @@
       "nivelRequerido": 3
     },
     {
+      "puesto": "Responsable de Pricing",
+      "competencia": "Negociación",
+      "tipoRequerimiento": "DESEABLE",
+      "nivelRequerido": 2
+    },
+    {
       "puesto": "Analista de Cuentas a Pagar",
       "competencia": "Negociación",
       "tipoRequerimiento": "OBLIGATORIA",
@@ -4228,13 +4685,7 @@
       "nivelRequerido": 3
     },
     {
-      "puesto": "Responsable de Pricing",
-      "competencia": "Negociación",
-      "tipoRequerimiento": "DESEABLE",
-      "nivelRequerido": 2
-    },
-    {
-      "puesto": "Planificador de Almacén",
+      "puesto": "Planificador de productos secos",
       "competencia": "Negociación",
       "tipoRequerimiento": "DESEABLE",
       "nivelRequerido": 2
@@ -4282,7 +4733,13 @@
       "nivelRequerido": 3
     },
     {
-      "puesto": "Control de Calidad",
+      "puesto": "Encargado de Depósito Central",
+      "competencia": "Liderazgo",
+      "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 2
+    },
+    {
+      "puesto": "Responsable de Calidad",
       "competencia": "Liderazgo",
       "tipoRequerimiento": "OBLIGATORIA",
       "nivelRequerido": 4
@@ -4304,6 +4761,12 @@
       "competencia": "Liderazgo",
       "tipoRequerimiento": "OBLIGATORIA",
       "nivelRequerido": 2
+    },
+    {
+      "puesto": "Encargado de Sucursal",
+      "competencia": "Liderazgo",
+      "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 3
     },
     {
       "puesto": "Referente de Caja",
@@ -4366,13 +4829,19 @@
       "nivelRequerido": 3
     },
     {
-      "puesto": "Control de Calidad",
+      "puesto": "Responsable de Calidad",
       "competencia": "Desarrollo de Personas",
       "tipoRequerimiento": "OBLIGATORIA",
       "nivelRequerido": 3
     },
     {
       "puesto": "Encargado Fresco",
+      "competencia": "Desarrollo de Personas",
+      "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 2
+    },
+    {
+      "puesto": "Encargado de Sucursal",
       "competencia": "Desarrollo de Personas",
       "tipoRequerimiento": "OBLIGATORIA",
       "nivelRequerido": 2
@@ -4411,7 +4880,7 @@
       "puesto": "Responsable de Logística",
       "competencia": "Pensamiento Analítico",
       "tipoRequerimiento": "OBLIGATORIA",
-      "nivelRequerido": 3
+      "nivelRequerido": 4
     },
     {
       "puesto": "Responsable de Compras",
@@ -4420,10 +4889,16 @@
       "nivelRequerido": 3
     },
     {
+      "puesto": "Responsable de Pricing",
+      "competencia": "Pensamiento Analítico",
+      "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 4
+    },
+    {
       "puesto": "Responsable de Procesos, Stock y Mejora Continua",
       "competencia": "Pensamiento Analítico",
       "tipoRequerimiento": "OBLIGATORIA",
-      "nivelRequerido": 3
+      "nivelRequerido": 4
     },
     {
       "puesto": "Tesorería",
@@ -4447,28 +4922,22 @@
       "puesto": "Analista de Compras",
       "competencia": "Pensamiento Analítico",
       "tipoRequerimiento": "OBLIGATORIA",
-      "nivelRequerido": 4
+      "nivelRequerido": 3
     },
     {
-      "puesto": "Auxiliar de Precios",
+      "puesto": "Analista de Precios",
       "competencia": "Pensamiento Analítico",
       "tipoRequerimiento": "OBLIGATORIA",
       "nivelRequerido": 3
     },
     {
-      "puesto": "Responsable de Pricing",
-      "competencia": "Pensamiento Analítico",
-      "tipoRequerimiento": "OBLIGATORIA",
-      "nivelRequerido": 4
-    },
-    {
-      "puesto": "Operador de Recepción y Control de Mercadería",
+      "puesto": "Recepción y Control de Mercadería",
       "competencia": "Pensamiento Analítico",
       "tipoRequerimiento": "DESEABLE",
       "nivelRequerido": 2
     },
     {
-      "puesto": "Control de Calidad",
+      "puesto": "Responsable de Calidad",
       "competencia": "Pensamiento Analítico",
       "tipoRequerimiento": "OBLIGATORIA",
       "nivelRequerido": 4
@@ -4483,10 +4952,10 @@
       "puesto": "Planificador Frescos",
       "competencia": "Pensamiento Analítico",
       "tipoRequerimiento": "OBLIGATORIA",
-      "nivelRequerido": 3
+      "nivelRequerido": 4
     },
     {
-      "puesto": "Planificador de Almacén",
+      "puesto": "Planificador de productos secos",
       "competencia": "Pensamiento Analítico",
       "tipoRequerimiento": "OBLIGATORIA",
       "nivelRequerido": 4
@@ -4516,16 +4985,16 @@
       "nivelRequerido": 3
     },
     {
-      "puesto": "Analista de Compras",
-      "competencia": "Visión Estratégica",
-      "tipoRequerimiento": "DESEABLE",
-      "nivelRequerido": 2
-    },
-    {
       "puesto": "Responsable de Pricing",
       "competencia": "Visión Estratégica",
       "tipoRequerimiento": "OBLIGATORIA",
       "nivelRequerido": 3
+    },
+    {
+      "puesto": "Analista de Compras",
+      "competencia": "Visión Estratégica",
+      "tipoRequerimiento": "DESEABLE",
+      "nivelRequerido": 2
     },
     {
       "puesto": "Responsable de Administración y Tesorería",
@@ -4549,16 +5018,22 @@
       "puesto": "Responsable de Logística",
       "competencia": "Toma de Decisiones",
       "tipoRequerimiento": "OBLIGATORIA",
-      "nivelRequerido": 3
+      "nivelRequerido": 4
     },
     {
       "puesto": "Responsable de Compras",
       "competencia": "Toma de Decisiones",
       "tipoRequerimiento": "OBLIGATORIA",
-      "nivelRequerido": 3
+      "nivelRequerido": 4
     },
     {
       "puesto": "Responsable de Recursos Humanos",
+      "competencia": "Toma de Decisiones",
+      "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 4
+    },
+    {
+      "puesto": "Responsable de Pricing",
       "competencia": "Toma de Decisiones",
       "tipoRequerimiento": "OBLIGATORIA",
       "nivelRequerido": 3
@@ -4567,16 +5042,16 @@
       "puesto": "Responsable de Procesos, Stock y Mejora Continua",
       "competencia": "Toma de Decisiones",
       "tipoRequerimiento": "OBLIGATORIA",
-      "nivelRequerido": 3
+      "nivelRequerido": 4
     },
     {
       "puesto": "Tesorería",
       "competencia": "Toma de Decisiones",
       "tipoRequerimiento": "OBLIGATORIA",
-      "nivelRequerido": 3
+      "nivelRequerido": 2
     },
     {
-      "puesto": "Responsable de Pricing",
+      "puesto": "Encargado de Depósito Central",
       "competencia": "Toma de Decisiones",
       "tipoRequerimiento": "OBLIGATORIA",
       "nivelRequerido": 3
@@ -4594,7 +5069,13 @@
       "nivelRequerido": 2
     },
     {
-      "puesto": "Control de Calidad",
+      "puesto": "Reparto Verdulería",
+      "competencia": "Toma de Decisiones",
+      "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 2
+    },
+    {
+      "puesto": "Responsable de Calidad",
       "competencia": "Toma de Decisiones",
       "tipoRequerimiento": "OBLIGATORIA",
       "nivelRequerido": 4
@@ -4612,15 +5093,21 @@
       "nivelRequerido": 3
     },
     {
-      "puesto": "Planificador de Almacén",
+      "puesto": "Planificador de productos secos",
       "competencia": "Toma de Decisiones",
       "tipoRequerimiento": "OBLIGATORIA",
-      "nivelRequerido": 3
+      "nivelRequerido": 4
     },
     {
       "puesto": "Encargado Expedición y Pedidos",
       "competencia": "Toma de Decisiones",
       "tipoRequerimiento": "DESEABLE",
+      "nivelRequerido": 2
+    },
+    {
+      "puesto": "Encargado de Sucursal",
+      "competencia": "Toma de Decisiones",
+      "tipoRequerimiento": "OBLIGATORIA",
       "nivelRequerido": 2
     },
     {
@@ -4687,7 +5174,13 @@
       "puesto": "Responsable de Recursos Humanos",
       "competencia": "Manejo de Conflictos",
       "tipoRequerimiento": "OBLIGATORIA",
-      "nivelRequerido": 3
+      "nivelRequerido": 4
+    },
+    {
+      "puesto": "Encargado de Sucursal",
+      "competencia": "Manejo de Conflictos",
+      "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 2
     },
     {
       "puesto": "Referente de Caja",
@@ -4726,6 +5219,12 @@
       "nivelRequerido": 3
     },
     {
+      "puesto": "Responsable de Pricing",
+      "competencia": "Innovación y Mejora Continua",
+      "tipoRequerimiento": "DESEABLE",
+      "nivelRequerido": 2
+    },
+    {
       "puesto": "Responsable de Procesos, Stock y Mejora Continua",
       "competencia": "Innovación y Mejora Continua",
       "tipoRequerimiento": "OBLIGATORIA",
@@ -4738,13 +5237,7 @@
       "nivelRequerido": 2
     },
     {
-      "puesto": "Responsable de Pricing",
-      "competencia": "Innovación y Mejora Continua",
-      "tipoRequerimiento": "DESEABLE",
-      "nivelRequerido": 2
-    },
-    {
-      "puesto": "Control de Calidad",
+      "puesto": "Responsable de Calidad",
       "competencia": "Innovación y Mejora Continua",
       "tipoRequerimiento": "OBLIGATORIA",
       "nivelRequerido": 4
@@ -4766,6 +5259,12 @@
       "competencia": "Sentido de Urgencia",
       "tipoRequerimiento": "OBLIGATORIA",
       "nivelRequerido": 3
+    },
+    {
+      "puesto": "Armador de Pedidos",
+      "competencia": "Sentido de Urgencia",
+      "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 2
     },
     {
       "puesto": "Planificador Frescos",
@@ -4792,10 +5291,16 @@
       "nivelRequerido": 3
     },
     {
-      "puesto": "Responsable de Contabilidad",
-      "competencia": "Compromiso con la Seguridad e Higiene",
+      "puesto": "Encargado de Sucursal",
+      "competencia": "Sentido de Urgencia",
       "tipoRequerimiento": "OBLIGATORIA",
       "nivelRequerido": 3
+    },
+    {
+      "puesto": "Auxiliar de Operaciones",
+      "competencia": "Sentido de Urgencia",
+      "tipoRequerimiento": "DESEABLE",
+      "nivelRequerido": 2
     },
     {
       "puesto": "Responsable de Producción",
@@ -4810,13 +5315,7 @@
       "nivelRequerido": 3
     },
     {
-      "puesto": "Responsable de Compras",
-      "competencia": "Compromiso con la Seguridad e Higiene",
-      "tipoRequerimiento": "OBLIGATORIA",
-      "nivelRequerido": 3
-    },
-    {
-      "puesto": "Responsable de Recursos Humanos",
+      "puesto": "Responsable de Pricing",
       "competencia": "Compromiso con la Seguridad e Higiene",
       "tipoRequerimiento": "OBLIGATORIA",
       "nivelRequerido": 3
@@ -4828,46 +5327,34 @@
       "nivelRequerido": 3
     },
     {
-      "puesto": "Analista de Capacitación y Desarrollo",
-      "competencia": "Compromiso con la Seguridad e Higiene",
-      "tipoRequerimiento": "OBLIGATORIA",
-      "nivelRequerido": 3
-    },
-    {
-      "puesto": "Auxiliar de Recursos Humanos",
-      "competencia": "Compromiso con la Seguridad e Higiene",
-      "tipoRequerimiento": "OBLIGATORIA",
-      "nivelRequerido": 3
-    },
-    {
-      "puesto": "Analista de Compras",
-      "competencia": "Compromiso con la Seguridad e Higiene",
-      "tipoRequerimiento": "OBLIGATORIA",
-      "nivelRequerido": 3
-    },
-    {
-      "puesto": "Auxiliar de Precios",
-      "competencia": "Compromiso con la Seguridad e Higiene",
-      "tipoRequerimiento": "OBLIGATORIA",
-      "nivelRequerido": 3
-    },
-    {
-      "puesto": "Responsable de Pricing",
-      "competencia": "Compromiso con la Seguridad e Higiene",
-      "tipoRequerimiento": "OBLIGATORIA",
-      "nivelRequerido": 3
-    },
-    {
       "puesto": "Ayudante de Reparto - Verdulería",
       "competencia": "Compromiso con la Seguridad e Higiene",
       "tipoRequerimiento": "OBLIGATORIA",
-      "nivelRequerido": 3
+      "nivelRequerido": 2
     },
     {
-      "puesto": "Operador de Recepción y Control de Mercadería",
+      "puesto": "Recepción y Control de Mercadería",
+      "competencia": "Compromiso con la Seguridad e Higiene",
+      "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 2
+    },
+    {
+      "puesto": "Encargado de Depósito Central",
       "competencia": "Compromiso con la Seguridad e Higiene",
       "tipoRequerimiento": "OBLIGATORIA",
       "nivelRequerido": 3
+    },
+    {
+      "puesto": "Armador de Depósito",
+      "competencia": "Compromiso con la Seguridad e Higiene",
+      "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 2
+    },
+    {
+      "puesto": "Armador de Pedidos",
+      "competencia": "Compromiso con la Seguridad e Higiene",
+      "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 2
     },
     {
       "puesto": "Reparto Fresco y Congelado",
@@ -4942,7 +5429,7 @@
       "nivelRequerido": 2
     },
     {
-      "puesto": "Control de Calidad",
+      "puesto": "Responsable de Calidad",
       "competencia": "Compromiso con la Seguridad e Higiene",
       "tipoRequerimiento": "OBLIGATORIA",
       "nivelRequerido": 3
@@ -4960,7 +5447,7 @@
       "nivelRequerido": 3
     },
     {
-      "puesto": "Planificador de Almacén",
+      "puesto": "Planificador de productos secos",
       "competencia": "Compromiso con la Seguridad e Higiene",
       "tipoRequerimiento": "OBLIGATORIA",
       "nivelRequerido": 3
@@ -4984,7 +5471,7 @@
       "nivelRequerido": 3
     },
     {
-      "puesto": "Encargados de Sucursal (genérico)",
+      "puesto": "Encargado de Sucursal",
       "competencia": "Compromiso con la Seguridad e Higiene",
       "tipoRequerimiento": "OBLIGATORIA",
       "nivelRequerido": 3
@@ -4996,19 +5483,25 @@
       "nivelRequerido": 2
     },
     {
-      "puesto": "Repositores (genérico)",
+      "puesto": "Cajero",
       "competencia": "Compromiso con la Seguridad e Higiene",
       "tipoRequerimiento": "OBLIGATORIA",
       "nivelRequerido": 2
     },
     {
-      "puesto": "Carniceros (genérico)",
+      "puesto": "Repositor",
       "competencia": "Compromiso con la Seguridad e Higiene",
       "tipoRequerimiento": "OBLIGATORIA",
       "nivelRequerido": 2
     },
     {
-      "puesto": "Verduleros (genérico)",
+      "puesto": "Carnicero",
+      "competencia": "Compromiso con la Seguridad e Higiene",
+      "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 2
+    },
+    {
+      "puesto": "Verdulero",
       "competencia": "Compromiso con la Seguridad e Higiene",
       "tipoRequerimiento": "OBLIGATORIA",
       "nivelRequerido": 2
@@ -5020,7 +5513,25 @@
       "nivelRequerido": 3
     },
     {
+      "puesto": "Vendedor Market",
+      "competencia": "Compromiso con la Seguridad e Higiene",
+      "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 2
+    },
+    {
+      "puesto": "Vendedor Granja",
+      "competencia": "Compromiso con la Seguridad e Higiene",
+      "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 2
+    },
+    {
       "puesto": "Responsable de Recepción y Depósito",
+      "competencia": "Compromiso con la Seguridad e Higiene",
+      "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 2
+    },
+    {
+      "puesto": "Auxiliar de Operaciones",
       "competencia": "Compromiso con la Seguridad e Higiene",
       "tipoRequerimiento": "OBLIGATORIA",
       "nivelRequerido": 2
@@ -5059,13 +5570,19 @@
       "puesto": "Responsable de Recursos Humanos",
       "competencia": "Disciplina Operativa",
       "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 4
+    },
+    {
+      "puesto": "Responsable de Pricing",
+      "competencia": "Disciplina Operativa",
+      "tipoRequerimiento": "OBLIGATORIA",
       "nivelRequerido": 3
     },
     {
       "puesto": "Responsable de Procesos, Stock y Mejora Continua",
       "competencia": "Disciplina Operativa",
       "tipoRequerimiento": "OBLIGATORIA",
-      "nivelRequerido": 3
+      "nivelRequerido": 4
     },
     {
       "puesto": "Tesorería",
@@ -5116,13 +5633,7 @@
       "nivelRequerido": 3
     },
     {
-      "puesto": "Auxiliar de Precios",
-      "competencia": "Disciplina Operativa",
-      "tipoRequerimiento": "OBLIGATORIA",
-      "nivelRequerido": 3
-    },
-    {
-      "puesto": "Responsable de Pricing",
+      "puesto": "Analista de Precios",
       "competencia": "Disciplina Operativa",
       "tipoRequerimiento": "OBLIGATORIA",
       "nivelRequerido": 3
@@ -5134,10 +5645,28 @@
       "nivelRequerido": 3
     },
     {
-      "puesto": "Operador de Recepción y Control de Mercadería",
+      "puesto": "Recepción y Control de Mercadería",
       "competencia": "Disciplina Operativa",
       "tipoRequerimiento": "OBLIGATORIA",
       "nivelRequerido": 3
+    },
+    {
+      "puesto": "Encargado de Depósito Central",
+      "competencia": "Disciplina Operativa",
+      "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 3
+    },
+    {
+      "puesto": "Armador de Depósito",
+      "competencia": "Disciplina Operativa",
+      "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 2
+    },
+    {
+      "puesto": "Armador de Pedidos",
+      "competencia": "Disciplina Operativa",
+      "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 2
     },
     {
       "puesto": "Reparto Fresco y Congelado",
@@ -5212,7 +5741,7 @@
       "nivelRequerido": 2
     },
     {
-      "puesto": "Control de Calidad",
+      "puesto": "Responsable de Calidad",
       "competencia": "Disciplina Operativa",
       "tipoRequerimiento": "OBLIGATORIA",
       "nivelRequerido": 4
@@ -5230,7 +5759,7 @@
       "nivelRequerido": 3
     },
     {
-      "puesto": "Planificador de Almacén",
+      "puesto": "Planificador de productos secos",
       "competencia": "Disciplina Operativa",
       "tipoRequerimiento": "OBLIGATORIA",
       "nivelRequerido": 3
@@ -5254,7 +5783,7 @@
       "nivelRequerido": 3
     },
     {
-      "puesto": "Encargados de Sucursal (genérico)",
+      "puesto": "Encargado de Sucursal",
       "competencia": "Disciplina Operativa",
       "tipoRequerimiento": "OBLIGATORIA",
       "nivelRequerido": 3
@@ -5266,19 +5795,25 @@
       "nivelRequerido": 2
     },
     {
-      "puesto": "Repositores (genérico)",
+      "puesto": "Cajero",
       "competencia": "Disciplina Operativa",
       "tipoRequerimiento": "OBLIGATORIA",
       "nivelRequerido": 2
     },
     {
-      "puesto": "Carniceros (genérico)",
+      "puesto": "Repositor",
       "competencia": "Disciplina Operativa",
       "tipoRequerimiento": "OBLIGATORIA",
       "nivelRequerido": 2
     },
     {
-      "puesto": "Verduleros (genérico)",
+      "puesto": "Carnicero",
+      "competencia": "Disciplina Operativa",
+      "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 2
+    },
+    {
+      "puesto": "Verdulero",
       "competencia": "Disciplina Operativa",
       "tipoRequerimiento": "OBLIGATORIA",
       "nivelRequerido": 2
@@ -5290,7 +5825,25 @@
       "nivelRequerido": 3
     },
     {
+      "puesto": "Vendedor Market",
+      "competencia": "Disciplina Operativa",
+      "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 2
+    },
+    {
+      "puesto": "Vendedor Granja",
+      "competencia": "Disciplina Operativa",
+      "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 2
+    },
+    {
       "puesto": "Responsable de Recepción y Depósito",
+      "competencia": "Disciplina Operativa",
+      "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 2
+    },
+    {
+      "puesto": "Auxiliar de Operaciones",
       "competencia": "Disciplina Operativa",
       "tipoRequerimiento": "OBLIGATORIA",
       "nivelRequerido": 2
@@ -5308,13 +5861,43 @@
       "nivelRequerido": 2
     },
     {
+      "puesto": "Cajero",
+      "competencia": "Vocación de Servicio",
+      "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 2
+    },
+    {
       "puesto": "Referente Granja y Fiambrería",
       "competencia": "Vocación de Servicio",
       "tipoRequerimiento": "OBLIGATORIA",
       "nivelRequerido": 3
     },
     {
+      "puesto": "Vendedor Market",
+      "competencia": "Vocación de Servicio",
+      "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 3
+    },
+    {
+      "puesto": "Vendedor Granja",
+      "competencia": "Vocación de Servicio",
+      "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 3
+    },
+    {
       "puesto": "Analista de Capacitación y Desarrollo",
+      "competencia": "Escucha Activa",
+      "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 3
+    },
+    {
+      "puesto": "Vendedor Market",
+      "competencia": "Escucha Activa",
+      "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 2
+    },
+    {
+      "puesto": "Vendedor Granja",
       "competencia": "Escucha Activa",
       "tipoRequerimiento": "OBLIGATORIA",
       "nivelRequerido": 2
@@ -5332,7 +5915,7 @@
       "nivelRequerido": 2
     },
     {
-      "puesto": "Auxiliar de Precios",
+      "puesto": "Analista de Precios",
       "competencia": "Manejo de Atención Multitarea",
       "tipoRequerimiento": "OBLIGATORIA",
       "nivelRequerido": 2
@@ -5344,7 +5927,19 @@
       "nivelRequerido": 1
     },
     {
-      "puesto": "Operador de Recepción y Control de Mercadería",
+      "puesto": "Recepción y Control de Mercadería",
+      "competencia": "Manejo de Atención Multitarea",
+      "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 2
+    },
+    {
+      "puesto": "Encargado de Sucursal",
+      "competencia": "Manejo de Atención Multitarea",
+      "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 3
+    },
+    {
+      "puesto": "Cajero",
       "competencia": "Manejo de Atención Multitarea",
       "tipoRequerimiento": "OBLIGATORIA",
       "nivelRequerido": 2
@@ -5353,6 +5948,18 @@
       "puesto": "Referente Granja y Fiambrería",
       "competencia": "Manejo de Atención Multitarea",
       "tipoRequerimiento": "DESEABLE",
+      "nivelRequerido": 2
+    },
+    {
+      "puesto": "Vendedor Market",
+      "competencia": "Manejo de Atención Multitarea",
+      "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 2
+    },
+    {
+      "puesto": "Vendedor Granja",
+      "competencia": "Manejo de Atención Multitarea",
+      "tipoRequerimiento": "OBLIGATORIA",
       "nivelRequerido": 2
     },
     {
@@ -5368,6 +5975,18 @@
       "nivelRequerido": 4
     },
     {
+      "puesto": "Cajero",
+      "competencia": "Manejo de Caja y Medios de Pago",
+      "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 3
+    },
+    {
+      "puesto": "Vendedor Granja",
+      "competencia": "Manejo de Caja y Medios de Pago",
+      "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 2
+    },
+    {
       "puesto": "Responsable de Administración y Tesorería",
       "competencia": "Manejo de Sistemas de Gestión (Tango)",
       "tipoRequerimiento": "OBLIGATORIA",
@@ -5380,6 +5999,12 @@
       "nivelRequerido": 3
     },
     {
+      "puesto": "Responsable de Producción",
+      "competencia": "Manejo de Sistemas de Gestión (Tango)",
+      "tipoRequerimiento": "DESEABLE",
+      "nivelRequerido": 2
+    },
+    {
       "puesto": "Responsable de Logística",
       "competencia": "Manejo de Sistemas de Gestión (Tango)",
       "tipoRequerimiento": "OBLIGATORIA",
@@ -5389,7 +6014,7 @@
       "puesto": "Responsable de Compras",
       "competencia": "Manejo de Sistemas de Gestión (Tango)",
       "tipoRequerimiento": "OBLIGATORIA",
-      "nivelRequerido": 2
+      "nivelRequerido": 3
     },
     {
       "puesto": "Responsable de Procesos, Stock y Mejora Continua",
@@ -5430,23 +6055,23 @@
     {
       "puesto": "Analista de Compras",
       "competencia": "Manejo de Sistemas de Gestión (Tango)",
-      "tipoRequerimiento": "DESEABLE",
+      "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 3
+    },
+    {
+      "puesto": "Analista de Precios",
+      "competencia": "Manejo de Sistemas de Gestión (Tango)",
+      "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 3
+    },
+    {
+      "puesto": "Recepción y Control de Mercadería",
+      "competencia": "Manejo de Sistemas de Gestión (Tango)",
+      "tipoRequerimiento": "OBLIGATORIA",
       "nivelRequerido": 2
     },
     {
-      "puesto": "Auxiliar de Precios",
-      "competencia": "Manejo de Sistemas de Gestión (Tango)",
-      "tipoRequerimiento": "OBLIGATORIA",
-      "nivelRequerido": 3
-    },
-    {
-      "puesto": "Operador de Recepción y Control de Mercadería",
-      "competencia": "Manejo de Sistemas de Gestión (Tango)",
-      "tipoRequerimiento": "OBLIGATORIA",
-      "nivelRequerido": 3
-    },
-    {
-      "puesto": "Planificador de Almacén",
+      "puesto": "Planificador de productos secos",
       "competencia": "Manejo de Sistemas de Gestión (Tango)",
       "tipoRequerimiento": "DESEABLE",
       "nivelRequerido": 2
@@ -5455,10 +6080,34 @@
       "puesto": "Encargado Expedición y Pedidos",
       "competencia": "Manejo de Sistemas de Gestión (Tango)",
       "tipoRequerimiento": "OBLIGATORIA",
-      "nivelRequerido": 3
+      "nivelRequerido": 2
+    },
+    {
+      "puesto": "Encargado de Sucursal",
+      "competencia": "Manejo de Sistemas de Gestión (Tango)",
+      "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 2
     },
     {
       "puesto": "Referente de Caja",
+      "competencia": "Manejo de Sistemas de Gestión (Tango)",
+      "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 2
+    },
+    {
+      "puesto": "Cajero",
+      "competencia": "Manejo de Sistemas de Gestión (Tango)",
+      "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 2
+    },
+    {
+      "puesto": "Vendedor Granja",
+      "competencia": "Manejo de Sistemas de Gestión (Tango)",
+      "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 2
+    },
+    {
+      "puesto": "Responsable de Recepción y Depósito",
       "competencia": "Manejo de Sistemas de Gestión (Tango)",
       "tipoRequerimiento": "OBLIGATORIA",
       "nivelRequerido": 2
@@ -5471,6 +6120,12 @@
     },
     {
       "puesto": "Responsable de Contabilidad",
+      "competencia": "Herramientas Informáticas de Oficina",
+      "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 3
+    },
+    {
+      "puesto": "Responsable de Producción",
       "competencia": "Herramientas Informáticas de Oficina",
       "tipoRequerimiento": "OBLIGATORIA",
       "nivelRequerido": 3
@@ -5491,7 +6146,7 @@
       "puesto": "Responsable de Recursos Humanos",
       "competencia": "Herramientas Informáticas de Oficina",
       "tipoRequerimiento": "OBLIGATORIA",
-      "nivelRequerido": 2
+      "nivelRequerido": 3
     },
     {
       "puesto": "Responsable de Procesos, Stock y Mejora Continua",
@@ -5545,10 +6200,10 @@
       "puesto": "Analista de Compras",
       "competencia": "Herramientas Informáticas de Oficina",
       "tipoRequerimiento": "OBLIGATORIA",
-      "nivelRequerido": 3
+      "nivelRequerido": 2
     },
     {
-      "puesto": "Auxiliar de Precios",
+      "puesto": "Analista de Precios",
       "competencia": "Herramientas Informáticas de Oficina",
       "tipoRequerimiento": "OBLIGATORIA",
       "nivelRequerido": 2
@@ -5560,19 +6215,31 @@
       "nivelRequerido": 3
     },
     {
-      "puesto": "Operador de Recepción y Control de Mercadería",
+      "puesto": "Recepción y Control de Mercadería",
       "competencia": "Herramientas Informáticas de Oficina",
       "tipoRequerimiento": "DESEABLE",
+      "nivelRequerido": 2
+    },
+    {
+      "puesto": "Encargado de Depósito Central",
+      "competencia": "Herramientas Informáticas de Oficina",
+      "tipoRequerimiento": "OBLIGATORIA",
       "nivelRequerido": 2
     },
     {
       "puesto": "Planificador Fábrica",
       "competencia": "Herramientas Informáticas de Oficina",
-      "tipoRequerimiento": "DESEABLE",
-      "nivelRequerido": 2
+      "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 3
     },
     {
-      "puesto": "Planificador de Almacén",
+      "puesto": "Planificador Frescos",
+      "competencia": "Herramientas Informáticas de Oficina",
+      "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 3
+    },
+    {
+      "puesto": "Planificador de productos secos",
       "competencia": "Herramientas Informáticas de Oficina",
       "tipoRequerimiento": "OBLIGATORIA",
       "nivelRequerido": 3
@@ -5590,10 +6257,40 @@
       "nivelRequerido": 2
     },
     {
+      "puesto": "Planificador Frescos",
+      "competencia": "Conocimiento de Producto (Perecederos)",
+      "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 2
+    },
+    {
+      "puesto": "Carnicero",
+      "competencia": "Conocimiento de Producto (Perecederos)",
+      "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 3
+    },
+    {
+      "puesto": "Verdulero",
+      "competencia": "Conocimiento de Producto (Perecederos)",
+      "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 3
+    },
+    {
       "puesto": "Referente Granja y Fiambrería",
       "competencia": "Conocimiento de Producto (Perecederos)",
       "tipoRequerimiento": "OBLIGATORIA",
       "nivelRequerido": 4
+    },
+    {
+      "puesto": "Vendedor Market",
+      "competencia": "Conocimiento de Producto (Perecederos)",
+      "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 3
+    },
+    {
+      "puesto": "Vendedor Granja",
+      "competencia": "Conocimiento de Producto (Perecederos)",
+      "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 3
     },
     {
       "puesto": "Operario Fresco - Carnicería",
@@ -5608,6 +6305,12 @@
       "nivelRequerido": 3
     },
     {
+      "puesto": "Carnicero",
+      "competencia": "Técnicas de Corte y Manipulación de Carnes",
+      "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 4
+    },
+    {
       "puesto": "Referente Granja y Fiambrería",
       "competencia": "Técnicas de Corte y Manipulación de Carnes",
       "tipoRequerimiento": "DESEABLE",
@@ -5616,14 +6319,74 @@
     {
       "puesto": "Reparto Verdulería",
       "competencia": "Manipulación y Conservación de Frutas y Verduras",
-      "tipoRequerimiento": "DESEABLE",
+      "tipoRequerimiento": "OBLIGATORIA",
       "nivelRequerido": 2
+    },
+    {
+      "puesto": "Verdulero",
+      "competencia": "Manipulación y Conservación de Frutas y Verduras",
+      "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 3
     },
     {
       "puesto": "Responsable de Producción",
       "competencia": "Normas de Seguridad Alimentaria (BPM)",
       "tipoRequerimiento": "OBLIGATORIA",
       "nivelRequerido": 4
+    },
+    {
+      "puesto": "Responsable de Logística",
+      "competencia": "Normas de Seguridad Alimentaria (BPM)",
+      "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 4
+    },
+    {
+      "puesto": "Ayudante de Reparto - Verdulería",
+      "competencia": "Normas de Seguridad Alimentaria (BPM)",
+      "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 2
+    },
+    {
+      "puesto": "Recepción y Control de Mercadería",
+      "competencia": "Normas de Seguridad Alimentaria (BPM)",
+      "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 2
+    },
+    {
+      "puesto": "Encargado de Depósito Central",
+      "competencia": "Normas de Seguridad Alimentaria (BPM)",
+      "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 2
+    },
+    {
+      "puesto": "Armador de Depósito",
+      "competencia": "Normas de Seguridad Alimentaria (BPM)",
+      "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 2
+    },
+    {
+      "puesto": "Armador de Pedidos",
+      "competencia": "Normas de Seguridad Alimentaria (BPM)",
+      "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 2
+    },
+    {
+      "puesto": "Reparto Fresco y Congelado",
+      "competencia": "Normas de Seguridad Alimentaria (BPM)",
+      "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 2
+    },
+    {
+      "puesto": "Reparto Seco",
+      "competencia": "Normas de Seguridad Alimentaria (BPM)",
+      "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 2
+    },
+    {
+      "puesto": "Reparto Verdulería",
+      "competencia": "Normas de Seguridad Alimentaria (BPM)",
+      "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 2
     },
     {
       "puesto": "Operario Fresco - Elaborados",
@@ -5680,7 +6443,7 @@
       "nivelRequerido": 2
     },
     {
-      "puesto": "Control de Calidad",
+      "puesto": "Responsable de Calidad",
       "competencia": "Normas de Seguridad Alimentaria (BPM)",
       "tipoRequerimiento": "OBLIGATORIA",
       "nivelRequerido": 4
@@ -5704,25 +6467,73 @@
       "nivelRequerido": 3
     },
     {
+      "puesto": "Encargado Expedición y Pedidos",
+      "competencia": "Normas de Seguridad Alimentaria (BPM)",
+      "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 3
+    },
+    {
+      "puesto": "Encargado de Sucursal",
+      "competencia": "Normas de Seguridad Alimentaria (BPM)",
+      "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 2
+    },
+    {
+      "puesto": "Referente de Caja",
+      "competencia": "Normas de Seguridad Alimentaria (BPM)",
+      "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 2
+    },
+    {
+      "puesto": "Cajero",
+      "competencia": "Normas de Seguridad Alimentaria (BPM)",
+      "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 2
+    },
+    {
+      "puesto": "Repositor",
+      "competencia": "Normas de Seguridad Alimentaria (BPM)",
+      "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 2
+    },
+    {
+      "puesto": "Carnicero",
+      "competencia": "Normas de Seguridad Alimentaria (BPM)",
+      "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 3
+    },
+    {
+      "puesto": "Verdulero",
+      "competencia": "Normas de Seguridad Alimentaria (BPM)",
+      "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 2
+    },
+    {
       "puesto": "Referente Granja y Fiambrería",
       "competencia": "Normas de Seguridad Alimentaria (BPM)",
       "tipoRequerimiento": "OBLIGATORIA",
       "nivelRequerido": 3
     },
     {
+      "puesto": "Vendedor Market",
+      "competencia": "Normas de Seguridad Alimentaria (BPM)",
+      "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 2
+    },
+    {
+      "puesto": "Vendedor Granja",
+      "competencia": "Normas de Seguridad Alimentaria (BPM)",
+      "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 2
+    },
+    {
       "puesto": "Responsable de Recepción y Depósito",
       "competencia": "Normas de Seguridad Alimentaria (BPM)",
-      "tipoRequerimiento": "DESEABLE",
+      "tipoRequerimiento": "OBLIGATORIA",
       "nivelRequerido": 2
     },
     {
       "puesto": "Responsable de Producción",
-      "competencia": "Gestión de Stock e Inventario",
-      "tipoRequerimiento": "OBLIGATORIA",
-      "nivelRequerido": 3
-    },
-    {
-      "puesto": "Responsable de Logística",
       "competencia": "Gestión de Stock e Inventario",
       "tipoRequerimiento": "OBLIGATORIA",
       "nivelRequerido": 3
@@ -5734,10 +6545,28 @@
       "nivelRequerido": 4
     },
     {
-      "puesto": "Operador de Recepción y Control de Mercadería",
+      "puesto": "Recepción y Control de Mercadería",
       "competencia": "Gestión de Stock e Inventario",
       "tipoRequerimiento": "OBLIGATORIA",
       "nivelRequerido": 3
+    },
+    {
+      "puesto": "Encargado de Depósito Central",
+      "competencia": "Gestión de Stock e Inventario",
+      "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 4
+    },
+    {
+      "puesto": "Armador de Depósito",
+      "competencia": "Gestión de Stock e Inventario",
+      "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 2
+    },
+    {
+      "puesto": "Armador de Pedidos",
+      "competencia": "Gestión de Stock e Inventario",
+      "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 2
     },
     {
       "puesto": "Reparto Seco",
@@ -5782,7 +6611,7 @@
       "nivelRequerido": 3
     },
     {
-      "puesto": "Planificador de Almacén",
+      "puesto": "Planificador de productos secos",
       "competencia": "Gestión de Stock e Inventario",
       "tipoRequerimiento": "OBLIGATORIA",
       "nivelRequerido": 4
@@ -5806,6 +6635,18 @@
       "nivelRequerido": 3
     },
     {
+      "puesto": "Encargado de Sucursal",
+      "competencia": "Gestión de Stock e Inventario",
+      "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 2
+    },
+    {
+      "puesto": "Repositor",
+      "competencia": "Gestión de Stock e Inventario",
+      "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 2
+    },
+    {
       "puesto": "Referente Granja y Fiambrería",
       "competencia": "Gestión de Stock e Inventario",
       "tipoRequerimiento": "OBLIGATORIA",
@@ -5815,7 +6656,13 @@
       "puesto": "Responsable de Recepción y Depósito",
       "competencia": "Gestión de Stock e Inventario",
       "tipoRequerimiento": "OBLIGATORIA",
-      "nivelRequerido": 4
+      "nivelRequerido": 2
+    },
+    {
+      "puesto": "Repositor",
+      "competencia": "Reposición y Merchandising",
+      "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 2
     },
     {
       "puesto": "Referente Granja y Fiambrería",
@@ -5878,6 +6725,12 @@
       "nivelRequerido": 2
     },
     {
+      "puesto": "Reparto Verdulería",
+      "competencia": "Logística y Distribución",
+      "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 2
+    },
+    {
       "puesto": "Encargado Expedición y Pedidos",
       "competencia": "Logística y Distribución",
       "tipoRequerimiento": "DESEABLE",
@@ -5932,10 +6785,10 @@
       "nivelRequerido": 3
     },
     {
-      "puesto": "Auxiliar de Precios",
+      "puesto": "Analista de Precios",
       "competencia": "Análisis de Costos",
-      "tipoRequerimiento": "DESEABLE",
-      "nivelRequerido": 2
+      "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 3
     },
     {
       "puesto": "Responsable de Pricing",
@@ -5992,7 +6845,7 @@
       "nivelRequerido": 2
     },
     {
-      "puesto": "Control de Calidad",
+      "puesto": "Responsable de Calidad",
       "competencia": "Control de Calidad",
       "tipoRequerimiento": "OBLIGATORIA",
       "nivelRequerido": 4
@@ -6034,6 +6887,12 @@
       "nivelRequerido": 4
     },
     {
+      "puesto": "Planificador de productos secos",
+      "competencia": "Planificación de la Producción y la Demanda",
+      "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 2
+    },
+    {
       "puesto": "Responsable de Recursos Humanos",
       "competencia": "Conocimiento Normativo Laboral (CCT 130/75)",
       "tipoRequerimiento": "OBLIGATORIA",
@@ -6048,7 +6907,7 @@
     {
       "puesto": "Auxiliar de Recursos Humanos",
       "competencia": "Reclutamiento y Selección",
-      "tipoRequerimiento": "DESEABLE",
+      "tipoRequerimiento": "OBLIGATORIA",
       "nivelRequerido": 2
     },
     {
@@ -6067,25 +6926,13 @@
       "puesto": "Responsable de Recursos Humanos",
       "competencia": "Administración de Personal",
       "tipoRequerimiento": "OBLIGATORIA",
-      "nivelRequerido": 3
+      "nivelRequerido": 4
     },
     {
       "puesto": "Auxiliar de Recursos Humanos",
       "competencia": "Administración de Personal",
       "tipoRequerimiento": "OBLIGATORIA",
       "nivelRequerido": 3
-    },
-    {
-      "puesto": "Responsable de Recursos Humanos",
-      "competencia": "Evaluación de Desempeño (Humand)",
-      "tipoRequerimiento": "OBLIGATORIA",
-      "nivelRequerido": 3
-    },
-    {
-      "puesto": "Auxiliar de Recursos Humanos",
-      "competencia": "Evaluación de Desempeño (Humand)",
-      "tipoRequerimiento": "DESEABLE",
-      "nivelRequerido": 2
     },
     {
       "puesto": "Reparto Fresco y Congelado",
@@ -6148,7 +6995,7 @@
       "nivelRequerido": 2
     },
     {
-      "puesto": "Control de Calidad",
+      "puesto": "Responsable de Calidad",
       "competencia": "Redacción de Procedimientos y Documentación",
       "tipoRequerimiento": "OBLIGATORIA",
       "nivelRequerido": 3
@@ -6157,7 +7004,7 @@
       "puesto": "Responsable de Logística",
       "competencia": "Análisis de Datos e Indicadores (KPIs)",
       "tipoRequerimiento": "OBLIGATORIA",
-      "nivelRequerido": 3
+      "nivelRequerido": 4
     },
     {
       "puesto": "Responsable de Procesos, Stock y Mejora Continua",
@@ -6172,7 +7019,7 @@
       "nivelRequerido": 3
     },
     {
-      "puesto": "Control de Calidad",
+      "puesto": "Responsable de Calidad",
       "competencia": "Análisis de Datos e Indicadores (KPIs)",
       "tipoRequerimiento": "OBLIGATORIA",
       "nivelRequerido": 3
@@ -6186,11 +7033,11 @@
     {
       "puesto": "Planificador Frescos",
       "competencia": "Análisis de Datos e Indicadores (KPIs)",
-      "tipoRequerimiento": "DESEABLE",
-      "nivelRequerido": 2
+      "tipoRequerimiento": "OBLIGATORIA",
+      "nivelRequerido": 3
     },
     {
-      "puesto": "Planificador de Almacén",
+      "puesto": "Planificador de productos secos",
       "competencia": "Análisis de Datos e Indicadores (KPIs)",
       "tipoRequerimiento": "OBLIGATORIA",
       "nivelRequerido": 3
