@@ -130,4 +130,7 @@ export const api = {
   getCompetencia: (id) => request(`/competencias/${id}`),
   listPuestosConMatriz: () => request("/competencias/puestos"),
   getCompetenciasDePuesto: (puesto) => request(`/competencias/puestos/${encodeURIComponent(puesto)}`),
+
+  // --- Alertas ---
+  getAlertas: () => request("/alertas"),
 };

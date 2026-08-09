@@ -8,6 +8,7 @@ import LoginScreen from "./components/LoginScreen.jsx";
 import UsuariosPanel from "./components/UsuariosPanel.jsx";
 import ImportarPanel from "./components/ImportarPanel.jsx";
 import CompetenciasDictionary from "./components/CompetenciasDictionary.jsx";
+import AlertasPanel from "./components/AlertasPanel.jsx";
 
 export default function App() {
   const [usuario, setUsuario] = useState(() => api.getUsuarioActual());
@@ -80,6 +81,9 @@ export default function App() {
           <button className="nav-tab" aria-current={vista === "competencias"} onClick={() => setVista("competencias")}>
             Competencias
           </button>
+          <button className="nav-tab" aria-current={vista === "alertas"} onClick={() => setVista("alertas")}>
+            Alertas
+          </button>
           {usuario.rol === "ADMIN" && (
             <button className="nav-tab" aria-current={vista === "usuarios"} onClick={() => setVista("usuarios")}>
               Usuarios
@@ -125,6 +129,7 @@ export default function App() {
         {vista === "usuarios" && usuario.rol === "ADMIN" && <UsuariosPanel />}
         {vista === "importar" && <ImportarPanel onImportado={cargarListado} />}
         {vista === "competencias" && <CompetenciasDictionary />}
+        {vista === "alertas" && <AlertasPanel />}
         {vista === "legajos" && (
           <>
             {errorCarga && (
