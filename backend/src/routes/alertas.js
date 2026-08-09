@@ -55,6 +55,9 @@ alertasRouter.get("/", async (req, res) => {
           detalle: !ultimaEval
             ? `Nunca fue evaluado${enPeriodoPrueba ? " (en período de prueba)" : ""}`
             : `Última evaluación hace ${diasSinEval} días${enPeriodoPrueba ? " (en período de prueba)" : ""}`,
+          _enPeriodoPrueba: enPeriodoPrueba,
+          _nuncaEvaluado: !ultimaEval,
+          _diasSinEval: diasSinEval ?? Infinity,
         });
       }
 
@@ -85,6 +88,8 @@ alertasRouter.get("/", async (req, res) => {
         sancionesAcumuladas.push({
           id: emp.id, nombre: nombreCompleto, puesto: emp.puesto,
           detalle: `${sanciones.rows[0].total} sanciones en los últimos ${DIAS_SANCIONES_RECIENTES} días`,
+          _enPeriodoPrueba: enPeriodoPrueba,
+          _totalSanciones: sanciones.rows[0].total,
         });
       }
 
@@ -128,6 +133,23 @@ alertasRouter.get("/", async (req, res) => {
       }
     }
 
+    // Orden pedido: primero quienes están en período de prueba (nunca evaluado
+    // antes que "hace X días"), después los efectivos con el mismo criterio.
+    sinEvaluacionReciente.sort((a, b) => {
+      if (a._enPeriodoPrueba !== b._enPeriodoPrueba) return a._enPeriodoPrueba ? -1 : 1;
+      if (a._nuncaEvaluado !== b._nuncaEvaluado) return a._nuncaEvaluado ? -1 : 1;
+      return b._diasSinEval - a._diasSinEval;
+    });
+
+    // Orden pedido: primero quienes están en período de prueba, después por
+    // cantidad de sanciones (de mayor a menor).
+    sancionesAcumuladas.sort((a, b) => {
+      if (a._enPeriodoPrueba !== b._enPeriodoPrueba) return a._enPeriodoPrueba ? -1 : 1;
+      return b._totalSanciones - a._totalSanciones;
+    });
+
+    const limpiar = (arr) => arr.map(({ _enPeriodoPrueba, _nuncaEvaluado, _diasSinEval, _totalSanciones, ...resto }) => resto);
+
     res.json({
       configuracion: {
         diasSinEvaluacionEfectivo: DIAS_SIN_EVALUACION_EFECTIVO,
@@ -140,8 +162,8 @@ alertasRouter.get("/", async (req, res) => {
         umbralPromocionPromedio: UMBRAL_PROMOCION_PROMEDIO,
         diasAntiguedadPromocion: DIAS_ANTIGUEDAD_PROMOCION,
       },
-      sinEvaluacionReciente,
-      sancionesAcumuladas,
+      sinEvaluacionReciente: limpiar(sinEvaluacionReciente),
+      sancionesAcumuladas: limpiar(sancionesAcumuladas),
       bajaDesempeno,
       cursosIncompletos,
       resultadosSobresalientes,
