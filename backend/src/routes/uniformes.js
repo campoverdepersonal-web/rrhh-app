@@ -19,9 +19,13 @@ export const CATALOGO_PRENDAS = {
   "Delantal": ["Azul"],
   "Cuello Polar": ["Azul", "Blanco"],
   "Capucha Polar": ["Blanca"],
+  "Gorra": ["Azul"],
+  "Chomba": ["Azul", "Blanca"],
+  "Camisa": ["Azul", "Beige"],
+  "Sweater": ["Azul"],
 };
 
-export const CATALOGO_MARCAS = ["OMBU", "BX", "DPS", "Beato", "Mingo", "Calfor Pampeana"];
+export const CATALOGO_MARCAS = ["OMBU", "BX", "DPS", "Beato", "Mingo", "Calfor Pampeana", "Promo Textil", "Mauro Sergio"];
 
 // Umbral de alerta (días desde la entrega). Por ahora igual para todas las
 // prendas — a futuro se puede definir por tipo_prenda.
