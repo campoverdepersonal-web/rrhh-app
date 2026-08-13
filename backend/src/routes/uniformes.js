@@ -14,7 +14,7 @@ export const CATALOGO_PRENDAS = {
   "Faja Lumbar": [],
   "Borcegos": ["Blancos", "Negros"],
   "Botas de Goma": ["Blancas"],
-  "Guantes": ["Congelados", "Térmicos"],
+  "Guantes": ["Congelados", "Térmicos", "Obra"],
   "Delantal PVC": ["Corto", "Largo"],
   "Delantal": ["Azul"],
   "Cuello Polar": ["Azul", "Blanco"],
@@ -23,6 +23,12 @@ export const CATALOGO_PRENDAS = {
   "Chomba": ["Azul", "Blanca"],
   "Camisa": ["Azul", "Beige"],
   "Sweater": ["Azul"],
+  "Chaleco Trucker": ["Azul", "Blanco"],
+  "Campera Trucker": ["Azul", "Blanco"],
+  "Pantalón Trucker": ["Azul"],
+  "Medias": [],
+  "Manga PVC": ["Blancas"],
+  "Cofia": ["Azul"],
 };
 
 export const CATALOGO_MARCAS = ["OMBU", "BX", "DPS", "Beato", "Mingo", "Calfor Pampeana", "Promo Textil", "Mauro Sergio"];
