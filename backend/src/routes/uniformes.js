@@ -6,11 +6,11 @@ export const uniformesRouter = Router({ mergeParams: true });
 // Catálogo fijo de prendas -> colores/detalle disponibles, y marcas.
 // Se expone via /api/uniformes/catalogo para que el frontend no lo duplique.
 export const CATALOGO_PRENDAS = {
-  "Remera": ["Blanca", "Azul"],
-  "Buzo Algodón": ["Azul"],
+  "Remera": ["Blanca", "Azul", "Negro"],
+  "Buzo Algodón": ["Azul", "Negro"],
   "Buzo Polar": ["Blanco", "Azul"],
   "Pantalón Náutico": ["Blanco", "Azul"],
-  "Pantalón Cargo": ["Blanco", "Camel"],
+  "Pantalón Cargo": ["Blanco", "Camel", "Negro"],
   "Faja Lumbar": [],
   "Borcegos": ["Blancos", "Negros"],
   "Botas de Goma": ["Blancas"],
@@ -29,6 +29,7 @@ export const CATALOGO_PRENDAS = {
   "Medias": [],
   "Manga PVC": ["Blancas"],
   "Cofia": ["Azul"],
+  "Campera Acetato": ["Blanca"],
 };
 
 export const CATALOGO_MARCAS = ["OMBU", "BX", "DPS", "Beato", "Mingo", "Calfor Pampeana", "Promo Textil", "Mauro Sergio"];
