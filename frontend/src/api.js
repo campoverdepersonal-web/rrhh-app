@@ -81,6 +81,7 @@ export const api = {
   },
   actualizarPuestosMasivo: (file) => importarArchivo("/employees/importar-actualizar-puesto", file),
   actualizarLegajosMasivo: (file) => importarArchivo("/employees/importar-actualizar-legajo", file),
+  importarBajasMasivo: (file) => importarArchivo("/employees/importar-bajas", file),
 
   // --- Uniformes ---
   getCatalogoUniformes: () => request("/uniformes/catalogo"),

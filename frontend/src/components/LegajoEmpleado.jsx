@@ -300,76 +300,7 @@ export default function LegajoEmpleado({ empleado, onDecisionRegistrada, usuario
         </div>
       )}
 
-      <div className="grid-2">
-        <div className="panel">
-          <h2>Decisión de fin de período de prueba</h2>
-          {empleado.historialDecisionesPeriodoPrueba?.length ? (
-            empleado.historialDecisionesPeriodoPrueba.map((d) => (
-              <div className="history-row" key={d.id}>
-                <span>{RESULTADOS.find((r) => r.value === d.resultado)?.label || d.resultado}</span>
-                <span className="muted">{formatFecha(d.fecha)} · {d.responsable}</span>
-              </div>
-            ))
-          ) : (
-            <p className="muted" style={{ fontSize: "0.88rem" }}>Todavía no se registró ninguna decisión.</p>
-          )}
-
-          {pp.estado === "EN_PRUEBA" && !formVisible && (
-            <button className="btn-primary" onClick={() => setFormVisible(true)}>
-              Registrar decisión
-            </button>
-          )}
-
-          {formVisible && (
-            <form onSubmit={handleSubmit} style={{ marginTop: 14 }}>
-              <div className="form-grid">
-                <label>
-                  Fecha
-                  <input
-                    type="date"
-                    value={form.fecha}
-                    onChange={(e) => setForm({ ...form, fecha: e.target.value })}
-                    required
-                  />
-                </label>
-                <label>
-                  Resultado
-                  <select
-                    value={form.resultado}
-                    onChange={(e) => setForm({ ...form, resultado: e.target.value })}
-                  >
-                    {RESULTADOS.map((r) => (
-                      <option key={r.value} value={r.value}>{r.label}</option>
-                    ))}
-                  </select>
-                </label>
-                <label>
-                  Responsable
-                  <input
-                    type="text"
-                    value={form.responsable}
-                    onChange={(e) => setForm({ ...form, responsable: e.target.value })}
-                    placeholder="Nombre del responsable"
-                    required
-                  />
-                </label>
-                <label style={{ gridColumn: "1 / -1" }}>
-                  Observaciones
-                  <textarea
-                    value={form.observaciones}
-                    onChange={(e) => setForm({ ...form, observaciones: e.target.value })}
-                    placeholder="Detalle de la evaluación (opcional)"
-                  />
-                </label>
-              </div>
-              {error && <p style={{ color: "var(--color-red)", fontSize: "0.85rem" }}>{error}</p>}
-              <button className="btn-primary" type="submit" disabled={enviando}>
-                {enviando ? "Guardando…" : "Guardar decisión"}
-              </button>
-            </form>
-          )}
-        </div>
-
+      <div>
         <div className="panel">
           <h2>Historial de puestos</h2>
           {empleado.historialPuestos?.length ? (

@@ -48,6 +48,25 @@ const TIPOS = [
     resultadoActualizarPuesto: true,
   },
   {
+    id: "bajas",
+    label: "Bajas",
+    titulo: "Importar bajas de empleados",
+    descripcion: "Si el Legajo ya existe en el sistema, actualiza sus datos y lo marca como baja. Si no existe, lo crea directamente como baja (para cargar historial de gente que nunca estuvo cargada como activa) — en ese caso Nombre, Apellido, CUIL, Puesto, Sector, Lugar de trabajo y Fecha de alta son obligatorios.",
+    columnas: [
+      "Legajo — obligatorio",
+      "Nombre, Apellido, CUIL — obligatorios si el legajo es nuevo",
+      "Puesto, Sector, Lugar de trabajo — obligatorios si el legajo es nuevo",
+      "Fecha de alta — formato DD/MM/AAAA, obligatoria si el legajo es nuevo",
+      "Fecha de baja — obligatoria siempre, formato DD/MM/AAAA",
+      "Motivo — opcional (ej: Renuncia, Despido, Fin de contrato)",
+    ],
+    plantilla: () => descargarPlantilla("plantilla-bajas.xlsx", "Bajas", [
+      { "Legajo": "L-0001", "Nombre": "Juan", "Apellido": "Pérez", "CUIL": "20-12345678-3", "Puesto": "Vendedor", "Sector": "Comercial", "Lugar de trabajo": "Sucursal Centro", "Fecha de alta": "01/01/2023", "Fecha de baja": "15/07/2026", "Motivo": "Renuncia" },
+    ], [10, 14, 14, 16, 20, 16, 20, 14, 14, 20]),
+    importar: api.importarBajasMasivo,
+    muestraActualizados: true,
+  },
+  {
     id: "comentarios",
     label: "Comentarios",
     titulo: "Importar comentarios de líderes",

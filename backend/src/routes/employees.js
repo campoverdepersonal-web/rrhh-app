@@ -244,6 +244,111 @@ employeesRouter.post("/importar-actualizar-legajo", upload.single("archivo"), as
   }
 });
 
+// ---------------------------------------------------------------------------
+// POST /api/employees/importar-bajas — registra la baja de varios empleados
+// a la vez (por Legajo), para carga de datos históricos y análisis de
+// rotación. No borra nada — el historial de cada persona se conserva.
+// ---------------------------------------------------------------------------
+employeesRouter.post("/importar-bajas", upload.single("archivo"), async (req, res) => {
+  try {
+    if (!req.file) return res.status(400).json({ error: "No se recibió ningún archivo" });
+
+    let filas;
+    try {
+      const workbook = XLSX.read(req.file.buffer, { type: "buffer", cellDates: true });
+      const hoja = workbook.Sheets[workbook.SheetNames[0]];
+      filas = XLSX.utils.sheet_to_json(hoja, { defval: "" });
+    } catch {
+      return res.status(400).json({ error: "No se pudo leer el archivo. ¿Es un Excel (.xlsx) o CSV válido?" });
+    }
+    if (filas.length === 0) return res.status(400).json({ error: "El archivo no tiene filas de datos" });
+
+    const buscarCol = (raw, ...nombres) => {
+      for (const key of Object.keys(raw)) {
+        if (nombres.includes(key.trim().toLowerCase())) return String(raw[key]).trim();
+      }
+      return "";
+    };
+    const buscarColCruda = (raw, ...nombres) => {
+      for (const key of Object.keys(raw)) {
+        if (nombres.includes(key.trim().toLowerCase())) return raw[key];
+      }
+      return "";
+    };
+
+    const resultado = { insertados: 0, actualizados: 0, errores: [] };
+
+    for (let i = 0; i < filas.length; i++) {
+      const numeroFila = i + 2;
+      const legajo = buscarCol(filas[i], "legajo");
+      const nombre = buscarCol(filas[i], "nombre");
+      const apellido = buscarCol(filas[i], "apellido");
+      const cuil = buscarCol(filas[i], "cuil");
+      const puesto = buscarCol(filas[i], "puesto");
+      const sector = buscarCol(filas[i], "sector");
+      const lugarTrabajo = buscarCol(filas[i], "lugar de trabajo");
+      const fechaAlta = parsearFecha(buscarColCruda(filas[i], "fecha de alta", "fecha de ingreso"));
+      const fechaBaja = parsearFecha(buscarColCruda(filas[i], "fecha de baja"));
+      const motivo = buscarCol(filas[i], "motivo") || null;
+
+      if (!legajo) { resultado.errores.push({ fila: numeroFila, motivo: "Falta el Legajo" }); continue; }
+      if (!fechaBaja) { resultado.errores.push({ fila: numeroFila, legajo, motivo: "Fecha de baja vacía o con formato inválido (usar DD/MM/AAAA)" }); continue; }
+
+      const existente = await pool.query(`SELECT id FROM employees WHERE legajo = $1`, [legajo]);
+
+      if (existente.rows.length > 0) {
+        // Ya existe: actualiza los datos provistos (los que vengan vacíos no
+        // pisan lo que ya había) y lo marca como baja.
+        await pool.query(
+          `UPDATE employees SET
+             nombre = COALESCE(NULLIF($1, ''), nombre),
+             apellido = COALESCE(NULLIF($2, ''), apellido),
+             cuil = COALESCE(NULLIF($3, ''), cuil),
+             puesto = COALESCE(NULLIF($4, ''), puesto),
+             sector = COALESCE(NULLIF($5, ''), sector),
+             lugar_trabajo = COALESCE(NULLIF($6, ''), lugar_trabajo),
+             fecha_ingreso = COALESCE($7, fecha_ingreso),
+             estado = 'BAJA', fecha_baja = $8, motivo_baja = $9, updated_at = now()
+           WHERE legajo = $10`,
+          [nombre, apellido, cuil, puesto, sector, lugarTrabajo, fechaAlta, fechaBaja, motivo, legajo]
+        );
+        resultado.actualizados++;
+        continue;
+      }
+
+      // No existe: se crea directamente como baja (carga histórica). Acá sí
+      // hacen falta todos los datos básicos, porque es un alta nueva.
+      if (!nombre || !apellido || !cuil || !puesto || !sector || !lugarTrabajo || !fechaAlta) {
+        resultado.errores.push({
+          fila: numeroFila, legajo,
+          motivo: "El legajo no existe en el sistema y faltan datos para crearlo (Nombre, Apellido, CUIL, Puesto, Sector, Lugar de trabajo y Fecha de alta son obligatorios en ese caso)",
+        });
+        continue;
+      }
+
+      try {
+        await pool.query(
+          `INSERT INTO employees (legajo, nombre, apellido, cuil, fecha_ingreso, puesto, sector, lugar_trabajo, estado, fecha_baja, motivo_baja)
+           VALUES ($1,$2,$3,$4,$5,$6,$7,$8,'BAJA',$9,$10)`,
+          [legajo, nombre, apellido, cuil, fechaAlta, puesto, sector, lugarTrabajo, fechaBaja, motivo]
+        );
+        resultado.insertados++;
+      } catch (err) {
+        if (err.code === "23505") {
+          resultado.errores.push({ fila: numeroFila, legajo, motivo: `El CUIL "${cuil}" ya pertenece a otro legajo` });
+        } else {
+          throw err;
+        }
+      }
+    }
+
+    res.json(resultado);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Error al importar las bajas" });
+  }
+});
+
 function validarFila(fila) {
   if (!fila.legajo) return "Falta el Legajo";
   if (!fila.nombre) return "Falta el Nombre";
