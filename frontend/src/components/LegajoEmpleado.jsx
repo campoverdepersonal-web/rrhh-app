@@ -28,6 +28,10 @@ export default function LegajoEmpleado({ empleado, onDecisionRegistrada, usuario
   const [formVisible, setFormVisible] = useState(false);
   const [enviando, setEnviando] = useState(false);
   const [eliminando, setEliminando] = useState(false);
+  const [formBajaVisible, setFormBajaVisible] = useState(false);
+  const [enviandoBaja, setEnviandoBaja] = useState(false);
+  const [errorBaja, setErrorBaja] = useState(null);
+  const [formBaja, setFormBaja] = useState({ fecha: new Date().toISOString().slice(0, 10), motivo: "" });
   const [editandoLegajo, setEditandoLegajo] = useState(false);
   const [legajoEditado, setLegajoEditado] = useState(empleado.legajo);
   const [enviandoLegajo, setEnviandoLegajo] = useState(false);
@@ -103,6 +107,35 @@ export default function LegajoEmpleado({ empleado, onDecisionRegistrada, usuario
     }
   }
 
+  async function handleRegistrarBaja(e) {
+    e.preventDefault();
+    setEnviandoBaja(true);
+    setErrorBaja(null);
+    try {
+      await api.registrarBaja(empleado.id, formBaja);
+      setFormBajaVisible(false);
+      onDecisionRegistrada?.();
+    } catch (err) {
+      setErrorBaja(err.message);
+    } finally {
+      setEnviandoBaja(false);
+    }
+  }
+
+  async function handleReactivar() {
+    const confirmado = window.confirm(`¿Reactivar a ${empleado.nombre} ${empleado.apellido}? Vuelve a la nómina activa.`);
+    if (!confirmado) return;
+    setEnviandoBaja(true);
+    try {
+      await api.reactivarEmpleado(empleado.id);
+      onDecisionRegistrada?.();
+    } catch (err) {
+      setErrorBaja(err.message);
+    } finally {
+      setEnviandoBaja(false);
+    }
+  }
+
   async function handleEliminar() {
     const confirmado = window.confirm(
       `¿Seguro que querés eliminar a ${empleado.nombre} ${empleado.apellido}?\n\nEsto borra también todo su historial (comentarios, evaluaciones, sanciones, cursos). Esta acción no se puede deshacer.`
@@ -155,6 +188,21 @@ export default function LegajoEmpleado({ empleado, onDecisionRegistrada, usuario
             </span>
           )}
           {errorLegajo && <span style={{ color: "var(--color-red)", fontSize: "0.76rem" }}>{errorLegajo}</span>}
+          {empleado.estado === "BAJA" && (
+            <span className="status-pill red" style={{ fontSize: "0.72rem" }}>
+              🔴 Baja el {formatFecha(empleado.fechaBaja)}{empleado.motivoBaja ? ` · ${empleado.motivoBaja}` : ""}
+            </span>
+          )}
+          {usuario?.rol === "ADMIN" && empleado.estado !== "BAJA" && !formBajaVisible && (
+            <button className="link-button" style={{ color: "var(--color-red)" }} onClick={() => setFormBajaVisible(true)}>
+              Dar de baja
+            </button>
+          )}
+          {usuario?.rol === "ADMIN" && empleado.estado === "BAJA" && (
+            <button className="link-button" onClick={handleReactivar} disabled={enviandoBaja}>
+              {enviandoBaja ? "Reactivando…" : "Reactivar"}
+            </button>
+          )}
           {usuario?.rol === "ADMIN" && (
             <button className="link-button" style={{ color: "var(--color-red)" }} onClick={handleEliminar} disabled={eliminando}>
               {eliminando ? "Eliminando…" : "Eliminar empleado"}
@@ -162,6 +210,33 @@ export default function LegajoEmpleado({ empleado, onDecisionRegistrada, usuario
           )}
         </div>
       </div>
+
+      {formBajaVisible && (
+        <form onSubmit={handleRegistrarBaja} className="panel" style={{ marginBottom: 20 }}>
+          <h2>Registrar baja de {empleado.nombre} {empleado.apellido}</h2>
+          <p className="muted" style={{ fontSize: "0.8rem", marginTop: -6 }}>
+            No se borra nada de su historial — solo deja de aparecer en la nómina activa,
+            y queda disponible para análisis (rotación, uniformes entregados, etc.) en la pestaña "Bajas".
+          </p>
+          <div className="form-grid">
+            <label>
+              Fecha de baja
+              <input type="date" value={formBaja.fecha} onChange={(e) => setFormBaja({ ...formBaja, fecha: e.target.value })} required />
+            </label>
+            <label style={{ gridColumn: "1 / -1" }}>
+              Motivo
+              <input type="text" value={formBaja.motivo} onChange={(e) => setFormBaja({ ...formBaja, motivo: e.target.value })} placeholder="Ej: Renuncia, despido, fin de contrato" />
+            </label>
+          </div>
+          {errorBaja && <p style={{ color: "var(--color-red)", fontSize: "0.85rem" }}>{errorBaja}</p>}
+          <div style={{ display: "flex", gap: 10 }}>
+            <button className="btn-primary" type="submit" disabled={enviandoBaja}>
+              {enviandoBaja ? "Guardando…" : "Confirmar baja"}
+            </button>
+            <button type="button" className="link-button" onClick={() => setFormBajaVisible(false)}>Cancelar</button>
+          </div>
+        </form>
+      )}
 
       <div className="tab-bar">
         {TABS.map((t) => (

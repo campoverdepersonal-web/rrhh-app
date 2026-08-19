@@ -29,8 +29,10 @@ CREATE TABLE IF NOT EXISTS employees (                          -- ACTIVO
   puesto             VARCHAR(120) NOT NULL,
   sector             VARCHAR(120) NOT NULL,
   lugar_trabajo      VARCHAR(120) NOT NULL,
-  estado             VARCHAR(20) NOT NULL DEFAULT 'ACTIVO'        -- ACTIVO | INACTIVO
-                     CHECK (estado IN ('ACTIVO', 'INACTIVO')),
+  estado             VARCHAR(20) NOT NULL DEFAULT 'ACTIVO'        -- ACTIVO | INACTIVO | BAJA
+                     CHECK (estado IN ('ACTIVO', 'INACTIVO', 'BAJA')),
+  fecha_baja         DATE,
+  motivo_baja        TEXT,
   created_at         TIMESTAMP NOT NULL DEFAULT now(),
   updated_at         TIMESTAMP NOT NULL DEFAULT now()
 );
@@ -231,3 +233,10 @@ CREATE TABLE IF NOT EXISTS entregas_uniforme (                    -- ACTIVO
 );
 
 CREATE INDEX IF NOT EXISTS idx_entregas_uniforme_employee ON entregas_uniforme(employee_id);
+
+-- Migración: agrega el estado "BAJA" y sus campos, y sube el límite de
+-- ANTIGÜEDAD del CHECK de estado (segura en bases nuevas y existentes).
+ALTER TABLE employees ADD COLUMN IF NOT EXISTS fecha_baja DATE;
+ALTER TABLE employees ADD COLUMN IF NOT EXISTS motivo_baja TEXT;
+ALTER TABLE employees DROP CONSTRAINT IF EXISTS employees_estado_check;
+ALTER TABLE employees ADD CONSTRAINT employees_estado_check CHECK (estado IN ('ACTIVO', 'INACTIVO', 'BAJA'));

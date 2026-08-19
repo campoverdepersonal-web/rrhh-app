@@ -270,7 +270,13 @@ employeesRouter.get("/", async (req, res) => {
     if (puesto) { valores.push(puesto); condiciones.push(`puesto = $${valores.length}`); }
     if (sector) { valores.push(sector); condiciones.push(`sector = $${valores.length}`); }
     if (lugarTrabajo) { valores.push(lugarTrabajo); condiciones.push(`lugar_trabajo = $${valores.length}`); }
-    if (estado) { valores.push(estado); condiciones.push(`estado = $${valores.length}`); }
+    if (estado) {
+      valores.push(estado);
+      condiciones.push(`estado = $${valores.length}`);
+    } else {
+      // Por defecto, los dados de baja no aparecen en la nómina activa.
+      condiciones.push(`estado != 'BAJA'`);
+    }
 
     const where = condiciones.length ? `WHERE ${condiciones.join(" AND ")}` : "";
     const { rows } = await pool.query(
@@ -306,6 +312,23 @@ employeesRouter.get("/", async (req, res) => {
 // ---------------------------------------------------------------------------
 // GET /api/employees/:id — legajo dinámico completo
 // ---------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
+// GET /api/employees/bajas — listado de empleados dados de baja (para
+// análisis de rotación, uniformes entregados durante su paso por la empresa, etc.)
+// Va ANTES de GET /:id para que "bajas" no se interprete como un id.
+// ---------------------------------------------------------------------------
+employeesRouter.get("/bajas", async (req, res) => {
+  try {
+    const { rows } = await pool.query(
+      `SELECT * FROM employees WHERE estado = 'BAJA' ORDER BY fecha_baja DESC NULLS LAST`
+    );
+    res.json(rows.map((r) => ({ ...serializeEmployee(r), antiguedad: calcularAntiguedad(r.fecha_ingreso).texto })));
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Error al listar las bajas" });
+  }
+});
+
 employeesRouter.get("/:id", async (req, res) => {
   try {
     const { id } = req.params;
@@ -484,6 +507,59 @@ employeesRouter.put("/:id", async (req, res) => {
 });
 
 // ---------------------------------------------------------------------------
+// POST /api/employees/:id/baja — registra la baja de un empleado. A partir de
+// acá deja de aparecer en la nómina activa (Legajos), pero todo su historial
+// (evaluaciones, sanciones, cursos, entregas de uniforme, etc.) se conserva.
+// ---------------------------------------------------------------------------
+employeesRouter.post("/:id/baja", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { fecha, motivo } = req.body;
+
+    if (!fecha) {
+      return res.status(400).json({ error: "La fecha de baja es obligatoria" });
+    }
+
+    const { rows } = await pool.query(
+      `UPDATE employees SET estado = 'BAJA', fecha_baja = $1, motivo_baja = $2, updated_at = now()
+       WHERE id = $3 RETURNING *`,
+      [fecha, motivo || null, id]
+    );
+
+    if (rows.length === 0) {
+      return res.status(404).json({ error: "Empleado no encontrado" });
+    }
+
+    res.json(serializeEmployee(rows[0]));
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Error al registrar la baja" });
+  }
+});
+
+// ---------------------------------------------------------------------------
+// POST /api/employees/:id/reactivar — corrige una baja cargada por error,
+// vuelve al empleado a estado Activo y limpia fecha/motivo de baja.
+// ---------------------------------------------------------------------------
+employeesRouter.post("/:id/reactivar", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { rows } = await pool.query(
+      `UPDATE employees SET estado = 'ACTIVO', fecha_baja = NULL, motivo_baja = NULL, updated_at = now()
+       WHERE id = $1 RETURNING *`,
+      [id]
+    );
+    if (rows.length === 0) {
+      return res.status(404).json({ error: "Empleado no encontrado" });
+    }
+    res.json(serializeEmployee(rows[0]));
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Error al reactivar el empleado" });
+  }
+});
+
+// ---------------------------------------------------------------------------
 // DELETE /api/employees/:id — elimina un empleado y todo su historial
 // (comentarios, evaluaciones, sanciones, cursos, etc. por cascada). Solo ADMIN.
 // ---------------------------------------------------------------------------
@@ -571,6 +647,8 @@ function serializeEmployee(row) {
     sector: row.sector,
     lugarTrabajo: row.lugar_trabajo,
     estado: row.estado,
+    fechaBaja: row.fecha_baja,
+    motivoBaja: row.motivo_baja,
   };
 }
 
