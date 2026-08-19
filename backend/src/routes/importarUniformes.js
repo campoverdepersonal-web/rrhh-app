@@ -116,7 +116,7 @@ importarUniformesRouter.post("/importar-entregas-uniforme", upload.single("archi
     if (filas.length === 0) return res.status(400).json({ error: "El archivo no tiene filas de datos" });
 
     const legajoAId = await mapaLegajoAId();
-    const resultado = { insertados: 0, omitidosPorDuplicado: 0, errores: [] };
+    const resultado = { insertados: 0, omitidosPorDuplicado: 0, duplicados: [], errores: [] };
 
     for (let i = 0; i < filas.length; i++) {
       const numeroFila = i + 2;
@@ -169,6 +169,10 @@ importarUniformesRouter.post("/importar-entregas-uniforme", upload.single("archi
       );
       if (existente.rows.length > 0) {
         resultado.omitidosPorDuplicado++;
+        resultado.duplicados.push({
+          fila: numeroFila, legajo,
+          detalle: `${tipoPrenda}${colorDetalle ? ` (${colorDetalle})` : ""} · entregada el ${fechaEntrega}`,
+        });
         continue;
       }
 

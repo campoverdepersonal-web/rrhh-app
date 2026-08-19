@@ -267,6 +267,18 @@ export default function ImportarPanel({ onImportado }) {
                 </div>
               </div>
 
+              {tipo.mostrarDuplicados && resultado.duplicados?.length > 0 && (
+                <>
+                  <h2 style={{ fontSize: "0.85rem" }}>Filas que ya existían (no se cargaron de nuevo)</h2>
+                  {resultado.duplicados.map((d, i) => (
+                    <div className="history-row" key={i}>
+                      <span>Fila {d.fila} ({d.legajo})</span>
+                      <span className="muted">{d.detalle}</span>
+                    </div>
+                  ))}
+                </>
+              )}
+
               {resultado.errores.length > 0 && (
                 <>
                   <h2 style={{ fontSize: "0.85rem" }}>Filas que no se pudieron cargar</h2>
