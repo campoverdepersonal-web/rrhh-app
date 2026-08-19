@@ -116,7 +116,7 @@ importarUniformesRouter.post("/importar-entregas-uniforme", upload.single("archi
     if (filas.length === 0) return res.status(400).json({ error: "El archivo no tiene filas de datos" });
 
     const legajoAId = await mapaLegajoAId();
-    const resultado = { insertados: 0, errores: [] };
+    const resultado = { insertados: 0, omitidosPorDuplicado: 0, errores: [] };
 
     for (let i = 0; i < filas.length; i++) {
       const numeroFila = i + 2;
@@ -154,6 +154,23 @@ importarUniformesRouter.post("/importar-entregas-uniforme", upload.single("archi
         continue;
       }
       const cantidad = cantidadCruda ? parseInt(cantidadCruda, 10) : 1;
+
+      // Evita cargar dos veces la misma entrega si el archivo se vuelve a
+      // importar (mismo empleado, fecha, prenda, color, marca, talle,
+      // cantidad y estado ya registrados).
+      const existente = await pool.query(
+        `SELECT id FROM entregas_uniforme
+         WHERE employee_id = $1 AND fecha_entrega = $2 AND tipo_prenda = $3
+           AND color_detalle IS NOT DISTINCT FROM $4
+           AND marca IS NOT DISTINCT FROM $5
+           AND talle IS NOT DISTINCT FROM $6
+           AND cantidad = $7 AND estado = $8`,
+        [employeeId, fechaEntrega, tipoPrenda, colorDetalle, marca, talle, cantidad || 1, estado]
+      );
+      if (existente.rows.length > 0) {
+        resultado.omitidosPorDuplicado++;
+        continue;
+      }
 
       await pool.query(
         `INSERT INTO entregas_uniforme (employee_id, fecha_entrega, tipo_prenda, color_detalle, marca, talle, cantidad, estado)

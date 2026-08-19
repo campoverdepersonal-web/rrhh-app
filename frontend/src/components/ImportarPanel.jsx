@@ -135,6 +135,7 @@ const TIPOS = [
       { "Legajo": "L-0001", "Fecha de entrega": "01/06/2026", "Tipo de prenda": "Faja Lumbar", "Color/Detalle": "", "Marca": "BX", "Talle": "M", "Cantidad": 1, "Estado": "Nueva" },
     ], [10, 16, 18, 16, 12, 10, 10, 10]),
     importar: api.importarEntregasUniforme,
+    mostrarDuplicados: true,
   },
 ];
 
@@ -233,6 +234,12 @@ export default function ImportarPanel({ onImportado }) {
                     <div className="fact-value" style={{ color: "var(--color-primary)" }}>{resultado.actualizados}</div>
                   </div>
                 )}
+                {tipo.mostrarDuplicados && (
+                  <div>
+                    <div className="fact-label">Ya existían</div>
+                    <div className="fact-value">{resultado.omitidosPorDuplicado || 0}</div>
+                  </div>
+                )}
                 <div>
                   <div className="fact-label">Con errores</div>
                   <div className="fact-value" style={{ color: resultado.errores.length ? "var(--color-red)" : "inherit" }}>
@@ -250,10 +257,19 @@ export default function ImportarPanel({ onImportado }) {
                       <span className="muted">{e.motivo}</span>
                     </div>
                   ))}
-                  <p className="muted" style={{ fontSize: "0.78rem", marginTop: 10 }}>
-                    Corregí esas filas en tu archivo y volvé a subirlo — las que ya se cargaron
-                    bien no se van a duplicar.
-                  </p>
+                  {tipo.mostrarDuplicados ? (
+                    <p className="muted" style={{ fontSize: "0.78rem", marginTop: 10 }}>
+                      Corregí esas filas en tu archivo y volvé a subirlo — las que ya se cargaron
+                      bien no se van a duplicar (se detectan por empleado, fecha, prenda, color,
+                      marca, talle, cantidad y estado idénticos).
+                    </p>
+                  ) : (
+                    <p className="muted" style={{ fontSize: "0.78rem", marginTop: 10 }}>
+                      Corregí esas filas en tu archivo. <strong>Ojo:</strong> si volvés a subir el
+                      archivo completo, las filas que ya se cargaron bien se van a duplicar — mejor
+                      dejá en el archivo solo las filas que fallaron antes de reimportar.
+                    </p>
+                  )}
                 </>
               )}
             </div>
