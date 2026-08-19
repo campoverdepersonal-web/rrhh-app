@@ -19,10 +19,10 @@
   --color-red: #B3433A;
   --color-red-soft: #F7E5E2;
 
-  /* Tipografía: Fraunces (serif cálida, con carácter propio) para
-     titulares, Inter para el texto de uso diario, IBM Plex Mono para
-     datos (legajo, CUIL, fechas). */
-  --font-display: "Fraunces", serif;
+  /* Tipografía: Manrope (geométrica, con carácter) para titulares, Inter
+     para el texto de uso diario, IBM Plex Mono para datos (legajo, CUIL,
+     fechas). */
+  --font-display: "Manrope", sans-serif;
   --font-body: "Inter", sans-serif;
   --font-mono: "IBM Plex Mono", monospace;
 
@@ -72,20 +72,21 @@ button, input, select {
   white-space: nowrap;
 }
 
-.brand-name {
-  font-family: var(--font-display);
-  font-weight: 700;
-  font-size: 1.08rem;
-  color: var(--color-primary);
-  letter-spacing: -0.01em;
+
+.brand-logo {
+  height: 38px;
+  width: auto;
+  display: block;
 }
 .brand-sub {
   font-family: var(--font-body);
-  font-weight: 500;
-  font-size: 0.76rem;
+  font-weight: 600;
+  font-size: 0.8rem;
   color: var(--color-ink-soft);
-  letter-spacing: 0.02em;
-  margin-left: 2px;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  padding-left: 10px;
+  border-left: 1px solid var(--color-border);
 }
 
 .brand-mark {
@@ -266,8 +267,10 @@ button, input, select {
 }
 
 .main {
-  padding: 32px 40px;
-  max-width: 980px;
+  padding: 32px 44px;
+  max-width: 1320px;
+  width: 100%;
+  margin: 0 auto;
   flex: 1;
   min-width: 0;
   overflow-y: auto;

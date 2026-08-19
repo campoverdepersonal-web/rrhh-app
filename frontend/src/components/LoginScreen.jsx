@@ -24,9 +24,8 @@ export default function LoginScreen({ onLogin }) {
   return (
     <div className="login-shell">
       <form className="login-card" onSubmit={handleSubmit}>
-        <div className="brand" style={{ justifyContent: "center", marginBottom: 6 }}>
-          <span className="brand-mark">RH</span>
-          Legajo dinámico
+        <div style={{ display: "flex", justifyContent: "center", marginBottom: 16 }}>
+          <img src="/logo-campo-verde.png" alt="Campo Verde" style={{ height: 56, width: "auto" }} />
         </div>
         <p className="legajo-sub" style={{ textAlign: "center", marginBottom: 20 }}>
           Ingresá con tu cuenta para continuar

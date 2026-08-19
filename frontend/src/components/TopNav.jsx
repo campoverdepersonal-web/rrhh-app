@@ -34,8 +34,8 @@ export default function TopNav({ vista, setVista, usuario, cerrarSesion }) {
   return (
     <header className="topnav">
       <div className="topnav-brand">
-        <span className="brand-mark">CV</span>
-        <span className="brand-name">Campo Verde <span className="brand-sub">RRHH</span></span>
+        <img src="/logo-campo-verde.png" alt="Campo Verde" className="brand-logo" />
+        <span className="brand-sub">RRHH</span>
       </div>
 
       <nav className="topnav-links">
