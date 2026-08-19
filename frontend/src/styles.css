@@ -1,23 +1,28 @@
 :root {
-  /* Color: paleta "legajo corporativo" — azul acero de confianza institucional,
-     con semáforo de estado (ámbar/prueba, verde azulado/efectivo, rojo/baja). */
-  --color-bg: #EEF1F5;
+  /* Color: paleta "Campo Verde" — verde bosque profundo como identidad
+     principal (alimentos frescos, campo), bronce cálido como acento (liga
+     con el camel del uniforme), sobre un papel neutro con leve tibieza
+     verdosa. Semáforo de estado en la misma familia tierra. */
+  --color-bg: #F2F1EA;
   --color-surface: #FFFFFF;
-  --color-ink: #1B2432;
-  --color-ink-soft: #5B6472;
-  --color-border: #DDE2E9;
-  --color-primary: #2B4C6F;
-  --color-primary-soft: #E7EDF3;
+  --color-ink: #1E2B22;
+  --color-ink-soft: #5C6B5F;
+  --color-border: #E1E0D2;
+  --color-primary: #1F4D3A;
+  --color-primary-soft: #E1EAE3;
+  --color-accent: #B08D3F;
+  --color-accent-soft: #F1E7CE;
   --color-amber: #C9820A;
   --color-amber-soft: #FBF0DC;
-  --color-teal: #0E8F79;
-  --color-teal-soft: #DEF3EF;
-  --color-red: #C1443B;
-  --color-red-soft: #FBE6E4;
+  --color-teal: #2E7D5B;
+  --color-teal-soft: #DFEEE5;
+  --color-red: #B3433A;
+  --color-red-soft: #F7E5E2;
 
-  /* Tipografía: Manrope para titulares con carácter, Inter para texto de uso
-     diario, IBM Plex Mono para datos (legajo, CUIL, fechas). */
-  --font-display: "Manrope", sans-serif;
+  /* Tipografía: Fraunces (serif cálida, con carácter propio) para
+     titulares, Inter para el texto de uso diario, IBM Plex Mono para
+     datos (legajo, CUIL, fechas). */
+  --font-display: "Fraunces", serif;
   --font-body: "Inter", sans-serif;
   --font-mono: "IBM Plex Mono", monospace;
 
@@ -40,45 +45,162 @@ button, input, select {
   font-family: inherit;
 }
 
-.app-shell {
-  display: grid;
-  grid-template-columns: 300px 1fr;
+.app-frame {
   min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
+.topnav {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  padding: 0 28px;
+  height: 60px;
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+  flex-shrink: 0;
+  position: sticky;
+  top: 0;
+  z-index: 20;
+}
+
+.topnav-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  white-space: nowrap;
+}
+
+.brand-name {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.08rem;
+  color: var(--color-primary);
+  letter-spacing: -0.01em;
+}
+.brand-sub {
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: 0.76rem;
+  color: var(--color-ink-soft);
+  letter-spacing: 0.02em;
+  margin-left: 2px;
+}
+
+.brand-mark {
+  width: 32px;
+  height: 32px;
+  border-radius: 9px;
+  background: var(--color-primary);
+  color: white;
+  display: grid;
+  place-items: center;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.82rem;
+  flex-shrink: 0;
+}
+
+.topnav-links {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex: 1;
+  overflow-x: auto;
+}
+
+.topnav-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 12px;
+  border-radius: var(--radius-sm);
+  border: none;
+  background: none;
+  color: var(--color-ink-soft);
+  font-size: 0.86rem;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.topnav-link:hover { background: var(--color-primary-soft); color: var(--color-ink); }
+.topnav-link[aria-current="true"] {
+  background: var(--color-primary-soft);
+  color: var(--color-primary);
+  font-weight: 600;
+}
+
+.topnav-dropdown { position: relative; }
+.topnav-dropdown-menu {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  box-shadow: 0 14px 32px rgba(30, 43, 34, 0.12);
+  padding: 6px;
+  display: flex;
+  flex-direction: column;
+  min-width: 190px;
+}
+.topnav-dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 9px 11px;
+  border-radius: var(--radius-sm);
+  border: none;
+  background: none;
+  color: var(--color-ink);
+  font-size: 0.86rem;
+  font-weight: 500;
+  cursor: pointer;
+  text-align: left;
+}
+.topnav-dropdown-item:hover { background: var(--color-primary-soft); }
+.topnav-dropdown-item[aria-current="true"] { color: var(--color-primary); font-weight: 600; background: var(--color-primary-soft); }
+
+.topnav-account {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-shrink: 0;
+}
+.topnav-account-name {
+  font-size: 0.84rem;
+  color: var(--color-ink-soft);
+  white-space: nowrap;
+}
+
+.app-body {
+  flex: 1;
+  display: flex;
+  min-height: 0;
+}
+.app-body.con-sidebar { display: grid; grid-template-columns: 300px 1fr; }
+
 @media (max-width: 860px) {
-  .app-shell { grid-template-columns: 1fr; }
+  .app-body.con-sidebar { grid-template-columns: 1fr; }
+  .topnav-links { gap: 0; }
 }
 
 .sidebar {
   background: var(--color-surface);
   border-right: 1px solid var(--color-border);
-  padding: 24px 18px;
+  padding: 22px 18px;
   display: flex;
   flex-direction: column;
-  gap: 18px;
+  gap: 14px;
+  overflow-y: auto;
 }
 
-.brand {
-  font-family: var(--font-display);
-  font-weight: 800;
-  font-size: 1.05rem;
-  letter-spacing: -0.01em;
-  color: var(--color-primary);
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.brand-mark {
-  width: 28px;
-  height: 28px;
-  border-radius: 8px;
-  background: var(--color-primary);
-  color: white;
-  display: grid;
-  place-items: center;
-  font-size: 0.85rem;
+.sidebar-prompt {
+  border: 1px dashed var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  margin-top: 4px;
 }
 
 .employee-search {
@@ -146,6 +268,9 @@ button, input, select {
 .main {
   padding: 32px 40px;
   max-width: 980px;
+  flex: 1;
+  min-width: 0;
+  overflow-y: auto;
 }
 
 .legajo-header {

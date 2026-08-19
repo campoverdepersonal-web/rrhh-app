@@ -122,7 +122,7 @@ export default function EvaluacionesPanel({ employeeId, puesto }) {
               <PolarGrid />
               <PolarAngleAxis dataKey="competencia" fontSize={11} />
               <PolarRadiusAxis domain={[0, 4]} tickCount={5} fontSize={10} />
-              <Radar name="Alcanzado" dataKey="Alcanzado" stroke="#0E8F79" fill="#0E8F79" fillOpacity={0.35} />
+              <Radar name="Alcanzado" dataKey="Alcanzado" stroke="#2E7D5B" fill="#2E7D5B" fillOpacity={0.35} />
               <Radar name="Requerido" dataKey="Requerido" stroke="#C9820A" fill="#C9820A" fillOpacity={0.12} />
               <Legend />
               <Tooltip />

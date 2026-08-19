@@ -10,6 +10,7 @@ import ImportarPanel from "./components/ImportarPanel.jsx";
 import CompetenciasDictionary from "./components/CompetenciasDictionary.jsx";
 import AlertasPanel from "./components/AlertasPanel.jsx";
 import BajasPanel from "./components/BajasPanel.jsx";
+import TopNav from "./components/TopNav.jsx";
 
 export default function App() {
   const [usuario, setUsuario] = useState(() => api.getUsuarioActual());
@@ -26,7 +27,6 @@ export default function App() {
     try {
       const data = await api.listEmployees();
       setEmpleados(data);
-      if (!seleccionadoId && data.length) setSeleccionadoId(data[0].id);
     } catch (err) {
       setErrorCarga(err.message);
     } finally {
@@ -49,6 +49,7 @@ export default function App() {
   }, [seleccionadoId, usuario]);
 
   const filtrados = useEmpleadosFiltrados(empleados, busqueda, filtros);
+  const hayBusquedaActiva = busqueda.trim() !== "" || Object.values(filtros).some(Boolean);
 
   if (!usuario) {
     return <LoginScreen onLogin={setUsuario} />;
@@ -59,105 +60,102 @@ export default function App() {
     setUsuario(null);
   }
 
-  return (
-    <div className="app-shell">
-      <aside className="sidebar">
-        <div className="brand">
-          <span className="brand-mark">RH</span>
-          Legajo dinámico
-        </div>
-        <div className="nav-tabs">
-          <button className="nav-tab" aria-current={vista === "legajos"} onClick={() => setVista("legajos")}>
-            Legajos
-          </button>
-          <button className="nav-tab" aria-current={vista === "dashboard"} onClick={() => setVista("dashboard")}>
-            Dashboard RRHH
-          </button>
-          <button className="nav-tab" aria-current={vista === "comparativos"} onClick={() => setVista("comparativos")}>
-            Comparativos
-          </button>
-          <button className="nav-tab" aria-current={vista === "importar"} onClick={() => setVista("importar")}>
-            Importar
-          </button>
-          <button className="nav-tab" aria-current={vista === "competencias"} onClick={() => setVista("competencias")}>
-            Competencias
-          </button>
-          <button className="nav-tab" aria-current={vista === "alertas"} onClick={() => setVista("alertas")}>
-            Alertas
-          </button>
-          <button className="nav-tab" aria-current={vista === "bajas"} onClick={() => setVista("bajas")}>
-            Bajas
-          </button>
-          {usuario.rol === "ADMIN" && (
-            <button className="nav-tab" aria-current={vista === "usuarios"} onClick={() => setVista("usuarios")}>
-              Usuarios
-            </button>
-          )}
-        </div>
-        <div className="account-bar">
-          <span>👤 {usuario.nombre}</span>
-          <button className="link-button" onClick={cerrarSesion}>Cerrar sesión</button>
-        </div>
-        <input
-          className="employee-search"
-          placeholder="Buscar por nombre o legajo…"
-          value={busqueda}
-          onChange={(e) => setBusqueda(e.target.value)}
-        />
-        <FiltrosPanel empleados={empleados} filtros={filtros} setFiltros={setFiltros} />
-        <p className="muted" style={{ fontSize: "0.76rem", margin: "-8px 2px 0" }}>
-          {filtrados.length} de {empleados.length} empleados
-        </p>
-        <ul className="employee-list">
-          {filtrados.map((e) => (
-            <li key={e.id}>
-              <button
-                className="employee-list-item"
-                aria-current={e.id === seleccionadoId}
-                onClick={() => setSeleccionadoId(e.id)}
-              >
-                <span className={`dot ${e.periodoPrueba.etiqueta.color}`} />
-                <span>
-                  <div className="name">{e.nombre} {e.apellido}</div>
-                  <div className="role">{e.puesto}</div>
-                </span>
-              </button>
-            </li>
-          ))}
-        </ul>
-      </aside>
+  function seleccionar(id) {
+    setSeleccionadoId(id);
+  }
 
-      <main className="main">
-        {vista === "dashboard" && <DashboardRRHH />}
-        {vista === "comparativos" && <ComparativosDashboard />}
-        {vista === "usuarios" && usuario.rol === "ADMIN" && <UsuariosPanel />}
-        {vista === "importar" && <ImportarPanel onImportado={cargarListado} />}
-        {vista === "competencias" && <CompetenciasDictionary />}
-        {vista === "alertas" && <AlertasPanel />}
-        {vista === "bajas" && <BajasPanel usuario={usuario} />}
+  const activosCount = empleados.filter((e) => e.estado === "ACTIVO").length;
+
+  return (
+    <div className="app-frame">
+      <TopNav vista={vista} setVista={setVista} usuario={usuario} cerrarSesion={cerrarSesion} />
+
+      <div className={vista === "legajos" ? "app-body con-sidebar" : "app-body"}>
         {vista === "legajos" && (
-          <>
-            {errorCarga && (
-              <div className="empty-state">
-                No se pudo conectar con la API ({errorCarga}). Verificá que el backend esté corriendo en
-                <code> http://localhost:4000</code> y que la base de datos esté inicializada.
+          <aside className="sidebar">
+            <input
+              className="employee-search"
+              placeholder="Buscar por nombre o legajo…"
+              value={busqueda}
+              onChange={(e) => setBusqueda(e.target.value)}
+            />
+            <FiltrosPanel empleados={empleados} filtros={filtros} setFiltros={setFiltros} />
+
+            {!hayBusquedaActiva && (
+              <div className="sidebar-prompt">
+                <p className="muted" style={{ fontSize: "0.85rem", margin: 0 }}>
+                  Buscá un nombre o legajo, o usá los filtros, para ver empleados.
+                </p>
+                <p className="muted" style={{ fontSize: "0.78rem", marginTop: 10 }}>
+                  {activosCount} empleado{activosCount !== 1 ? "s" : ""} activo{activosCount !== 1 ? "s" : ""} en la nómina.
+                </p>
               </div>
             )}
-            {!errorCarga && cargando && <div className="loading-state">Cargando legajos…</div>}
-            {!errorCarga && !cargando && detalle && (
-              <LegajoEmpleado
-                empleado={detalle}
-                usuario={usuario}
-                onDecisionRegistrada={() => { cargarListado(); api.getEmployee(seleccionadoId).then(setDetalle); }}
-                onEliminado={() => { setSeleccionadoId(null); setDetalle(null); cargarListado(); }}
-              />
+
+            {hayBusquedaActiva && (
+              <>
+                <p className="muted" style={{ fontSize: "0.76rem", margin: "-2px 2px 4px" }}>
+                  {filtrados.length} de {empleados.length} empleados
+                </p>
+                <ul className="employee-list">
+                  {filtrados.map((e) => (
+                    <li key={e.id}>
+                      <button
+                        className="employee-list-item"
+                        aria-current={e.id === seleccionadoId}
+                        onClick={() => seleccionar(e.id)}
+                      >
+                        <span className={`dot ${e.periodoPrueba.etiqueta.color}`} />
+                        <span>
+                          <div className="name">{e.nombre} {e.apellido}</div>
+                          <div className="role">{e.puesto}</div>
+                        </span>
+                      </button>
+                    </li>
+                  ))}
+                  {filtrados.length === 0 && (
+                    <p className="muted" style={{ fontSize: "0.85rem" }}>Sin resultados.</p>
+                  )}
+                </ul>
+              </>
             )}
-            {!errorCarga && !cargando && !detalle && (
-              <div className="empty-state">Seleccioná un empleado para ver su legajo.</div>
-            )}
-          </>
+          </aside>
         )}
-      </main>
+
+        <main className="main">
+          {vista === "dashboard" && <DashboardRRHH />}
+          {vista === "comparativos" && <ComparativosDashboard />}
+          {vista === "usuarios" && usuario.rol === "ADMIN" && <UsuariosPanel />}
+          {vista === "importar" && <ImportarPanel onImportado={cargarListado} />}
+          {vista === "competencias" && <CompetenciasDictionary />}
+          {vista === "alertas" && <AlertasPanel />}
+          {vista === "bajas" && <BajasPanel usuario={usuario} />}
+          {vista === "legajos" && (
+            <>
+              {errorCarga && (
+                <div className="empty-state">
+                  No se pudo conectar con la API ({errorCarga}). Verificá que el backend esté corriendo en
+                  <code> http://localhost:4000</code> y que la base de datos esté inicializada.
+                </div>
+              )}
+              {!errorCarga && cargando && <div className="loading-state">Cargando legajos…</div>}
+              {!errorCarga && !cargando && detalle && (
+                <LegajoEmpleado
+                  empleado={detalle}
+                  usuario={usuario}
+                  onDecisionRegistrada={() => { cargarListado(); api.getEmployee(seleccionadoId).then(setDetalle); }}
+                  onEliminado={() => { setSeleccionadoId(null); setDetalle(null); cargarListado(); }}
+                />
+              )}
+              {!errorCarga && !cargando && !detalle && (
+                <div className="empty-state">
+                  {hayBusquedaActiva ? "Elegí un empleado de la lista para ver su legajo." : "Buscá o filtrá para encontrar a alguien."}
+                </div>
+              )}
+            </>
+          )}
+        </main>
+      </div>
     </div>
   );
 }

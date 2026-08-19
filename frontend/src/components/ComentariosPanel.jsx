@@ -4,11 +4,11 @@ import { api } from "../api.js";
 import { formatFecha, toInputDate } from "../dateUtils.js";
 
 const TIPOS = [
-  { value: "POSITIVO", label: "Positivo", color: "teal", hex: "#0E8F79" },
-  { value: "FELICITACION", label: "Felicitación", color: "teal", hex: "#37B6A0" },
+  { value: "POSITIVO", label: "Positivo", color: "teal", hex: "#2E7D5B" },
+  { value: "FELICITACION", label: "Felicitación", color: "teal", hex: "#4FA37D" },
   { value: "OBSERVACION", label: "Observación", color: "amber", hex: "#C9820A" },
-  { value: "CORRECTIVO", label: "Correctivo", color: "amber", hex: "#E0A544" },
-  { value: "NEGATIVO", label: "Negativo", color: "red", hex: "#C1443B" },
+  { value: "CORRECTIVO", label: "Correctivo", color: "amber", hex: "#D6A34B" },
+  { value: "NEGATIVO", label: "Negativo", color: "red", hex: "#B3433A" },
 ];
 
 const FORM_VACIO = { fecha: new Date().toISOString().slice(0, 10), lider: "", tipo: "POSITIVO", comentario: "", lugarTrabajo: "" };

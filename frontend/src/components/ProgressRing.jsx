@@ -1,7 +1,7 @@
 const COLORS = {
   amber: "#C9820A",
-  teal: "#0E8F79",
-  red: "#C1443B",
+  teal: "#2E7D5B",
+  red: "#B3433A",
 };
 
 export default function ProgressRing({ progreso, colorKey, centerLabel, centerSub }) {
@@ -19,7 +19,7 @@ export default function ProgressRing({ progreso, colorKey, centerLabel, centerSu
         cy={size / 2}
         r={radius}
         fill="none"
-        stroke="#E9EDF2"
+        stroke="#E4E2D6"
         strokeWidth={stroke}
       />
       <circle
@@ -35,10 +35,10 @@ export default function ProgressRing({ progreso, colorKey, centerLabel, centerSu
         transform={`rotate(-90 ${size / 2} ${size / 2})`}
         style={{ transition: "stroke-dashoffset 0.4s ease" }}
       />
-      <text x="50%" y="46%" textAnchor="middle" fontSize="17" fill="#1B2432">
+      <text x="50%" y="46%" textAnchor="middle" fontSize="17" fill="#1E2B22">
         {centerLabel}
       </text>
-      <text x="50%" y="64%" textAnchor="middle" fontSize="9" fill="#5B6472">
+      <text x="50%" y="64%" textAnchor="middle" fontSize="9" fill="#5C6B5F">
         {centerSub}
       </text>
     </svg>

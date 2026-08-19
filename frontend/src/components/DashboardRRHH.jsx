@@ -5,10 +5,10 @@ import {
 } from "recharts";
 import { api } from "../api.js";
 
-const COLOR_PRIMARY = "#2B4C6F";
-const COLOR_TEAL = "#0E8F79";
+const COLOR_PRIMARY = "#1F4D3A";
+const COLOR_TEAL = "#2E7D5B";
 const COLOR_AMBER = "#C9820A";
-const COLOR_RED = "#C1443B";
+const COLOR_RED = "#B3433A";
 
 function KpiCard({ label, value, sub, children }) {
   return (
@@ -82,7 +82,7 @@ export default function DashboardRRHH() {
           ) : (
             <ResponsiveContainer width="100%" height={220}>
               <BarChart data={data.sectoresMejorDesempeno} layout="vertical" margin={{ left: 10 }}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#E9EDF2" horizontal={false} />
+                <CartesianGrid strokeDasharray="3 3" stroke="#E4E2D6" horizontal={false} />
                 <XAxis type="number" domain={[0, 10]} fontSize={12} />
                 <YAxis type="category" dataKey="sector" width={110} fontSize={12} />
                 <Tooltip />
@@ -99,7 +99,7 @@ export default function DashboardRRHH() {
           ) : (
             <ResponsiveContainer width="100%" height={220}>
               <BarChart data={data.puestosMenorDesempeno} layout="vertical" margin={{ left: 10 }}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#E9EDF2" horizontal={false} />
+                <CartesianGrid strokeDasharray="3 3" stroke="#E4E2D6" horizontal={false} />
                 <XAxis type="number" domain={[0, 10]} fontSize={12} />
                 <YAxis type="category" dataKey="puesto" width={110} fontSize={12} />
                 <Tooltip />
@@ -118,7 +118,7 @@ export default function DashboardRRHH() {
           ) : (
             <ResponsiveContainer width="100%" height={200}>
               <LineChart data={data.evolucionMensual}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#E9EDF2" />
+                <CartesianGrid strokeDasharray="3 3" stroke="#E4E2D6" />
                 <XAxis dataKey="mes" fontSize={12} />
                 <YAxis domain={[0, 10]} fontSize={12} />
                 <Tooltip />
@@ -132,13 +132,13 @@ export default function DashboardRRHH() {
           <h2>Distribución de calificaciones</h2>
           <ResponsiveContainer width="100%" height={200}>
             <BarChart data={data.distribucionCalificaciones}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#E9EDF2" />
+              <CartesianGrid strokeDasharray="3 3" stroke="#E4E2D6" />
               <XAxis dataKey="rango" fontSize={12} />
               <YAxis allowDecimals={false} fontSize={12} />
               <Tooltip />
               <Bar dataKey="cantidad" radius={[4, 4, 0, 0]}>
                 {data.distribucionCalificaciones.map((entry, i) => (
-                  <Cell key={i} fill={["#C1443B", "#C9820A", "#2B4C6F", "#0E8F79"][i]} />
+                  <Cell key={i} fill={["#B3433A", "#C9820A", "#1F4D3A", "#2E7D5B"][i]} />
                 ))}
               </Bar>
             </BarChart>
