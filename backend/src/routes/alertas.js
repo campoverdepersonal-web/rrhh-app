@@ -18,9 +18,60 @@ const UMBRAL_SOBRESALIENTE = 9;        // puntaje de la última evaluación
 const UMBRAL_PROMOCION_PROMEDIO = 8.5;
 const DIAS_ANTIGUEDAD_PROMOCION = 365;
 
+// ---------------------------------------------------------------------------
+// Todo lo que antes eran N consultas (una por empleado) ahora son 6
+// consultas en total, sin importar cuántos empleados haya. Se resuelven en
+// paralelo con Promise.all y después se combinan en memoria.
+// ---------------------------------------------------------------------------
 alertasRouter.get("/", async (req, res) => {
   try {
-    const empleados = await pool.query(`SELECT * FROM employees WHERE estado = 'ACTIVO'`);
+    const [
+      empleadosResult,
+      ultimasEvalsResult,
+      sancionesRecientesResult,
+      cursosSinCompletarResult,
+      resumenEvalsResult,
+      sancionesTotalesResult,
+    ] = await Promise.all([
+      pool.query(`SELECT * FROM employees WHERE estado = 'ACTIVO'`),
+      pool.query(`
+        SELECT employee_id, fecha, puntaje_total FROM (
+          SELECT employee_id, fecha, puntaje_total,
+                 ROW_NUMBER() OVER (PARTITION BY employee_id ORDER BY fecha DESC) AS rn
+          FROM evaluaciones_desempeno WHERE puntaje_total IS NOT NULL
+        ) t WHERE rn <= 2 ORDER BY employee_id, fecha DESC
+      `),
+      pool.query(
+        `SELECT employee_id, count(*)::int AS total FROM sanciones
+         WHERE fecha >= CURRENT_DATE - ($1 || ' days')::interval
+         GROUP BY employee_id`,
+        [DIAS_SANCIONES_RECIENTES]
+      ),
+      pool.query(
+        `SELECT employee_id, curso, estado, created_at FROM cursos_capacitaciones
+         WHERE estado IN ('PENDIENTE', 'EN_CURSO', 'NO_COMPLETADO')`
+      ),
+      pool.query(`
+        SELECT employee_id, avg(puntaje_total)::numeric(4,2) AS promedio, count(*)::int AS cantidad
+        FROM evaluaciones_desempeno WHERE puntaje_total IS NOT NULL GROUP BY employee_id
+      `),
+      pool.query(`SELECT employee_id, count(*)::int AS total FROM sanciones GROUP BY employee_id`),
+    ]);
+
+    // --- Agrupar resultados por employee_id para acceso O(1) ---
+    const evalsPorEmpleado = new Map();
+    for (const row of ultimasEvalsResult.rows) {
+      if (!evalsPorEmpleado.has(row.employee_id)) evalsPorEmpleado.set(row.employee_id, []);
+      evalsPorEmpleado.get(row.employee_id).push(row);
+    }
+    const sancionesRecientesPorEmpleado = new Map(sancionesRecientesResult.rows.map((r) => [r.employee_id, r.total]));
+    const sancionesTotalesPorEmpleado = new Map(sancionesTotalesResult.rows.map((r) => [r.employee_id, r.total]));
+    const resumenEvalsPorEmpleado = new Map(resumenEvalsResult.rows.map((r) => [r.employee_id, r]));
+    const cursosPorEmpleado = new Map();
+    for (const row of cursosSinCompletarResult.rows) {
+      if (!cursosPorEmpleado.has(row.employee_id)) cursosPorEmpleado.set(row.employee_id, []);
+      cursosPorEmpleado.get(row.employee_id).push(row);
+    }
 
     const sinEvaluacionReciente = [];
     const sancionesAcumuladas = [];
@@ -29,18 +80,10 @@ alertasRouter.get("/", async (req, res) => {
     const resultadosSobresalientes = [];
     const candidatosPromocion = [];
 
-    for (const emp of empleados.rows) {
+    for (const emp of empleadosResult.rows) {
       const nombreCompleto = `${emp.nombre} ${emp.apellido}`;
-
-      // --- Evaluaciones (últimas 2, para tendencia) ---
-      const evals = await pool.query(
-        `SELECT fecha, puntaje_total FROM evaluaciones_desempeno
-         WHERE employee_id = $1 AND puntaje_total IS NOT NULL
-         ORDER BY fecha DESC LIMIT 2`,
-        [emp.id]
-      );
-
-      const ultimaEval = evals.rows[0];
+      const evals = evalsPorEmpleado.get(emp.id) || [];
+      const ultimaEval = evals[0];
       const diasSinEval = ultimaEval
         ? Math.floor((Date.now() - new Date(ultimaEval.fecha)) / 86400000)
         : null;
@@ -61,12 +104,12 @@ alertasRouter.get("/", async (req, res) => {
         });
       }
 
-      if (evals.rows.length === 2) {
-        const caida = Number(evals.rows[1].puntaje_total) - Number(evals.rows[0].puntaje_total);
+      if (evals.length === 2) {
+        const caida = Number(evals[1].puntaje_total) - Number(evals[0].puntaje_total);
         if (caida >= CAIDA_DESEMPENO_PUNTOS) {
           bajaDesempeno.push({
             id: emp.id, nombre: nombreCompleto, puesto: emp.puesto,
-            detalle: `Bajó de ${evals.rows[1].puntaje_total} a ${evals.rows[0].puntaje_total} puntos`,
+            detalle: `Bajó de ${evals[1].puntaje_total} a ${evals[0].puntaje_total} puntos`,
           });
         }
       }
@@ -78,28 +121,18 @@ alertasRouter.get("/", async (req, res) => {
         });
       }
 
-      // --- Sanciones recientes ---
-      const sanciones = await pool.query(
-        `SELECT count(*)::int AS total FROM sanciones
-         WHERE employee_id = $1 AND fecha >= CURRENT_DATE - ($2 || ' days')::interval`,
-        [emp.id, DIAS_SANCIONES_RECIENTES]
-      );
-      if (sanciones.rows[0].total >= UMBRAL_SANCIONES_ACUMULADAS) {
+      const totalSancionesRecientes = sancionesRecientesPorEmpleado.get(emp.id) || 0;
+      if (totalSancionesRecientes >= UMBRAL_SANCIONES_ACUMULADAS) {
         sancionesAcumuladas.push({
           id: emp.id, nombre: nombreCompleto, puesto: emp.puesto,
-          detalle: `${sanciones.rows[0].total} sanciones en los últimos ${DIAS_SANCIONES_RECIENTES} días`,
+          detalle: `${totalSancionesRecientes} sanciones en los últimos ${DIAS_SANCIONES_RECIENTES} días`,
           _enPeriodoPrueba: enPeriodoPrueba,
-          _totalSanciones: sanciones.rows[0].total,
+          _totalSanciones: totalSancionesRecientes,
         });
       }
 
-      // --- Cursos sin completar ---
-      const cursosSinCompletar = await pool.query(
-        `SELECT curso, estado, fecha, created_at FROM cursos_capacitaciones
-         WHERE employee_id = $1 AND estado IN ('PENDIENTE', 'EN_CURSO', 'NO_COMPLETADO')`,
-        [emp.id]
-      );
-      const cursosVencidos = cursosSinCompletar.rows.filter((c) => {
+      const cursosSinCompletar = cursosPorEmpleado.get(emp.id) || [];
+      const cursosVencidos = cursosSinCompletar.filter((c) => {
         if (c.estado === "NO_COMPLETADO") return true;
         const diasDesdeCreado = Math.floor((Date.now() - new Date(c.created_at)) / 86400000);
         return diasDesdeCreado >= DIAS_CURSO_SIN_COMPLETAR;
@@ -111,19 +144,14 @@ alertasRouter.get("/", async (req, res) => {
         });
       }
 
-      // --- Candidato a promoción (heurística simple, ajustable) ---
-      const todasEvals = await pool.query(
-        `SELECT avg(puntaje_total)::numeric(4,2) AS promedio, count(*)::int AS cantidad
-         FROM evaluaciones_desempeno WHERE employee_id = $1 AND puntaje_total IS NOT NULL`,
-        [emp.id]
-      );
-      const todasSanciones = await pool.query(`SELECT count(*)::int AS total FROM sanciones WHERE employee_id = $1`, [emp.id]);
+      const resumenEval = resumenEvalsPorEmpleado.get(emp.id);
+      const promedio = resumenEval?.promedio ?? null;
+      const totalSancionesHistoricas = sancionesTotalesPorEmpleado.get(emp.id) || 0;
       const antiguedadDias = Math.floor((Date.now() - new Date(emp.fecha_ingreso)) / 86400000);
-      const promedio = todasEvals.rows[0].promedio;
 
       if (
         promedio !== null && Number(promedio) >= UMBRAL_PROMOCION_PROMEDIO &&
-        todasSanciones.rows[0].total === 0 &&
+        totalSancionesHistoricas === 0 &&
         antiguedadDias >= DIAS_ANTIGUEDAD_PROMOCION
       ) {
         candidatosPromocion.push({

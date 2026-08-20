@@ -158,7 +158,7 @@ export default function LegajoEmpleado({ empleado, onDecisionRegistrada, usuario
           <h1>{empleado.nombre} {empleado.apellido}</h1>
           <p className="legajo-sub">{empleado.puesto} · {empleado.sector} · {empleado.lugarTrabajo}</p>
         </div>
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 6 }}>
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 8 }}>
           {!editandoLegajo ? (
             <span className="legajo-code">
               Legajo {empleado.legajo} · CUIL {empleado.cuil}
@@ -188,28 +188,33 @@ export default function LegajoEmpleado({ empleado, onDecisionRegistrada, usuario
             </span>
           )}
           {errorLegajo && <span style={{ color: "var(--color-red)", fontSize: "0.76rem" }}>{errorLegajo}</span>}
-          {empleado.estado === "BAJA" && (
-            <span className="status-pill red" style={{ fontSize: "0.72rem" }}>
-              🔴 Baja el {formatFecha(empleado.fechaBaja)}{empleado.motivoBaja ? ` · ${empleado.motivoBaja}` : ""}
-            </span>
-          )}
-          {usuario?.rol === "ADMIN" && empleado.estado !== "BAJA" && !formBajaVisible && (
-            <button className="link-button" style={{ color: "var(--color-red)" }} onClick={() => setFormBajaVisible(true)}>
-              Dar de baja
-            </button>
-          )}
-          {usuario?.rol === "ADMIN" && empleado.estado === "BAJA" && (
-            <button className="link-button" onClick={handleReactivar} disabled={enviandoBaja}>
-              {enviandoBaja ? "Reactivando…" : "Reactivar"}
-            </button>
-          )}
+
           {usuario?.rol === "ADMIN" && (
-            <button className="link-button" style={{ color: "var(--color-red)" }} onClick={handleEliminar} disabled={eliminando}>
-              {eliminando ? "Eliminando…" : "Eliminar empleado"}
-            </button>
+            <div style={{ display: "flex", gap: 14, alignItems: "center" }}>
+              {empleado.estado !== "BAJA" && !formBajaVisible && (
+                <button className="link-button" style={{ color: "var(--color-red)" }} onClick={() => setFormBajaVisible(true)}>
+                  Dar de baja
+                </button>
+              )}
+              {empleado.estado === "BAJA" && (
+                <button className="link-button" onClick={handleReactivar} disabled={enviandoBaja}>
+                  {enviandoBaja ? "Reactivando…" : "Reactivar"}
+                </button>
+              )}
+              <button className="link-button" style={{ color: "var(--color-red)" }} onClick={handleEliminar} disabled={eliminando}>
+                {eliminando ? "Eliminando…" : "Eliminar empleado"}
+              </button>
+            </div>
           )}
         </div>
       </div>
+
+      {empleado.estado === "BAJA" && (
+        <div className="alert-banner" style={{ background: "var(--color-red-soft)", borderColor: "#E3BDB8", color: "#7A2E27" }}>
+          🔴 <strong>Baja</strong> registrada el {formatFecha(empleado.fechaBaja)}
+          {empleado.motivoBaja ? ` — ${empleado.motivoBaja}` : ""}
+        </div>
+      )}
 
       {formBajaVisible && (
         <form onSubmit={handleRegistrarBaja} className="panel" style={{ marginBottom: 20 }}>
