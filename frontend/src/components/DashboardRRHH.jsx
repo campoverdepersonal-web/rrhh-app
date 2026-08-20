@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import {
   ResponsiveContainer, BarChart, Bar, LineChart, Line,
-  XAxis, YAxis, CartesianGrid, Tooltip, Cell,
+  XAxis, YAxis, CartesianGrid, Tooltip, Cell, Legend,
 } from "recharts";
 import { api } from "../api.js";
 
@@ -64,6 +64,11 @@ export default function DashboardRRHH() {
             </div>
           )}
         </KpiCard>
+        <KpiCard
+          label={`🔄 Rotación ${data.rotacion.anio}`}
+          value={`${data.rotacion.porcentaje}%`}
+          sub={`${data.rotacion.bajasEnAnio} baja(s) en el año`}
+        />
         <KpiCard label="📋 Evaluaciones realizadas" value={data.evaluaciones.realizadas} />
         <KpiCard label="⭐ Promedio general" value={data.evaluaciones.promedioGeneral ?? "—"} />
         <KpiCard
@@ -72,6 +77,30 @@ export default function DashboardRRHH() {
           sub={`${data.capacitaciones.completados} completadas`}
         />
         <KpiCard label="🚩 Sanciones registradas" value={data.sanciones} />
+      </div>
+
+      <div className="panel" style={{ marginTop: 20 }}>
+        <h2>Bajas por sector y motivo {data.rotacion.anio}</h2>
+        {data.bajasPorSectorYMotivo.length === 0 ? (
+          <p className="muted" style={{ fontSize: "0.85rem" }}>Todavía no hay bajas registradas.</p>
+        ) : (
+          <ResponsiveContainer width="100%" height={Math.max(180, data.bajasPorSectorYMotivo.length * 42)}>
+            <BarChart data={data.bajasPorSectorYMotivo} layout="vertical" margin={{ left: 10 }}>
+              <CartesianGrid strokeDasharray="3 3" stroke="#E4E2D6" horizontal={false} />
+              <XAxis type="number" allowDecimals={false} fontSize={12} />
+              <YAxis type="category" dataKey="sector" width={130} fontSize={12} />
+              <Tooltip />
+              <Legend />
+              <Bar dataKey="renuncia" name="Renuncia" stackId="motivo" fill={COLOR_AMBER} />
+              <Bar dataKey="finPeriodoPrueba" name="Fin de período de prueba" stackId="motivo" fill={COLOR_PRIMARY} />
+              <Bar dataKey="otros" name="Otros (despidos, acuerdos, etc.)" stackId="motivo" fill={COLOR_RED} radius={[0, 4, 4, 0]} />
+            </BarChart>
+          </ResponsiveContainer>
+        )}
+        <p className="muted" style={{ fontSize: "0.78rem", marginTop: 10 }}>
+          "Otros" agrupa despidos sin causa, acuerdos laborales, y cualquier motivo de baja
+          que no mencione explícitamente "renuncia" o "período de prueba".
+        </p>
       </div>
 
       <div className="grid-2" style={{ marginTop: 24 }}>

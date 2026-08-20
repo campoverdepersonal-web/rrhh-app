@@ -127,11 +127,56 @@ dashboardRouter.get("/rrhh", async (req, res) => {
 
     const sancionesStats = await pool.query(`SELECT count(*)::int AS total FROM sanciones`);
 
+    // --- Rotación % (año actual) ---
+    // Fórmula estándar: bajas del período / dotación promedio del período.
+    // Dotación promedio = (dotación al inicio del año + dotación actual) / 2.
+    const dotacionInicioAnio = await pool.query(`
+      SELECT count(*)::int AS total FROM employees
+      WHERE fecha_ingreso <= date_trunc('year', CURRENT_DATE)
+        AND (fecha_baja IS NULL OR fecha_baja > date_trunc('year', CURRENT_DATE))
+    `);
+    const dotacionActual = await pool.query(`SELECT count(*)::int AS total FROM employees WHERE estado != 'BAJA'`);
+    const bajasEnAnio = await pool.query(`
+      SELECT count(*)::int AS total FROM employees
+      WHERE estado = 'BAJA' AND fecha_baja >= date_trunc('year', CURRENT_DATE) AND fecha_baja <= CURRENT_DATE
+    `);
+    const dInicio = dotacionInicioAnio.rows[0].total;
+    const dActual = dotacionActual.rows[0].total;
+    const dPromedio = (dInicio + dActual) / 2;
+    const rotacion = {
+      anio: new Date().getFullYear(),
+      bajasEnAnio: bajasEnAnio.rows[0].total,
+      dotacionInicioAnio: dInicio,
+      dotacionActual: dActual,
+      porcentaje: dPromedio > 0 ? Number(((bajasEnAnio.rows[0].total / dPromedio) * 100).toFixed(1)) : 0,
+    };
+
+    // --- Bajas por sector y motivo ---
+    // El motivo es texto libre (lo carga RRHH al dar de baja); se clasifica
+    // por palabras clave en 3 categorías. Los casos de "no superó el período
+    // de prueba" solo aparecen acá si se cargaron manualmente como Baja.
+    const bajasPorSectorYMotivoResult = await pool.query(`
+      SELECT sector,
+        count(*) FILTER (WHERE motivo_baja ILIKE '%renuncia%')::int AS renuncia,
+        count(*) FILTER (WHERE motivo_baja ILIKE '%per%odo de prueba%')::int AS "finPeriodoPrueba",
+        count(*) FILTER (
+          WHERE motivo_baja IS NULL
+             OR (motivo_baja NOT ILIKE '%renuncia%' AND motivo_baja NOT ILIKE '%per%odo de prueba%')
+        )::int AS otros,
+        count(*)::int AS total
+      FROM employees
+      WHERE estado = 'BAJA'
+      GROUP BY sector
+      ORDER BY total DESC
+    `);
+
     res.json({
       empleadosActivos: activos.length,
       empleadosInactivos: inactivos.length,
       empleadosEnPeriodoPrueba: enPeriodoPrueba.length,
       proximosAVencer,
+      rotacion,
+      bajasPorSectorYMotivo: bajasPorSectorYMotivoResult.rows,
       evaluaciones: {
         realizadas: evalStats.rows[0].total,
         promedioGeneral: evalStats.rows[0].promedio,
