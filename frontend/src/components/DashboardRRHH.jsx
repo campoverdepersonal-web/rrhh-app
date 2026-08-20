@@ -10,6 +10,21 @@ const COLOR_TEAL = "#2E7D5B";
 const COLOR_AMBER = "#C9820A";
 const COLOR_RED = "#B3433A";
 
+function agruparPorLugar(filas) {
+  const mapa = new Map();
+  for (const f of filas) {
+    if (!mapa.has(f.lugarTrabajo)) {
+      mapa.set(f.lugarTrabajo, { lugarTrabajo: f.lugarTrabajo, renuncia: 0, finPeriodoPrueba: 0, otros: 0, total: 0 });
+    }
+    const acc = mapa.get(f.lugarTrabajo);
+    acc.renuncia += f.renuncia;
+    acc.finPeriodoPrueba += f.finPeriodoPrueba;
+    acc.otros += f.otros;
+    acc.total += f.total;
+  }
+  return [...mapa.values()].sort((a, b) => b.total - a.total);
+}
+
 function KpiCard({ label, value, sub, children }) {
   return (
     <div className="kpi-card">
@@ -25,6 +40,7 @@ export default function DashboardRRHH() {
   const [data, setData] = useState(null);
   const [cargando, setCargando] = useState(true);
   const [error, setError] = useState(null);
+  const [lugarSeleccionado, setLugarSeleccionado] = useState(null);
 
   useEffect(() => {
     api.getDashboardRRHH().then(setData).catch((e) => setError(e.message)).finally(() => setCargando(false));
@@ -80,27 +96,54 @@ export default function DashboardRRHH() {
       </div>
 
       <div className="panel" style={{ marginTop: 20 }}>
-        <h2>Bajas por sector y motivo {data.rotacion.anio}</h2>
-        {data.bajasPorSectorYMotivo.length === 0 ? (
-          <p className="muted" style={{ fontSize: "0.85rem" }}>Todavía no hay bajas registradas.</p>
-        ) : (
-          <ResponsiveContainer width="100%" height={Math.max(180, data.bajasPorSectorYMotivo.length * 42)}>
-            <BarChart data={data.bajasPorSectorYMotivo} layout="vertical" margin={{ left: 10 }}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#E4E2D6" horizontal={false} />
-              <XAxis type="number" allowDecimals={false} fontSize={12} />
-              <YAxis type="category" dataKey="sector" width={130} fontSize={12} />
-              <Tooltip />
-              <Legend />
-              <Bar dataKey="renuncia" name="Renuncia" stackId="motivo" fill={COLOR_AMBER} />
-              <Bar dataKey="finPeriodoPrueba" name="Fin de período de prueba" stackId="motivo" fill={COLOR_PRIMARY} />
-              <Bar dataKey="otros" name="Otros (despidos, acuerdos, etc.)" stackId="motivo" fill={COLOR_RED} radius={[0, 4, 4, 0]} />
-            </BarChart>
-          </ResponsiveContainer>
-        )}
-        <p className="muted" style={{ fontSize: "0.78rem", marginTop: 10 }}>
-          "Otros" agrupa despidos sin causa, acuerdos laborales, y cualquier motivo de baja
-          que no mencione explícitamente "renuncia" o "período de prueba".
-        </p>
+        <h2>
+          {lugarSeleccionado
+            ? `${lugarSeleccionado} · por sector`
+            : `Bajas por lugar de trabajo y motivo ${data.rotacion.anio}`}
+          {lugarSeleccionado && (
+            <button className="link-button" style={{ marginLeft: 10, fontSize: "0.78rem" }} onClick={() => setLugarSeleccionado(null)}>
+              ← volver a todos los lugares
+            </button>
+          )}
+        </h2>
+        {(() => {
+          const filas = lugarSeleccionado
+            ? data.bajasPorSectorYMotivo.filter((f) => f.lugarTrabajo === lugarSeleccionado)
+            : agruparPorLugar(data.bajasPorSectorYMotivo);
+          const claveEje = lugarSeleccionado ? "sector" : "lugarTrabajo";
+
+          if (filas.length === 0) {
+            return <p className="muted" style={{ fontSize: "0.85rem" }}>Todavía no hay bajas registradas.</p>;
+          }
+          return (
+            <>
+              <ResponsiveContainer width="100%" height={Math.max(180, filas.length * 42)}>
+                <BarChart
+                  data={filas}
+                  layout="vertical"
+                  margin={{ left: 10 }}
+                  onClick={(e) => {
+                    if (!lugarSeleccionado && e?.activeLabel) setLugarSeleccionado(e.activeLabel);
+                  }}
+                >
+                  <CartesianGrid strokeDasharray="3 3" stroke="#E4E2D6" horizontal={false} />
+                  <XAxis type="number" allowDecimals={false} fontSize={12} />
+                  <YAxis type="category" dataKey={claveEje} width={130} fontSize={12} />
+                  <Tooltip />
+                  <Legend />
+                  <Bar dataKey="renuncia" name="Renuncia" stackId="motivo" fill={COLOR_AMBER} style={{ cursor: lugarSeleccionado ? "default" : "pointer" }} />
+                  <Bar dataKey="finPeriodoPrueba" name="Fin de período de prueba" stackId="motivo" fill={COLOR_PRIMARY} style={{ cursor: lugarSeleccionado ? "default" : "pointer" }} />
+                  <Bar dataKey="otros" name="Otros (despidos, acuerdos, etc.)" stackId="motivo" fill={COLOR_RED} radius={[0, 4, 4, 0]} style={{ cursor: lugarSeleccionado ? "default" : "pointer" }} />
+                </BarChart>
+              </ResponsiveContainer>
+              {!lugarSeleccionado && (
+                <p className="muted" style={{ fontSize: "0.78rem", marginTop: 8 }}>
+                  Clic en una barra para ver el detalle por sector de ese lugar de trabajo.
+                </p>
+              )}
+            </>
+          );
+        })()}
       </div>
 
       <div className="grid-2" style={{ marginTop: 24 }}>

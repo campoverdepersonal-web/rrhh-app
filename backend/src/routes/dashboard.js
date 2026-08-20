@@ -156,7 +156,7 @@ dashboardRouter.get("/rrhh", async (req, res) => {
     // por palabras clave en 3 categorías. Los casos de "no superó el período
     // de prueba" solo aparecen acá si se cargaron manualmente como Baja.
     const bajasPorSectorYMotivoResult = await pool.query(`
-      SELECT sector,
+      SELECT lugar_trabajo AS "lugarTrabajo", sector,
         count(*) FILTER (WHERE motivo_baja ILIKE '%renuncia%')::int AS renuncia,
         count(*) FILTER (WHERE motivo_baja ILIKE '%per%odo de prueba%')::int AS "finPeriodoPrueba",
         count(*) FILTER (
@@ -166,7 +166,7 @@ dashboardRouter.get("/rrhh", async (req, res) => {
         count(*)::int AS total
       FROM employees
       WHERE estado = 'BAJA'
-      GROUP BY sector
+      GROUP BY lugar_trabajo, sector
       ORDER BY total DESC
     `);
 
