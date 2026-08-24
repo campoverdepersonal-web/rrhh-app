@@ -399,10 +399,11 @@ employeesRouter.get("/", async (req, res) => {
     );
 
     const empleados = rows.map((emp) => {
-      const periodoPrueba = calcularPeriodoPrueba(emp.fecha_ingreso, evalPorEmpleado[emp.id] || null);
+      const fechaReferencia = emp.estado === "BAJA" && emp.fecha_baja ? new Date(emp.fecha_baja) : new Date();
+      const periodoPrueba = calcularPeriodoPrueba(emp.fecha_ingreso, evalPorEmpleado[emp.id] || null, fechaReferencia);
       return {
         ...serializeEmployee(emp),
-        antiguedad: calcularAntiguedad(emp.fecha_ingreso).texto,
+        antiguedad: calcularAntiguedad(emp.fecha_ingreso, fechaReferencia).texto,
         periodoPrueba,
       };
     });
@@ -427,7 +428,10 @@ employeesRouter.get("/bajas", async (req, res) => {
     const { rows } = await pool.query(
       `SELECT * FROM employees WHERE estado = 'BAJA' ORDER BY fecha_baja DESC NULLS LAST`
     );
-    res.json(rows.map((r) => ({ ...serializeEmployee(r), antiguedad: calcularAntiguedad(r.fecha_ingreso).texto })));
+    res.json(rows.map((r) => ({
+      ...serializeEmployee(r),
+      antiguedad: calcularAntiguedad(r.fecha_ingreso, r.fecha_baja ? new Date(r.fecha_baja) : new Date()).texto,
+    })));
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Error al listar las bajas" });
@@ -455,11 +459,12 @@ employeesRouter.get("/:id", async (req, res) => {
     );
 
     const ultimaEvaluacion = evaluacionesPeriodoPrueba.rows[0] || null;
-    const periodoPrueba = calcularPeriodoPrueba(empleado.fecha_ingreso, ultimaEvaluacion);
+    const fechaReferencia = empleado.estado === "BAJA" && empleado.fecha_baja ? new Date(empleado.fecha_baja) : new Date();
+    const periodoPrueba = calcularPeriodoPrueba(empleado.fecha_ingreso, ultimaEvaluacion, fechaReferencia);
 
     res.json({
       ...serializeEmployee(empleado),
-      antiguedad: calcularAntiguedad(empleado.fecha_ingreso).texto,
+      antiguedad: calcularAntiguedad(empleado.fecha_ingreso, fechaReferencia).texto,
       periodoPrueba,
       historialPuestos: historialPuestos.rows.map(serializeHistorialPuesto),
       historialDecisionesPeriodoPrueba: evaluacionesPeriodoPrueba.rows.map(serializeEvaluacionPeriodoPrueba),
