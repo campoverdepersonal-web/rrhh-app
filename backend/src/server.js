@@ -14,6 +14,7 @@ import { competenciasRouter } from "./routes/competencias.js";
 import { importarEvaluacionesCompetenciasRouter } from "./routes/importarEvaluacionesCompetencias.js";
 import { uniformesRouter, catalogoRouter } from "./routes/uniformes.js";
 import { alertasRouter } from "./routes/alertas.js";
+import { historialRouter } from "./routes/historial.js";
 import { importarUniformesRouter } from "./routes/importarUniformes.js";
 import { requireAuth } from "./middleware/auth.js";
 
@@ -39,6 +40,7 @@ app.use("/api/dashboard", requireAuth, comparativosRouter);
 app.use("/api/competencias", requireAuth, competenciasRouter);
 app.use("/api/uniformes", requireAuth, catalogoRouter);
 app.use("/api/alertas", requireAuth, alertasRouter);
+app.use("/api/historial", requireAuth, historialRouter);
 app.use("/api/employees", requireAuth, importarEvaluacionesCompetenciasRouter);
 
 app.use((req, res) => res.status(404).json({ error: "No encontrado" }));

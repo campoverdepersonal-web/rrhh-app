@@ -33,6 +33,19 @@ dashboardRouter.get("/rrhh", async (req, res) => {
         legajo: e.legajo,
         diasRestantes: e.periodoPrueba.diasRestantes,
       }));
+    // Listado completo de quienes están en período de prueba, ordenado de
+    // menos a más días para la finalización (para el drill-down del KPI).
+    const enPeriodoPruebaDetalle = enPeriodoPrueba
+      .map((e) => ({
+        id: e.id,
+        nombre: `${e.nombre} ${e.apellido}`,
+        legajo: e.legajo,
+        puesto: e.puesto,
+        lugarTrabajo: e.lugar_trabajo,
+        diasRestantes: e.periodoPrueba.diasRestantes,
+        fechaFinPeriodoPrueba: e.periodoPrueba.fechaFinPeriodoPrueba,
+      }))
+      .sort((a, b) => a.diasRestantes - b.diasRestantes);
 
     // --- Evaluaciones de desempeño ---
     const evalStats = await pool.query(`
@@ -156,7 +169,7 @@ dashboardRouter.get("/rrhh", async (req, res) => {
     // por palabras clave en 3 categorías. Los casos de "no superó el período
     // de prueba" solo aparecen acá si se cargaron manualmente como Baja.
     const bajasPorSectorYMotivoResult = await pool.query(`
-      SELECT lugar_trabajo AS "lugarTrabajo", sector,
+      SELECT lugar_trabajo AS "lugarTrabajo", sector, puesto,
         count(*) FILTER (WHERE motivo_baja ILIKE '%renuncia%')::int AS renuncia,
         count(*) FILTER (WHERE motivo_baja ILIKE '%per%odo de prueba%')::int AS "finPeriodoPrueba",
         count(*) FILTER (
@@ -166,7 +179,7 @@ dashboardRouter.get("/rrhh", async (req, res) => {
         count(*)::int AS total
       FROM employees
       WHERE estado = 'BAJA'
-      GROUP BY lugar_trabajo, sector
+      GROUP BY lugar_trabajo, sector, puesto
       ORDER BY total DESC
     `);
 
@@ -174,6 +187,7 @@ dashboardRouter.get("/rrhh", async (req, res) => {
       empleadosActivos: activos.length,
       empleadosInactivos: inactivos.length,
       empleadosEnPeriodoPrueba: enPeriodoPrueba.length,
+      enPeriodoPruebaDetalle,
       proximosAVencer,
       rotacion,
       bajasPorSectorYMotivo: bajasPorSectorYMotivoResult.rows,

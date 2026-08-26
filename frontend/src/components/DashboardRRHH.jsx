@@ -10,13 +10,14 @@ const COLOR_TEAL = "#2E7D5B";
 const COLOR_AMBER = "#C9820A";
 const COLOR_RED = "#B3433A";
 
-function agruparPorLugar(filas) {
+function agruparPor(filas, campo) {
   const mapa = new Map();
   for (const f of filas) {
-    if (!mapa.has(f.lugarTrabajo)) {
-      mapa.set(f.lugarTrabajo, { lugarTrabajo: f.lugarTrabajo, renuncia: 0, finPeriodoPrueba: 0, otros: 0, total: 0 });
+    const clave = f[campo] || "(sin especificar)";
+    if (!mapa.has(clave)) {
+      mapa.set(clave, { [campo]: clave, renuncia: 0, finPeriodoPrueba: 0, otros: 0, total: 0 });
     }
-    const acc = mapa.get(f.lugarTrabajo);
+    const acc = mapa.get(clave);
     acc.renuncia += f.renuncia;
     acc.finPeriodoPrueba += f.finPeriodoPrueba;
     acc.otros += f.otros;
@@ -25,9 +26,9 @@ function agruparPorLugar(filas) {
   return [...mapa.values()].sort((a, b) => b.total - a.total);
 }
 
-function KpiCard({ label, value, sub, children }) {
+function KpiCard({ label, value, sub, children, onClick }) {
   return (
-    <div className="kpi-card">
+    <div className={`kpi-card${onClick ? " kpi-card-clickable" : ""}`} onClick={onClick} role={onClick ? "button" : undefined}>
       <div className="fact-label">{label}</div>
       <div className="kpi-value">{value}</div>
       {sub && <div className="kpi-sub">{sub}</div>}
@@ -41,6 +42,8 @@ export default function DashboardRRHH() {
   const [cargando, setCargando] = useState(true);
   const [error, setError] = useState(null);
   const [lugarSeleccionado, setLugarSeleccionado] = useState(null);
+  const [vistaBajas, setVistaBajas] = useState("lugar"); // "lugar" | "sector" | "puesto"
+  const [verPeriodoPrueba, setVerPeriodoPrueba] = useState(false);
 
   useEffect(() => {
     api.getDashboardRRHH().then(setData).catch((e) => setError(e.message)).finally(() => setCargando(false));
@@ -54,7 +57,7 @@ export default function DashboardRRHH() {
     <div>
       <div className="legajo-header">
         <div>
-          <h1>Dashboard general de RRHH</h1>
+          <h1>Dashboard general</h1>
           <p className="legajo-sub">Vista ejecutiva de toda la organización</p>
         </div>
       </div>
@@ -66,6 +69,7 @@ export default function DashboardRRHH() {
         <KpiCard
           label="⚠️ Vencimientos próximos (≤15 días)"
           value={data.proximosAVencer.length}
+          onClick={() => setVerPeriodoPrueba((v) => !v)}
         >
           {data.proximosAVencer.length > 0 && (
             <div className="hover-list-trigger">
@@ -79,6 +83,7 @@ export default function DashboardRRHH() {
               </div>
             </div>
           )}
+          <div className="kpi-sub" style={{ marginTop: 4 }}>Clic para ver a todos →</div>
         </KpiCard>
         <KpiCard
           label={`🔄 Rotación ${data.rotacion.anio}`}
@@ -95,22 +100,57 @@ export default function DashboardRRHH() {
         <KpiCard label="🚩 Sanciones registradas" value={data.sanciones} />
       </div>
 
+      {verPeriodoPrueba && (
+        <div className="panel" style={{ marginTop: 20 }}>
+          <h2>
+            Todos en período de prueba
+            <span className="muted" style={{ fontWeight: 400, fontSize: "0.8rem" }}> · ordenados de menos a más días para la finalización</span>
+            <button className="link-button" style={{ marginLeft: 10, fontSize: "0.78rem" }} onClick={() => setVerPeriodoPrueba(false)}>
+              Ocultar
+            </button>
+          </h2>
+          {data.enPeriodoPruebaDetalle.length === 0 ? (
+            <p className="muted" style={{ fontSize: "0.85rem" }}>No hay nadie en período de prueba ahora mismo.</p>
+          ) : (
+            data.enPeriodoPruebaDetalle.map((p) => (
+              <div className="history-row" key={p.id}>
+                <span>{p.nombre} <span className="muted">— {p.puesto} · {p.lugarTrabajo}</span></span>
+                <span className={`status-pill ${p.diasRestantes <= 15 ? "amber" : "teal"}`} style={{ fontSize: "0.78rem", padding: "3px 10px" }}>
+                  {p.diasRestantes} día{p.diasRestantes !== 1 ? "s" : ""} restantes
+                </span>
+              </div>
+            ))
+          )}
+        </div>
+      )}
+
       <div className="panel" style={{ marginTop: 20 }}>
         <h2>
           {lugarSeleccionado
             ? `${lugarSeleccionado} · por sector`
-            : `Bajas por lugar de trabajo y motivo ${data.rotacion.anio}`}
+            : `Bajas por ${vistaBajas === "lugar" ? "lugar de trabajo" : vistaBajas} y motivo ${data.rotacion.anio}`}
           {lugarSeleccionado && (
             <button className="link-button" style={{ marginLeft: 10, fontSize: "0.78rem" }} onClick={() => setLugarSeleccionado(null)}>
               ← volver a todos los lugares
             </button>
           )}
         </h2>
+
+        {!lugarSeleccionado && (
+          <div className="nav-tabs" style={{ maxWidth: 340, marginBottom: 14 }}>
+            <button className="nav-tab" aria-current={vistaBajas === "lugar"} onClick={() => { setVistaBajas("lugar"); setLugarSeleccionado(null); }}>Lugar de trabajo</button>
+            <button className="nav-tab" aria-current={vistaBajas === "sector"} onClick={() => { setVistaBajas("sector"); setLugarSeleccionado(null); }}>Sector</button>
+            <button className="nav-tab" aria-current={vistaBajas === "puesto"} onClick={() => { setVistaBajas("puesto"); setLugarSeleccionado(null); }}>Puesto</button>
+          </div>
+        )}
+
         {(() => {
+          const campoVista = { lugar: "lugarTrabajo", sector: "sector", puesto: "puesto" }[vistaBajas];
           const filas = lugarSeleccionado
             ? data.bajasPorSectorYMotivo.filter((f) => f.lugarTrabajo === lugarSeleccionado)
-            : agruparPorLugar(data.bajasPorSectorYMotivo);
-          const claveEje = lugarSeleccionado ? "sector" : "lugarTrabajo";
+            : agruparPor(data.bajasPorSectorYMotivo, campoVista);
+          const claveEje = lugarSeleccionado ? "sector" : campoVista;
+          const puedeDrillDown = vistaBajas === "lugar" && !lugarSeleccionado;
 
           if (filas.length === 0) {
             return <p className="muted" style={{ fontSize: "0.85rem" }}>Todavía no hay bajas registradas.</p>;
@@ -123,20 +163,20 @@ export default function DashboardRRHH() {
                   layout="vertical"
                   margin={{ left: 10 }}
                   onClick={(e) => {
-                    if (!lugarSeleccionado && e?.activeLabel) setLugarSeleccionado(e.activeLabel);
+                    if (puedeDrillDown && e?.activeLabel) setLugarSeleccionado(e.activeLabel);
                   }}
                 >
                   <CartesianGrid strokeDasharray="3 3" stroke="#E4E2D6" horizontal={false} />
                   <XAxis type="number" allowDecimals={false} fontSize={12} />
-                  <YAxis type="category" dataKey={claveEje} width={130} fontSize={12} />
+                  <YAxis type="category" dataKey={claveEje} width={150} fontSize={12} />
                   <Tooltip />
                   <Legend />
-                  <Bar dataKey="renuncia" name="Renuncia" stackId="motivo" fill={COLOR_AMBER} style={{ cursor: lugarSeleccionado ? "default" : "pointer" }} />
-                  <Bar dataKey="finPeriodoPrueba" name="Fin de período de prueba" stackId="motivo" fill={COLOR_PRIMARY} style={{ cursor: lugarSeleccionado ? "default" : "pointer" }} />
-                  <Bar dataKey="otros" name="Otros (despidos, acuerdos, etc.)" stackId="motivo" fill={COLOR_RED} radius={[0, 4, 4, 0]} style={{ cursor: lugarSeleccionado ? "default" : "pointer" }} />
+                  <Bar dataKey="renuncia" name="Renuncia" stackId="motivo" fill={COLOR_AMBER} style={{ cursor: puedeDrillDown ? "pointer" : "default" }} />
+                  <Bar dataKey="finPeriodoPrueba" name="Fin de período de prueba" stackId="motivo" fill={COLOR_PRIMARY} style={{ cursor: puedeDrillDown ? "pointer" : "default" }} />
+                  <Bar dataKey="otros" name="Otros (despidos, acuerdos, etc.)" stackId="motivo" fill={COLOR_RED} radius={[0, 4, 4, 0]} style={{ cursor: puedeDrillDown ? "pointer" : "default" }} />
                 </BarChart>
               </ResponsiveContainer>
-              {!lugarSeleccionado && (
+              {puedeDrillDown && (
                 <p className="muted" style={{ fontSize: "0.78rem", marginTop: 8 }}>
                   Clic en una barra para ver el detalle por sector de ese lugar de trabajo.
                 </p>

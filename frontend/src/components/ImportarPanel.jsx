@@ -1,6 +1,7 @@
 import { useState } from "react";
 import * as XLSX from "xlsx";
 import { api } from "../api.js";
+import HistorialTable from "./HistorialTable.jsx";
 
 function descargarPlantilla(nombreArchivo, hojaNombre, datos, anchos) {
   const hoja = XLSX.utils.json_to_sheet(datos);
@@ -68,6 +69,7 @@ const TIPOS = [
   },
   {
     id: "comentarios",
+    historialTipo: "comentarios",
     label: "Comentarios",
     titulo: "Importar comentarios de líderes",
     descripcion: "Cada fila agrega un comentario nuevo al historial del empleado (no reemplaza nada existente).",
@@ -79,6 +81,7 @@ const TIPOS = [
   },
   {
     id: "evaluaciones",
+    historialTipo: "evaluaciones",
     label: "Evaluaciones",
     titulo: "Importar evaluaciones de desempeño",
     descripcion: "Cada fila agrega una evaluación nueva al historial del empleado.",
@@ -90,6 +93,7 @@ const TIPOS = [
   },
   {
     id: "evaluaciones-competencias",
+    historialTipo: "evaluaciones-competencias",
     label: "Evaluaciones por competencia",
     titulo: "Importar evaluaciones por competencia",
     descripcion: "Para reportes con una fila por cada competencia evaluada (ej. exportados de una encuesta). Las filas que compartan Legajo + Fecha + Evaluador se agrupan como una sola evaluación con todas sus competencias.",
@@ -103,6 +107,7 @@ const TIPOS = [
   },
   {
     id: "sanciones",
+    historialTipo: "sanciones",
     label: "Sanciones",
     titulo: "Importar sanciones",
     descripcion: "Cada fila agrega una sanción nueva al historial del empleado.",
@@ -114,6 +119,7 @@ const TIPOS = [
   },
   {
     id: "cursos",
+    historialTipo: "cursos",
     label: "Cursos",
     titulo: "Importar cursos y capacitaciones",
     descripcion: "Cada fila agrega un curso nuevo al historial del empleado.",
@@ -137,6 +143,7 @@ const TIPOS = [
   },
   {
     id: "entregas-uniforme",
+    historialTipo: "entregas-uniforme",
     label: "Entregas de uniforme",
     titulo: "Importar historial de entregas de uniforme",
     descripcion: "Una fila por cada prenda entregada. Se agregan como entregas nuevas al historial.",
@@ -348,6 +355,8 @@ export default function ImportarPanel({ onImportado }) {
           )}
         </div>
       </div>
+
+      {tipo.historialTipo && <HistorialTable tipo={tipo.historialTipo} />}
     </div>
   );
 }

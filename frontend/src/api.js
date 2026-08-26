@@ -83,6 +83,9 @@ export const api = {
   actualizarLegajosMasivo: (file) => importarArchivo("/employees/importar-actualizar-legajo", file),
   importarBajasMasivo: (file) => importarArchivo("/employees/importar-bajas", file),
 
+  // --- Historial completo (para control, independiente del legajo) ---
+  getHistorial: (tipo) => request(`/historial/${tipo}`),
+
   // --- Uniformes ---
   getCatalogoUniformes: () => request("/uniformes/catalogo"),
   getTallesUniforme: (employeeId) => request(`/employees/${employeeId}/talles-uniforme`),
