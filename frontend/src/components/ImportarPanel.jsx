@@ -356,7 +356,7 @@ export default function ImportarPanel({ onImportado }) {
         </div>
       </div>
 
-      {tipo.historialTipo && <HistorialTable tipo={tipo.historialTipo} />}
+      {tipo.historialTipo && <HistorialTable key={tipo.historialTipo} tipo={tipo.historialTipo} />}
     </div>
   );
 }
