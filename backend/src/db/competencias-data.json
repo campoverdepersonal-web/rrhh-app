@@ -955,7 +955,7 @@
       "justificacionClasificacion": "Diferencia el desempeño según la complejidad, autonomía y foco propios de cada puesto; no aporta valor discriminante si se exige por igual a toda la organización."
     },
     {
-      "nombre": "Conocimiento de Producto (Perecederos)",
+      "nombre": "Conocimiento de Productos (Perecederos)",
       "tipo": "TECNICA",
       "definicion": "Conocimiento de las características, variedades, formas de conservación y usos de los productos frescos comercializados por la empresa (carnes, fiambres, frutas y verduras).",
       "importancia": "Permite brindar información precisa al cliente y tomar decisiones correctas de manipulación, exhibición y conservación del producto.",
@@ -6252,43 +6252,43 @@
     },
     {
       "puesto": "Reparto Verdulería",
-      "competencia": "Conocimiento de Producto (Perecederos)",
+      "competencia": "Conocimiento de productos perecederos",
       "tipoRequerimiento": "OBLIGATORIA",
       "nivelRequerido": 2
     },
     {
       "puesto": "Planificador Frescos",
-      "competencia": "Conocimiento de Producto (Perecederos)",
+      "competencia": "Conocimiento de productos perecederos",
       "tipoRequerimiento": "OBLIGATORIA",
       "nivelRequerido": 2
     },
     {
       "puesto": "Carnicero",
-      "competencia": "Conocimiento de Producto (Perecederos)",
+      "competencia": "Conocimiento de productos perecederos",
       "tipoRequerimiento": "OBLIGATORIA",
       "nivelRequerido": 3
     },
     {
       "puesto": "Verdulero",
-      "competencia": "Conocimiento de Producto (Perecederos)",
+      "competencia": "Conocimiento de productos perecederos",
       "tipoRequerimiento": "OBLIGATORIA",
       "nivelRequerido": 3
     },
     {
       "puesto": "Referente Granja y Fiambrería",
-      "competencia": "Conocimiento de Producto (Perecederos)",
+      "competencia": "Conocimiento de productos perecederos",
       "tipoRequerimiento": "OBLIGATORIA",
       "nivelRequerido": 4
     },
     {
       "puesto": "Vendedor Market",
-      "competencia": "Conocimiento de Producto (Perecederos)",
+      "competencia": "Conocimiento de productos perecederos",
       "tipoRequerimiento": "OBLIGATORIA",
       "nivelRequerido": 3
     },
     {
       "puesto": "Vendedor Granja",
-      "competencia": "Conocimiento de Producto (Perecederos)",
+      "competencia": "Conocimiento de productos perecederos",
       "tipoRequerimiento": "OBLIGATORIA",
       "nivelRequerido": 3
     },

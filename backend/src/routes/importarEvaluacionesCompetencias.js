@@ -147,10 +147,13 @@ importarEvaluacionesCompetenciasRouter.post("/importar-evaluaciones-competencias
         [grupo.employeeId, grupo.fecha, grupo.evaluador]
       );
 
-      const puntajePromedio = grupo.competencias.some((c) => c.puntaje !== null)
+      // Se calcula sobre el nivel interno (1-4), no sobre el "Puntaje" crudo
+      // del archivo — ese valor externo varía según la herramienta de origen
+      // y a veces ni "Muy bueno" llega a representar un 10/10 real.
+      const puntajePromedio = grupo.competencias.length > 0
         ? Number((
-            grupo.competencias.filter((c) => c.puntaje !== null).reduce((a, c) => a + c.puntaje, 0)
-            / grupo.competencias.filter((c) => c.puntaje !== null).length * 10
+            grupo.competencias.reduce((a, c) => a + c.nivelAlcanzado, 0)
+            / grupo.competencias.length / 4 * 10
           ).toFixed(2))
         : null;
 
