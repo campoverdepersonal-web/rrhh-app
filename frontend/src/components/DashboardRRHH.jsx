@@ -26,6 +26,23 @@ function agruparPor(filas, campo) {
   return [...mapa.values()].sort((a, b) => b.total - a.total);
 }
 
+const PALETA = ["#1F4D3A", "#B08D3F", "#C9820A", "#B3433A", "#2E7D5B", "#6B7F8C", "#8C6E4E", "#4A6B7C"];
+
+function pivotearPorMes(filas) {
+  const lugares = [...new Set(filas.map((f) => f.lugarTrabajo))].sort();
+  const meses = [...new Set(filas.map((f) => f.mes))].sort();
+  const porMes = meses.map((mes) => {
+    const fila = { mes };
+    for (const lugar of lugares) fila[lugar] = 0;
+    return fila;
+  });
+  const indicePorMes = Object.fromEntries(porMes.map((f, i) => [f.mes, i]));
+  for (const f of filas) {
+    porMes[indicePorMes[f.mes]][f.lugarTrabajo] = f.cantidad;
+  }
+  return { filas: porMes, lugares };
+}
+
 const MESES = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"];
 function formatMes(mesISO) {
   const [anio, mes] = mesISO.split("-");
@@ -134,14 +151,23 @@ export default function DashboardRRHH() {
           {data.sancionesPorMesYLugar.length === 0 ? (
             <p className="muted" style={{ fontSize: "0.85rem" }}>No hay sanciones registradas todavía.</p>
           ) : (
-            data.sancionesPorMesYLugar.map((s, i) => (
-              <div className="history-row" key={i}>
-                <span>{formatMes(s.mes)} <span className="muted">— {s.lugarTrabajo}</span></span>
-                <span className="status-pill red" style={{ fontSize: "0.78rem", padding: "3px 10px" }}>
-                  {s.cantidad} sanción{s.cantidad !== 1 ? "es" : ""}
-                </span>
-              </div>
-            ))
+            (() => {
+              const { filas, lugares } = pivotearPorMes(data.sancionesPorMesYLugar);
+              return (
+                <ResponsiveContainer width="100%" height={280}>
+                  <BarChart data={filas} margin={{ left: 0 }}>
+                    <CartesianGrid strokeDasharray="3 3" stroke="#E4E2D6" />
+                    <XAxis dataKey="mes" fontSize={12} tickFormatter={formatMes} />
+                    <YAxis allowDecimals={false} fontSize={12} />
+                    <Tooltip labelFormatter={formatMes} />
+                    <Legend />
+                    {lugares.map((lugar, i) => (
+                      <Bar key={lugar} dataKey={lugar} name={lugar} stackId="sanciones" fill={PALETA[i % PALETA.length]} radius={i === lugares.length - 1 ? [4, 4, 0, 0] : undefined} />
+                    ))}
+                  </BarChart>
+                </ResponsiveContainer>
+              );
+            })()
           )}
         </div>
       )}
