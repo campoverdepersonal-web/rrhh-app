@@ -11,6 +11,12 @@ dashboardRouter.get("/rrhh", async (req, res) => {
     const empleados = empleadosResult.rows;
     const activos = empleados.filter((e) => e.estado === "ACTIVO");
     const inactivos = empleados.filter((e) => e.estado === "INACTIVO");
+    const inactivosDetalle = inactivos.map((e) => ({
+      id: e.id,
+      nombre: `${e.nombre} ${e.apellido}`,
+      legajo: e.legajo,
+      puesto: e.puesto,
+    }));
 
     const evaluacionesUltimasPP = await pool.query(
       `SELECT DISTINCT ON (employee_id) employee_id, resultado FROM periodo_prueba_evaluaciones ORDER BY employee_id, fecha DESC`
@@ -91,47 +97,6 @@ dashboardRouter.get("/rrhh", async (req, res) => {
       LIMIT 5
     `);
 
-    const puestosMenorDesempeno = await pool.query(`
-      SELECT puesto, avg(ed.puntaje_total)::numeric(4,2) AS promedio, count(*)::int AS evaluaciones
-      FROM evaluaciones_desempeno ed JOIN employees e ON e.id = ed.employee_id
-      WHERE ed.puntaje_total IS NOT NULL
-      GROUP BY puesto ORDER BY promedio ASC LIMIT 6
-    `);
-
-    const sectoresMejorDesempeno = await pool.query(`
-      SELECT sector, avg(ed.puntaje_total)::numeric(4,2) AS promedio, count(*)::int AS evaluaciones
-      FROM evaluaciones_desempeno ed JOIN employees e ON e.id = ed.employee_id
-      WHERE ed.puntaje_total IS NOT NULL
-      GROUP BY sector ORDER BY promedio DESC LIMIT 6
-    `);
-
-    const distribucion = await pool.query(`
-      SELECT
-        CASE
-          WHEN puntaje_total < 4 THEN '0-4'
-          WHEN puntaje_total < 6 THEN '4-6'
-          WHEN puntaje_total < 8 THEN '6-8'
-          ELSE '8-10'
-        END AS rango,
-        count(*)::int AS cantidad
-      FROM evaluaciones_desempeno WHERE puntaje_total IS NOT NULL
-      GROUP BY rango
-    `);
-    const ordenRangos = ["0-4", "4-6", "6-8", "8-10"];
-    const distribucionOrdenada = ordenRangos.map((r) => ({
-      rango: r,
-      cantidad: distribucion.rows.find((row) => row.rango === r)?.cantidad || 0,
-    }));
-
-    const evolucionMensual = await pool.query(`
-      SELECT to_char(date_trunc('month', fecha), 'YYYY-MM') AS mes,
-             avg(puntaje_total)::numeric(4,2) AS promedio,
-             count(*)::int AS cantidad
-      FROM evaluaciones_desempeno
-      WHERE puntaje_total IS NOT NULL AND fecha >= (CURRENT_DATE - INTERVAL '12 months')
-      GROUP BY mes ORDER BY mes
-    `);
-
     const cursosStats = await pool.query(`
       SELECT count(*)::int AS total,
              count(*) FILTER (WHERE estado = 'COMPLETADO')::int AS completados
@@ -139,6 +104,16 @@ dashboardRouter.get("/rrhh", async (req, res) => {
     `);
 
     const sancionesStats = await pool.query(`SELECT count(*)::int AS total FROM sanciones`);
+
+    // --- Sanciones por mes y lugar de trabajo (para el drill-down del KPI) ---
+    const sancionesPorMesYLugarResult = await pool.query(`
+      SELECT to_char(date_trunc('month', s.fecha), 'YYYY-MM') AS mes,
+             e.lugar_trabajo AS "lugarTrabajo",
+             count(*)::int AS cantidad
+      FROM sanciones s JOIN employees e ON e.id = s.employee_id
+      GROUP BY mes, e.lugar_trabajo
+      ORDER BY mes DESC, cantidad DESC
+    `);
 
     // --- Rotación % (año actual) ---
     // Fórmula estándar: bajas del período / dotación promedio del período.
@@ -186,6 +161,7 @@ dashboardRouter.get("/rrhh", async (req, res) => {
     res.json({
       empleadosActivos: activos.length,
       empleadosInactivos: inactivos.length,
+      inactivosDetalle,
       empleadosEnPeriodoPrueba: enPeriodoPrueba.length,
       enPeriodoPruebaDetalle,
       proximosAVencer,
@@ -197,12 +173,9 @@ dashboardRouter.get("/rrhh", async (req, res) => {
       },
       capacitaciones: cursosStats.rows[0],
       sanciones: sancionesStats.rows[0].total,
+      sancionesPorMesYLugar: sancionesPorMesYLugarResult.rows,
       colaboradoresDestacados: destacados.rows,
       colaboradoresEnRiesgo: enRiesgo.rows,
-      puestosMenorDesempeno: puestosMenorDesempeno.rows,
-      sectoresMejorDesempeno: sectoresMejorDesempeno.rows,
-      distribucionCalificaciones: distribucionOrdenada,
-      evolucionMensual: evolucionMensual.rows,
     });
   } catch (err) {
     console.error(err);
