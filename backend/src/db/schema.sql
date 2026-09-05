@@ -240,3 +240,75 @@ ALTER TABLE employees ADD COLUMN IF NOT EXISTS fecha_baja DATE;
 ALTER TABLE employees ADD COLUMN IF NOT EXISTS motivo_baja TEXT;
 ALTER TABLE employees DROP CONSTRAINT IF EXISTS employees_estado_check;
 ALTER TABLE employees ADD CONSTRAINT employees_estado_check CHECK (estado IN ('ACTIVO', 'INACTIVO', 'BAJA'));
+
+
+-- ---------------------------------------------------------------------------
+-- Nine Box — Desempeño (0-100, de Humand) x Potencial (evaluación de 12
+-- preguntas), con cruce automático a una de 9 celdas. Solo aplica a puestos
+-- clave y mandos (en la práctica, a quien tenga estos datos cargados).
+-- ---------------------------------------------------------------------------
+
+-- Desempeño para Nine Box: el puntaje 0-100 que da Humand ("Puntaje de
+-- competencias"), separado del puntaje 0-10 que ya usamos en el resto de la
+-- app. Un registro vigente por persona (se actualiza al reimportar); el
+-- reporte de Humand no trae fecha por persona, así que no se historiza.
+CREATE TABLE IF NOT EXISTS nine_box_desempeno (                   -- ACTIVO
+  id                    SERIAL PRIMARY KEY,
+  employee_id           INTEGER UNIQUE NOT NULL REFERENCES employees(id) ON DELETE CASCADE,
+  puntaje_competencias  NUMERIC(5,2) NOT NULL CHECK (puntaje_competencias BETWEEN 0 AND 100),
+  actualizado_en        TIMESTAMP NOT NULL DEFAULT now()
+);
+
+-- Tabla de puntaje por opción de Potencial (12 preguntas x 4 opciones),
+-- editable desde la app para no depender de un desarrollador si cambian
+-- las preguntas en Humand.
+CREATE TABLE IF NOT EXISTS potencial_config_opciones (            -- ACTIVO
+  id                 SERIAL PRIMARY KEY,
+  dimension          VARCHAR(40) NOT NULL,        -- Aprendizaje | Aspiración | Compromiso | Liderazgo
+  pregunta_numero    INTEGER NOT NULL,             -- 1 a 12
+  pregunta_texto     TEXT NOT NULL,
+  opcion_texto       TEXT NOT NULL,
+  puntaje            INTEGER NOT NULL CHECK (puntaje BETWEEN 1 AND 4),
+  UNIQUE (pregunta_numero, opcion_texto)
+);
+
+-- Config editable de las 9 celdas del Nine Box (nombre, foco, acción).
+CREATE TABLE IF NOT EXISTS nine_box_celdas_config (               -- ACTIVO
+  id                 SERIAL PRIMARY KEY,
+  desempeno_nivel    VARCHAR(10) NOT NULL,     -- Bajo | Medio | Alto
+  potencial_nivel    VARCHAR(10) NOT NULL,     -- Bajo | Medio | Alto
+  nombre_celda       VARCHAR(60) NOT NULL,
+  foco_desarrollo    TEXT,
+  accion_sugerida    TEXT,
+  UNIQUE (desempeno_nivel, potencial_nivel)
+);
+
+-- Evaluaciones de Potencial — SÍ historizadas (una fila nueva por cada
+-- importación de esa persona, nunca se pisa la anterior).
+CREATE TABLE IF NOT EXISTS potencial_evaluaciones (               -- ACTIVO
+  id                    SERIAL PRIMARY KEY,
+  employee_id           INTEGER NOT NULL REFERENCES employees(id) ON DELETE CASCADE,
+  fecha                 DATE NOT NULL,
+  evaluador             VARCHAR(120),
+  aprendizaje_promedio  NUMERIC(3,2),
+  aspiracion_promedio   NUMERIC(3,2),
+  compromiso_promedio   NUMERIC(3,2),
+  liderazgo_promedio    NUMERIC(3,2),
+  potencial_final       NUMERIC(3,2),
+  created_at            TIMESTAMP NOT NULL DEFAULT now()
+);
+CREATE INDEX IF NOT EXISTS idx_potencial_evaluaciones_employee ON potencial_evaluaciones(employee_id);
+
+-- Detalle de las 12 respuestas de cada evaluación de Potencial, con su
+-- puntaje (según potencial_config_opciones al momento de importar) y
+-- comentario/evidencia opcional.
+CREATE TABLE IF NOT EXISTS potencial_respuestas (                 -- ACTIVO
+  id                 SERIAL PRIMARY KEY,
+  evaluacion_id      INTEGER NOT NULL REFERENCES potencial_evaluaciones(id) ON DELETE CASCADE,
+  pregunta_numero    INTEGER NOT NULL,
+  dimension          VARCHAR(40) NOT NULL,
+  opcion_texto       TEXT NOT NULL,
+  puntaje            INTEGER NOT NULL,
+  comentario         TEXT,
+  UNIQUE (evaluacion_id, pregunta_numero)
+);

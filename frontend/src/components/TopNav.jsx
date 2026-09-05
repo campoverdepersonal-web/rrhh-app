@@ -1,13 +1,14 @@
 import { useEffect, useRef, useState } from "react";
 import {
   Contact, LayoutDashboard, GitCompare, TriangleAlert, UserMinus,
-  Settings, Upload, BookOpen, UserCog, ChevronDown, LogOut,
+  Settings, Upload, BookOpen, UserCog, ChevronDown, LogOut, Grid3x3, SlidersHorizontal,
 } from "lucide-react";
 
 const PRINCIPALES = [
   { id: "legajos", label: "Legajos", Icon: Contact },
   { id: "dashboard", label: "Dashboard RRHH", Icon: LayoutDashboard },
   { id: "comparativos", label: "Comparativos", Icon: GitCompare },
+  { id: "ninebox", label: "Nine Box", Icon: Grid3x3 },
   { id: "alertas", label: "Alertas", Icon: TriangleAlert },
   { id: "bajas", label: "Bajas", Icon: UserMinus },
 ];
@@ -19,6 +20,7 @@ export default function TopNav({ vista, setVista, usuario, cerrarSesion }) {
   const ADMIN_ITEMS = [
     { id: "importar", label: "Importar", Icon: Upload },
     { id: "competencias", label: "Competencias", Icon: BookOpen },
+    { id: "ninebox-config", label: "Configuración de Nine Box", Icon: SlidersHorizontal },
     ...(usuario.rol === "ADMIN" ? [{ id: "usuarios", label: "Usuarios", Icon: UserCog }] : []),
   ];
   const enSeccionAdmin = ADMIN_ITEMS.some((i) => i.id === vista);

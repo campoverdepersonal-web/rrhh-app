@@ -9,6 +9,7 @@
     "db:init": "node src/db/init.js",
     "db:seed": "node src/db/seed.js",
     "db:seed-competencias": "node src/db/seed-competencias.js",
+    "db:seed-nine-box": "node src/db/seed-nine-box.js",
     "db:create-admin": "node src/db/create-admin.js"
   },
   "dependencies": {

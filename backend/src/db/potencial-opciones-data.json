@@ -1,0 +1,338 @@
+[
+  {
+    "dimension": "Aprendizaje",
+    "preguntaTexto": "¿Con qué nivel esta persona incorpora nuevos procesos, herramientas o normativas sin necesitar que se le repita la explicación?",
+    "opcionTexto": "Necesita que le repitan la explicación varias veces antes de aplicarlo correctamente.",
+    "puntaje": 1,
+    "preguntaNumero": 1
+  },
+  {
+    "dimension": "Aprendizaje",
+    "preguntaTexto": "¿Con qué nivel esta persona incorpora nuevos procesos, herramientas o normativas sin necesitar que se le repita la explicación?",
+    "opcionTexto": "Lo aplica bien después de una o dos repeticiones, con acompañamiento.",
+    "puntaje": 2,
+    "preguntaNumero": 1
+  },
+  {
+    "dimension": "Aprendizaje",
+    "preguntaTexto": "¿Con qué nivel esta persona incorpora nuevos procesos, herramientas o normativas sin necesitar que se le repita la explicación?",
+    "opcionTexto": "Lo aplica bien con una sola explicación, casi sin apoyo.",
+    "puntaje": 3,
+    "preguntaNumero": 1
+  },
+  {
+    "dimension": "Aprendizaje",
+    "preguntaTexto": "¿Con qué nivel esta persona incorpora nuevos procesos, herramientas o normativas sin necesitar que se le repita la explicación?",
+    "opcionTexto": "Lo aplica de inmediato y ayuda a que otros también lo incorporen.",
+    "puntaje": 4,
+    "preguntaNumero": 1
+  },
+  {
+    "dimension": "Aprendizaje",
+    "preguntaTexto": "¿Con qué nivel esta persona aplica lo aprendido en una situación a otras situaciones distintas, sin que se lo indiquen?",
+    "opcionTexto": "Solo aplica lo aprendido en la situación exacta en la que lo vio; no lo transfiere a otras.",
+    "puntaje": 1,
+    "preguntaNumero": 2
+  },
+  {
+    "dimension": "Aprendizaje",
+    "preguntaTexto": "¿Con qué nivel esta persona aplica lo aprendido en una situación a otras situaciones distintas, sin que se lo indiquen?",
+    "opcionTexto": "Transfiere lo aprendido a situaciones muy parecidas, pero necesita ayuda si cambia el contexto.",
+    "puntaje": 2,
+    "preguntaNumero": 2
+  },
+  {
+    "dimension": "Aprendizaje",
+    "preguntaTexto": "¿Con qué nivel esta persona aplica lo aprendido en una situación a otras situaciones distintas, sin que se lo indiquen?",
+    "opcionTexto": "Transfiere lo aprendido a situaciones distintas de las habituales por su cuenta.",
+    "puntaje": 3,
+    "preguntaNumero": 2
+  },
+  {
+    "dimension": "Aprendizaje",
+    "preguntaTexto": "¿Con qué nivel esta persona aplica lo aprendido en una situación a otras situaciones distintas, sin que se lo indiquen?",
+    "opcionTexto": "Anticipa dónde más se puede aplicar lo aprendido, incluso fuera de su tarea diaria.",
+    "puntaje": 4,
+    "preguntaNumero": 2
+  },
+  {
+    "dimension": "Aprendizaje",
+    "preguntaTexto": "¿Con qué nivel esta persona busca por su cuenta información o formación para resolver algo que no sabe?",
+    "opcionTexto": "Frente a algo que no sabe, espera a que otro se lo resuelva.",
+    "puntaje": 1,
+    "preguntaNumero": 3
+  },
+  {
+    "dimension": "Aprendizaje",
+    "preguntaTexto": "¿Con qué nivel esta persona busca por su cuenta información o formación para resolver algo que no sabe?",
+    "opcionTexto": "Pregunta a un compañero o jefe, pero no busca por otros medios.",
+    "puntaje": 2,
+    "preguntaNumero": 3
+  },
+  {
+    "dimension": "Aprendizaje",
+    "preguntaTexto": "¿Con qué nivel esta persona busca por su cuenta información o formación para resolver algo que no sabe?",
+    "opcionTexto": "Busca la información por su cuenta (instructivos, manuales, tutoriales) antes de preguntar.",
+    "puntaje": 3,
+    "preguntaNumero": 3
+  },
+  {
+    "dimension": "Aprendizaje",
+    "preguntaTexto": "¿Con qué nivel esta persona busca por su cuenta información o formación para resolver algo que no sabe?",
+    "opcionTexto": "Busca la información por su cuenta y además la comparte con el equipo.",
+    "puntaje": 4,
+    "preguntaNumero": 3
+  },
+  {
+    "dimension": "Aspiración",
+    "preguntaTexto": "¿Con qué nivel esta persona se postula o pide asumir tareas de mayor responsabilidad cuando surge la oportunidad?",
+    "opcionTexto": "No se postula ni cuando se abre una oportunidad concreta.",
+    "puntaje": 1,
+    "preguntaNumero": 4
+  },
+  {
+    "dimension": "Aspiración",
+    "preguntaTexto": "¿Con qué nivel esta persona se postula o pide asumir tareas de mayor responsabilidad cuando surge la oportunidad?",
+    "opcionTexto": "Acepta si se lo ofrecen, pero no se postula por su cuenta.",
+    "puntaje": 2,
+    "preguntaNumero": 4
+  },
+  {
+    "dimension": "Aspiración",
+    "preguntaTexto": "¿Con qué nivel esta persona se postula o pide asumir tareas de mayor responsabilidad cuando surge la oportunidad?",
+    "opcionTexto": "Pide o se postula activamente cuando ve una oportunidad.",
+    "puntaje": 3,
+    "preguntaNumero": 4
+  },
+  {
+    "dimension": "Aspiración",
+    "preguntaTexto": "¿Con qué nivel esta persona se postula o pide asumir tareas de mayor responsabilidad cuando surge la oportunidad?",
+    "opcionTexto": "Busca oportunidades de forma proactiva, incluso antes de que se anuncien.",
+    "puntaje": 4,
+    "preguntaNumero": 4
+  },
+  {
+    "dimension": "Aspiración",
+    "preguntaTexto": "¿Con qué nivel esta persona habla espontáneamente de su interés en crecer dentro de Campo Verde?",
+    "opcionTexto": "Nunca menciona interés en crecer o cambiar de rol.",
+    "puntaje": 1,
+    "preguntaNumero": 6
+  },
+  {
+    "dimension": "Aspiración",
+    "preguntaTexto": "¿Con qué nivel esta persona habla espontáneamente de su interés en crecer dentro de Campo Verde?",
+    "opcionTexto": "Lo menciona solo si se le pregunta directamente.",
+    "puntaje": 2,
+    "preguntaNumero": 6
+  },
+  {
+    "dimension": "Aspiración",
+    "preguntaTexto": "¿Con qué nivel esta persona habla espontáneamente de su interés en crecer dentro de Campo Verde?",
+    "opcionTexto": "Lo menciona espontáneamente en charlas de desempeño o informales.",
+    "puntaje": 3,
+    "preguntaNumero": 6
+  },
+  {
+    "dimension": "Aspiración",
+    "preguntaTexto": "¿Con qué nivel esta persona habla espontáneamente de su interés en crecer dentro de Campo Verde?",
+    "opcionTexto": "Habla de su interés en crecer y además pregunta qué necesita para lograrlo.",
+    "puntaje": 4,
+    "preguntaNumero": 6
+  },
+  {
+    "dimension": "Aspiración",
+    "preguntaTexto": "¿Con qué nivel esta persona invierte tiempo propio en prepararse para un rol de mayor nivel?",
+    "opcionTexto": "No invierte tiempo propio en prepararse para otro rol.",
+    "puntaje": 1,
+    "preguntaNumero": 5
+  },
+  {
+    "dimension": "Aspiración",
+    "preguntaTexto": "¿Con qué nivel esta persona invierte tiempo propio en prepararse para un rol de mayor nivel?",
+    "opcionTexto": "Participa si Campo Verde le ofrece una capacitación, pero no busca por su cuenta.",
+    "puntaje": 2,
+    "preguntaNumero": 5
+  },
+  {
+    "dimension": "Aspiración",
+    "preguntaTexto": "¿Con qué nivel esta persona invierte tiempo propio en prepararse para un rol de mayor nivel?",
+    "opcionTexto": "Busca por su cuenta capacitación o práctica para prepararse.",
+    "puntaje": 3,
+    "preguntaNumero": 5
+  },
+  {
+    "dimension": "Aspiración",
+    "preguntaTexto": "¿Con qué nivel esta persona invierte tiempo propio en prepararse para un rol de mayor nivel?",
+    "opcionTexto": "Además de prepararse, ya practica tareas del rol al que aspira (mentoring, reemplazos).",
+    "puntaje": 4,
+    "preguntaNumero": 5
+  },
+  {
+    "dimension": "Compromiso",
+    "preguntaTexto": "¿Con qué nivel esta persona sostiene su desempeño en momentos de alta exigencia (temporada alta, baja dotación)?",
+    "opcionTexto": "Baja notoriamente su desempeño en momentos de alta exigencia.",
+    "puntaje": 1,
+    "preguntaNumero": 7
+  },
+  {
+    "dimension": "Compromiso",
+    "preguntaTexto": "¿Con qué nivel esta persona sostiene su desempeño en momentos de alta exigencia (temporada alta, baja dotación)?",
+    "opcionTexto": "Sostiene lo básico, pero se nota el desgaste o el malestar.",
+    "puntaje": 2,
+    "preguntaNumero": 7
+  },
+  {
+    "dimension": "Compromiso",
+    "preguntaTexto": "¿Con qué nivel esta persona sostiene su desempeño en momentos de alta exigencia (temporada alta, baja dotación)?",
+    "opcionTexto": "Sostiene el mismo nivel de desempeño en esos momentos.",
+    "puntaje": 3,
+    "preguntaNumero": 7
+  },
+  {
+    "dimension": "Compromiso",
+    "preguntaTexto": "¿Con qué nivel esta persona sostiene su desempeño en momentos de alta exigencia (temporada alta, baja dotación)?",
+    "opcionTexto": "Sostiene el desempeño y además ayuda a que el resto del equipo lo sostenga.",
+    "puntaje": 4,
+    "preguntaNumero": 7
+  },
+  {
+    "dimension": "Compromiso",
+    "preguntaTexto": "¿Con qué nivel esta persona se hace cargo de los resultados de su sector, incluso cuando algo sale mal?",
+    "opcionTexto": "Ante un error, busca explicaciones externas antes que hacerse cargo.",
+    "puntaje": 1,
+    "preguntaNumero": 8
+  },
+  {
+    "dimension": "Compromiso",
+    "preguntaTexto": "¿Con qué nivel esta persona se hace cargo de los resultados de su sector, incluso cuando algo sale mal?",
+    "opcionTexto": "Reconoce el error si se lo señalan, pero no toma la iniciativa.",
+    "puntaje": 2,
+    "preguntaNumero": 8
+  },
+  {
+    "dimension": "Compromiso",
+    "preguntaTexto": "¿Con qué nivel esta persona se hace cargo de los resultados de su sector, incluso cuando algo sale mal?",
+    "opcionTexto": "Reconoce el error por su cuenta y busca la solución.",
+    "puntaje": 3,
+    "preguntaNumero": 8
+  },
+  {
+    "dimension": "Compromiso",
+    "preguntaTexto": "¿Con qué nivel esta persona se hace cargo de los resultados de su sector, incluso cuando algo sale mal?",
+    "opcionTexto": "Se hace cargo del error, lo soluciona y evita que se repita.",
+    "puntaje": 4,
+    "preguntaNumero": 8
+  },
+  {
+    "dimension": "Compromiso",
+    "preguntaTexto": "¿Con qué nivel esta persona actúa de acuerdo a los valores de Campo Verde aun sin supervisión directa?",
+    "opcionTexto": "Cumple las normas solo cuando hay supervisión directa.",
+    "puntaje": 1,
+    "preguntaNumero": 9
+  },
+  {
+    "dimension": "Compromiso",
+    "preguntaTexto": "¿Con qué nivel esta persona actúa de acuerdo a los valores de Campo Verde aun sin supervisión directa?",
+    "opcionTexto": "Cumple la mayoría de las normas, con algunas excepciones sin supervisión.",
+    "puntaje": 2,
+    "preguntaNumero": 9
+  },
+  {
+    "dimension": "Compromiso",
+    "preguntaTexto": "¿Con qué nivel esta persona actúa de acuerdo a los valores de Campo Verde aun sin supervisión directa?",
+    "opcionTexto": "Actúa igual haya o no supervisión directa.",
+    "puntaje": 3,
+    "preguntaNumero": 9
+  },
+  {
+    "dimension": "Compromiso",
+    "preguntaTexto": "¿Con qué nivel esta persona actúa de acuerdo a los valores de Campo Verde aun sin supervisión directa?",
+    "opcionTexto": "Es un ejemplo para otros de cómo actuar sin necesitar supervisión.",
+    "puntaje": 4,
+    "preguntaNumero": 9
+  },
+  {
+    "dimension": "Liderazgo / manejo de equipo",
+    "preguntaTexto": "¿Con qué nivel esta persona da instrucciones claras y se asegura de que se entiendan?",
+    "opcionTexto": "Da instrucciones poco claras y no chequea si se entendieron.",
+    "puntaje": 1,
+    "preguntaNumero": 10
+  },
+  {
+    "dimension": "Liderazgo / manejo de equipo",
+    "preguntaTexto": "¿Con qué nivel esta persona da instrucciones claras y se asegura de que se entiendan?",
+    "opcionTexto": "Da instrucciones básicas, pero no siempre confirma que se entendieron.",
+    "puntaje": 2,
+    "preguntaNumero": 10
+  },
+  {
+    "dimension": "Liderazgo / manejo de equipo",
+    "preguntaTexto": "¿Con qué nivel esta persona da instrucciones claras y se asegura de que se entiendan?",
+    "opcionTexto": "Da instrucciones claras y confirma que el equipo las entendió.",
+    "puntaje": 3,
+    "preguntaNumero": 10
+  },
+  {
+    "dimension": "Liderazgo / manejo de equipo",
+    "preguntaTexto": "¿Con qué nivel esta persona da instrucciones claras y se asegura de que se entiendan?",
+    "opcionTexto": "Da instrucciones claras, confirma la comprensión y ajusta si hace falta.",
+    "puntaje": 4,
+    "preguntaNumero": 10
+  },
+  {
+    "dimension": "Liderazgo / manejo de equipo",
+    "preguntaTexto": "¿Con qué nivel esta persona da feedback a su equipo o a quienes guía de forma regular?",
+    "opcionTexto": "Casi no da feedback, o solo lo da ante un problema grave.",
+    "puntaje": 1,
+    "preguntaNumero": 11
+  },
+  {
+    "dimension": "Liderazgo / manejo de equipo",
+    "preguntaTexto": "¿Con qué nivel esta persona da feedback a su equipo o a quienes guía de forma regular?",
+    "opcionTexto": "Da feedback de forma esporádica, más reactivo que planificado.",
+    "puntaje": 2,
+    "preguntaNumero": 11
+  },
+  {
+    "dimension": "Liderazgo / manejo de equipo",
+    "preguntaTexto": "¿Con qué nivel esta persona da feedback a su equipo o a quienes guía de forma regular?",
+    "opcionTexto": "Da feedback con regularidad, no solo ante errores.",
+    "puntaje": 3,
+    "preguntaNumero": 11
+  },
+  {
+    "dimension": "Liderazgo / manejo de equipo",
+    "preguntaTexto": "¿Con qué nivel esta persona da feedback a su equipo o a quienes guía de forma regular?",
+    "opcionTexto": "Da feedback regular y además hace seguimiento de que se aplique.",
+    "puntaje": 4,
+    "preguntaNumero": 11
+  },
+  {
+    "dimension": "Liderazgo / manejo de equipo",
+    "preguntaTexto": "¿Con qué nivel esta persona delega tareas y responsabilidades en otros, en vez de concentrar todo en sí misma/o?",
+    "opcionTexto": "Concentra las decisiones y tareas importantes en sí mismo/a.",
+    "puntaje": 1,
+    "preguntaNumero": 12
+  },
+  {
+    "dimension": "Liderazgo / manejo de equipo",
+    "preguntaTexto": "¿Con qué nivel esta persona delega tareas y responsabilidades en otros, en vez de concentrar todo en sí misma/o?",
+    "opcionTexto": "Delega tareas simples, pero retiene las decisiones importantes.",
+    "puntaje": 2,
+    "preguntaNumero": 12
+  },
+  {
+    "dimension": "Liderazgo / manejo de equipo",
+    "preguntaTexto": "¿Con qué nivel esta persona delega tareas y responsabilidades en otros, en vez de concentrar todo en sí misma/o?",
+    "opcionTexto": "Delega responsabilidades acordes al nivel de cada persona.",
+    "puntaje": 3,
+    "preguntaNumero": 12
+  },
+  {
+    "dimension": "Liderazgo / manejo de equipo",
+    "preguntaTexto": "¿Con qué nivel esta persona delega tareas y responsabilidades en otros, en vez de concentrar todo en sí misma/o?",
+    "opcionTexto": "Delega de forma activa y desarrolla a otros para que asuman más responsabilidad.",
+    "puntaje": 4,
+    "preguntaNumero": 12
+  }
+]

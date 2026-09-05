@@ -10,6 +10,8 @@ import ImportarPanel from "./components/ImportarPanel.jsx";
 import CompetenciasDictionary from "./components/CompetenciasDictionary.jsx";
 import AlertasPanel from "./components/AlertasPanel.jsx";
 import BajasPanel from "./components/BajasPanel.jsx";
+import NineBoxPanel from "./components/NineBoxPanel.jsx";
+import NineBoxConfigPanel from "./components/NineBoxConfigPanel.jsx";
 import TopNav from "./components/TopNav.jsx";
 
 export default function App() {
@@ -128,6 +130,8 @@ export default function App() {
           {vista === "usuarios" && usuario.rol === "ADMIN" && <UsuariosPanel />}
           {vista === "importar" && <ImportarPanel onImportado={cargarListado} />}
           {vista === "competencias" && <CompetenciasDictionary />}
+          {vista === "ninebox" && <NineBoxPanel onVerLegajo={(id) => { seleccionar(id); setVista("legajos"); }} />}
+          {vista === "ninebox-config" && <NineBoxConfigPanel />}
           {vista === "alertas" && <AlertasPanel />}
           {vista === "bajas" && <BajasPanel usuario={usuario} />}
           {vista === "legajos" && (

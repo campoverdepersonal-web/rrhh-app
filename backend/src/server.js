@@ -16,6 +16,8 @@ import { uniformesRouter, catalogoRouter } from "./routes/uniformes.js";
 import { alertasRouter } from "./routes/alertas.js";
 import { historialRouter } from "./routes/historial.js";
 import { importarUniformesRouter } from "./routes/importarUniformes.js";
+import { nineBoxRouter, nineBoxEmpleadoRouter } from "./routes/nineBox.js";
+import { importarNineBoxRouter } from "./routes/importarNineBox.js";
 import { requireAuth } from "./middleware/auth.js";
 
 dotenv.config();
@@ -34,7 +36,10 @@ app.use("/api/employees/:employeeId/evaluaciones", requireAuth, evaluacionesRout
 app.use("/api/employees/:employeeId/sanciones", requireAuth, sancionesRouter);
 app.use("/api/employees/:employeeId/cursos", requireAuth, cursosRouter);
 app.use("/api/employees/:employeeId", requireAuth, uniformesRouter);
+app.use("/api/employees/:employeeId", requireAuth, nineBoxEmpleadoRouter);
 app.use("/api/employees", requireAuth, importarUniformesRouter);
+app.use("/api/employees", requireAuth, importarNineBoxRouter);
+app.use("/api/nine-box", requireAuth, nineBoxRouter);
 app.use("/api/dashboard", requireAuth, dashboardRouter);
 app.use("/api/dashboard", requireAuth, comparativosRouter);
 app.use("/api/competencias", requireAuth, competenciasRouter);

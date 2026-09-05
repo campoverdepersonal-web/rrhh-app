@@ -5,6 +5,7 @@ import EvaluacionesPanel from "./EvaluacionesPanel.jsx";
 import SancionesPanel from "./SancionesPanel.jsx";
 import CursosPanel from "./CursosPanel.jsx";
 import UniformesPanel from "./UniformesPanel.jsx";
+import NineBoxEmpleadoPanel from "./NineBoxEmpleadoPanel.jsx";
 import { api } from "../api.js";
 import { formatFecha } from "../dateUtils.js";
 
@@ -15,6 +16,7 @@ const TABS = [
   { id: "sanciones", label: "Sanciones" },
   { id: "cursos", label: "Cursos y capacitaciones" },
   { id: "uniformes", label: "Uniformes" },
+  { id: "ninebox", label: "Nine Box" },
 ];
 
 const RESULTADOS = [
@@ -261,6 +263,7 @@ export default function LegajoEmpleado({ empleado, onDecisionRegistrada, usuario
       {tab === "sanciones" && <SancionesPanel employeeId={empleado.id} />}
       {tab === "cursos" && <CursosPanel employeeId={empleado.id} />}
       {tab === "uniformes" && <UniformesPanel employeeId={empleado.id} />}
+      {tab === "ninebox" && <NineBoxEmpleadoPanel employeeId={empleado.id} />}
 
       {tab === "resumen" && (
       <>

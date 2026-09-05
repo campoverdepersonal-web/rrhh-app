@@ -163,6 +163,33 @@ const TIPOS = [
     importar: api.importarEntregasUniforme,
     mostrarDuplicados: true,
   },
+  {
+    id: "puntaje-competencias-nine-box",
+    label: "Puntaje de competencias (Nine Box)",
+    titulo: "Importar puntaje de competencias para Nine Box",
+    descripcion: "El puntaje 0-100 que da Humand por persona (\"Puntaje de competencias\"), para el eje Desempeño del Nine Box. Se actualiza el valor vigente de cada persona — no es el mismo puntaje 0-10 que usamos en Evaluaciones.",
+    columnas: ["Legajo — debe existir en el sistema", "Puntaje de competencias (0 a 100)", "Nombre, Puesto — opcionales, solo de referencia"],
+    plantilla: () => descargarPlantilla("plantilla-puntaje-nine-box.xlsx", "Desempeño", [
+      { "Legajo": "L-0001", "Puntaje de competencias (0 a 100)": 92.86, "Nombre (opcional, referencia)": "Ana Torres", "Puesto / evaluación (opcional)": "Referente de Caja" },
+    ], [10, 30, 24, 30]),
+    importar: api.importarPuntajeCompetenciasNineBox,
+    resultadoActualizarPuesto: true,
+  },
+  {
+    id: "potencial",
+    label: "Potencial (Nine Box)",
+    titulo: "Importar evaluación de Potencial",
+    descripcion: "Pegá el reporte de Potencial tal cual lo exporta Humand, pero renombrando la columna \"Evaluado\" a \"Legajo\" (el resto de las columnas, dejalas igual). Cada fila es una evaluación completa de una persona (12 preguntas) y queda guardada como historial — no pisa evaluaciones anteriores de la misma persona.",
+    columnas: [
+      "Legajo (reemplaza a \"Evaluado\") — debe existir en el sistema",
+      "Fecha de respuesta, Evaluador — obligatorios",
+      "Estado de evaluación — solo se procesan las \"Finalizada\"",
+      "Las 12 columnas de pregunta + sus 12 columnas de \"N. Comentario\" — tal cual las exporta Humand",
+    ],
+    plantilla: null,
+    importar: api.importarPotencial,
+    resultadoPotencial: true,
+  },
 ];
 
 export default function ImportarPanel({ onImportado }) {
@@ -217,11 +244,13 @@ export default function ImportarPanel({ onImportado }) {
 
       <div className="grid-2" style={{ alignItems: "start" }}>
         <div className="panel">
-          <h2>1. Descargá la plantilla</h2>
+          <h2>1. {tipo.plantilla ? "Descargá la plantilla" : "Cómo preparar el archivo"}</h2>
           <p className="muted" style={{ fontSize: "0.85rem" }}>{tipo.descripcion}</p>
-          <button className="btn-primary" onClick={tipo.plantilla}>
-            📥 Descargar plantilla (.xlsx)
-          </button>
+          {tipo.plantilla && (
+            <button className="btn-primary" onClick={tipo.plantilla}>
+              📥 Descargar plantilla (.xlsx)
+            </button>
+          )}
 
           <h2 style={{ marginTop: 20 }}>Columnas esperadas</h2>
           <ul style={{ fontSize: "0.82rem", color: "var(--color-ink-soft)", paddingLeft: 18, margin: 0 }}>
@@ -245,7 +274,7 @@ export default function ImportarPanel({ onImportado }) {
 
           {error && <p style={{ color: "var(--color-red)", fontSize: "0.85rem", marginTop: 12 }}>{error}</p>}
 
-          {resultado && !tipo.resultadoCustom && (
+          {resultado && !tipo.resultadoCustom && !tipo.resultadoPotencial && (
             <div style={{ marginTop: 18 }}>
               <div className="badge-facts" style={{ marginBottom: 14 }}>
                 {!tipo.resultadoActualizarPuesto && (
@@ -349,6 +378,38 @@ export default function ImportarPanel({ onImportado }) {
                     Corregí esas filas y volvé a subir el archivo completo — la evaluación se
                     vuelve a armar entera, así que no hace falta separar lo que ya cargó bien.
                   </p>
+                </>
+              )}
+            </div>
+          )}
+          {resultado && tipo.resultadoPotencial && (
+            <div style={{ marginTop: 18 }}>
+              <div className="badge-facts" style={{ marginBottom: 14 }}>
+                <div>
+                  <div className="fact-label">Evaluaciones cargadas</div>
+                  <div className="fact-value" style={{ color: "var(--color-teal)" }}>{resultado.evaluacionesCreadas}</div>
+                </div>
+                <div>
+                  <div className="fact-label">Omitidas (no finalizadas)</div>
+                  <div className="fact-value">{resultado.omitidas.length}</div>
+                </div>
+                <div>
+                  <div className="fact-label">Con errores</div>
+                  <div className="fact-value" style={{ color: resultado.errores.length ? "var(--color-red)" : "inherit" }}>
+                    {resultado.errores.length}
+                  </div>
+                </div>
+              </div>
+
+              {resultado.errores.length > 0 && (
+                <>
+                  <h2 style={{ fontSize: "0.85rem" }}>Filas que no se pudieron cargar</h2>
+                  {resultado.errores.map((e, i) => (
+                    <div className="history-row" key={i}>
+                      <span>Fila {e.fila}{e.legajo ? ` (${e.legajo})` : ""}</span>
+                      <span className="muted">{e.motivo}</span>
+                    </div>
+                  ))}
                 </>
               )}
             </div>

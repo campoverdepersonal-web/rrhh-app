@@ -1,0 +1,65 @@
+[
+  {
+    "desempenoNivel": "Bajo",
+    "potencialNivel": "Alto",
+    "nombreCelda": "Enigma",
+    "focoDesarrollo": "Revisar si está en el rol correcto o si hay una barrera puntual afectando el desempeño.",
+    "accionSugerida": "Conversación 1 a 1 para relevar causas (adaptación al puesto, sobrecarga, falta de herramientas); considerar reasignación de tareas o mentoring antes de descartar su potencial."
+  },
+  {
+    "desempenoNivel": "Medio",
+    "potencialNivel": "Alto",
+    "nombreCelda": "Talento emergente",
+    "focoDesarrollo": "Acelerar el desarrollo antes de que la falta de oportunidades genere una fuga de talento.",
+    "accionSugerida": "Asignar proyectos o responsabilidades que pongan a prueba el siguiente nivel del Plan de Carrera; mentoring de un referente N3/N4."
+  },
+  {
+    "desempenoNivel": "Alto",
+    "potencialNivel": "Alto",
+    "nombreCelda": "Estrella",
+    "focoDesarrollo": "Prioridad máxima de desarrollo y sucesión.",
+    "accionSugerida": "Plan de desarrollo acelerado; presentar como caso al Comité de Carrera para planificar sucesión; exposición directa a Gerencia."
+  },
+  {
+    "desempenoNivel": "Bajo",
+    "potencialNivel": "Medio",
+    "nombreCelda": "Dilema",
+    "focoDesarrollo": "Entender qué está frenando el desempeño antes de invertir en desarrollo.",
+    "accionSugerida": "Reunión de devolución para identificar causas (claridad del rol, obstáculos del entorno, motivación); acompañamiento cercano del jefe directo por 60 días con revisión de resultados."
+  },
+  {
+    "desempenoNivel": "Medio",
+    "potencialNivel": "Medio",
+    "nombreCelda": "Core en desarrollo",
+    "focoDesarrollo": "Es la base operativa de Campo Verde — fortalecer para sostener o mejorar el desempeño.",
+    "accionSugerida": "Plan de desarrollo con objetivos de mejora concretos + capacitación según el Diccionario de Competencias del puesto; revisión semestral."
+  },
+  {
+    "desempenoNivel": "Alto",
+    "potencialNivel": "Medio",
+    "nombreCelda": "Sólido con proyección",
+    "focoDesarrollo": "Buen candidato/a a preparar para el próximo nivel, con desarrollo dirigido.",
+    "accionSugerida": "Plan de desarrollo con foco en las competencias del próximo nivel del Plan de Carrera; exposición a tareas de mayor responsabilidad."
+  },
+  {
+    "desempenoNivel": "Bajo",
+    "potencialNivel": "Bajo",
+    "nombreCelda": "Riesgo",
+    "focoDesarrollo": "Sostener el desempeño mínimo del puesto o evaluar la desvinculación.",
+    "accionSugerida": "Plan de mejora con objetivos concretos y plazo definido (30-60 días); seguimiento quincenal con el jefe directo; si no hay mejora, escalar a RRHH."
+  },
+  {
+    "desempenoNivel": "Medio",
+    "potencialNivel": "Bajo",
+    "nombreCelda": "Profesional estable",
+    "focoDesarrollo": "Mantener en el rol actual, sin urgencia de desarrollo hacia otro nivel.",
+    "accionSugerida": "Reconocimiento del aporte sostenido; capacitación técnica puntual para consolidar el puesto actual."
+  },
+  {
+    "desempenoNivel": "Alto",
+    "potencialNivel": "Bajo",
+    "nombreCelda": "Especialista clave",
+    "focoDesarrollo": "Retener y reconocer, sin forzar una promoción que no busca.",
+    "accionSugerida": "Reconocimiento formal; posible rol de referente o mentor dentro de su especialidad, sin presión de ascenso."
+  }
+]

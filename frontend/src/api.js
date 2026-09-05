@@ -140,4 +140,15 @@ export const api = {
 
   // --- Alertas ---
   getAlertas: () => request("/alertas"),
+
+  // --- Nine Box ---
+  getNineBox: () => request("/nine-box"),
+  getNineBoxConfigOpciones: () => request("/nine-box/config/opciones"),
+  actualizarNineBoxOpcion: (id, data) => put(`/nine-box/config/opciones/${id}`, data),
+  getNineBoxConfigCeldas: () => request("/nine-box/config/celdas"),
+  actualizarNineBoxCelda: (id, data) => put(`/nine-box/config/celdas/${id}`, data),
+  getNineBoxEmpleado: (employeeId) => request(`/employees/${employeeId}/nine-box`),
+  getPotencialHistorial: (employeeId) => request(`/employees/${employeeId}/potencial-historial`),
+  importarPuntajeCompetenciasNineBox: (file) => importarArchivo("/employees/importar-puntaje-competencias-nine-box", file),
+  importarPotencial: (file) => importarArchivo("/employees/importar-potencial", file),
 };
