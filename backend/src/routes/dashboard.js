@@ -39,6 +39,24 @@ dashboardRouter.get("/rrhh", async (req, res) => {
         legajo: e.legajo,
         diasRestantes: e.periodoPrueba.diasRestantes,
       }));
+
+    // --- Chequeo de evaluación de desempeño a los 60 y 120 días ---
+    // A los 60 días corresponde una evaluación simple (cualquiera cuenta).
+    // A los 120, una evaluación con competencias cargadas.
+    const conEvaluacionSimple = await pool.query(`SELECT DISTINCT employee_id FROM evaluaciones_desempeno`);
+    const idsConEvaluacionSimple = new Set(conEvaluacionSimple.rows.map((r) => r.employee_id));
+    const conEvaluacionCompetencias = await pool.query(`
+      SELECT DISTINCT ev.employee_id
+      FROM evaluaciones_desempeno ev
+      JOIN evaluacion_competencias ec ON ec.evaluacion_id = ev.id
+    `);
+    const idsConEvaluacionCompetencias = new Set(conEvaluacionCompetencias.rows.map((r) => r.employee_id));
+
+    function estadoHito(diasTranscurridos, umbral, yaTiene) {
+      if (diasTranscurridos < umbral) return "futura";
+      return yaTiene ? "realizada" : "vencida";
+    }
+
     // Listado completo de quienes están en período de prueba, ordenado de
     // menos a más días para la finalización (para el drill-down del KPI).
     const enPeriodoPruebaDetalle = enPeriodoPrueba
@@ -50,6 +68,8 @@ dashboardRouter.get("/rrhh", async (req, res) => {
         lugarTrabajo: e.lugar_trabajo,
         diasRestantes: e.periodoPrueba.diasRestantes,
         fechaFinPeriodoPrueba: e.periodoPrueba.fechaFinPeriodoPrueba,
+        evaluacion60: estadoHito(e.periodoPrueba.diasTranscurridos, 60, idsConEvaluacionSimple.has(e.id)),
+        evaluacion120: estadoHito(e.periodoPrueba.diasTranscurridos, 120, idsConEvaluacionCompetencias.has(e.id)),
       }))
       .sort((a, b) => a.diasRestantes - b.diasRestantes);
 
