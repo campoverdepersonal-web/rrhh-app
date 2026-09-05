@@ -50,14 +50,14 @@ function formatMes(mesISO) {
   return `${nombre.charAt(0).toUpperCase()}${nombre.slice(1)} ${anio}`;
 }
 
-function HitoPill({ dias, tipo, estado }) {
+function HitoPill({ dias, estado }) {
   const config = {
-    futura: { color: "", texto: `Día ${dias}: aún no corresponde`, style: { background: "var(--color-bg)", color: "var(--color-ink-soft)" } },
-    realizada: { color: "teal", texto: `✅ ${tipo} (día ${dias}) hecha` },
-    vencida: { color: "red", texto: `⚠️ ${tipo} (día ${dias}) pendiente` },
+    futura: { color: "", texto: "Aún no corresponde", style: { background: "var(--color-bg)", color: "var(--color-ink-soft)" } },
+    realizada: { color: "teal", texto: "✅ Hecha" },
+    vencida: { color: "red", texto: "⚠️ Pendiente" },
   }[estado];
   return (
-    <span className={`status-pill ${config.color}`} style={{ fontSize: "0.72rem", padding: "2px 8px", ...config.style }}>
+    <span className={`status-pill ${config.color}`} style={{ fontSize: "0.76rem", padding: "3px 10px", justifySelf: "start", ...config.style }}>
       {config.texto}
     </span>
   );
@@ -197,23 +197,26 @@ export default function DashboardRRHH() {
           {data.enPeriodoPruebaDetalle.length === 0 ? (
             <p className="muted" style={{ fontSize: "0.85rem" }}>No hay nadie en período de prueba ahora mismo.</p>
           ) : (
-            data.enPeriodoPruebaDetalle.map((p) => (
-              <div className="history-row" key={p.id} style={{ alignItems: "flex-start" }}>
-                <div>
-                  <div>{p.nombre} <span className="muted">— {p.puesto} · {p.lugarTrabajo}</span></div>
-                  <div style={{ display: "flex", gap: 6, marginTop: 5 }}>
-                    <HitoPill dias={60} tipo="Evaluación simple" estado={p.evaluacion60} />
-                    <HitoPill dias={120} tipo="Evaluación por competencias" estado={p.evaluacion120} />
-                  </div>
-                </div>
-                <span style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 3 }}>
-                  <span className={`status-pill ${p.diasRestantes <= 15 ? "amber" : "teal"}`} style={{ fontSize: "0.78rem", padding: "3px 10px" }}>
-                    {p.diasRestantes} día{p.diasRestantes !== 1 ? "s" : ""} restantes
-                  </span>
-                  <span className="muted" style={{ fontSize: "0.74rem" }}>Finaliza el {formatFecha(p.fechaFinPeriodoPrueba)}</span>
-                </span>
+            <div className="periodo-prueba-tabla">
+              <div className="periodo-prueba-fila periodo-prueba-header">
+                <span>Persona</span>
+                <span>Día 60 · Eval. simple</span>
+                <span>Día 120 · Eval. competencias</span>
+                <span>Restantes</span>
+                <span>Finaliza</span>
               </div>
-            ))
+              {data.enPeriodoPruebaDetalle.map((p) => (
+                <div className="periodo-prueba-fila" key={p.id}>
+                  <span>{p.nombre} <span className="muted" style={{ display: "block", fontSize: "0.76rem" }}>{p.puesto} · {p.lugarTrabajo}</span></span>
+                  <HitoPill dias={60} estado={p.evaluacion60} />
+                  <HitoPill dias={120} estado={p.evaluacion120} />
+                  <span className={`status-pill ${p.diasRestantes <= 15 ? "amber" : "teal"}`} style={{ fontSize: "0.78rem", padding: "3px 10px", justifySelf: "start" }}>
+                    {p.diasRestantes}d
+                  </span>
+                  <span className="muted" style={{ fontSize: "0.78rem" }}>{formatFecha(p.fechaFinPeriodoPrueba)}</span>
+                </div>
+              ))}
+            </div>
           )}
         </div>
       )}
