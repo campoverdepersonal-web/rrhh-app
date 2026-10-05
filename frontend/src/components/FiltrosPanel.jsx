@@ -39,6 +39,38 @@ export function useEmpleadosFiltrados(empleados, busqueda, filtros) {
   }, [empleados, busqueda, filtros]);
 }
 
+// ---------------------------------------------------------------------------
+// Orden del listado de legajos
+// ---------------------------------------------------------------------------
+export const ORDEN_OPCIONES = [
+  { value: "apellido", label: "Apellido (A-Z)" },
+  { value: "legajo", label: "N° de legajo" },
+  { value: "ingreso", label: "Ingreso más reciente" },
+];
+
+// Comparador "natural": ordena "9" antes que "10" y respeta tildes y
+// mayúsculas como lo haría una persona (Álvarez junto a Alvarez).
+const collator = new Intl.Collator("es", { numeric: true, sensitivity: "base" });
+
+export function ordenarEmpleados(empleados, orden) {
+  const copia = [...empleados];
+  const porApellido = (a, b) =>
+    collator.compare(a.apellido || "", b.apellido || "") || collator.compare(a.nombre || "", b.nombre || "");
+
+  if (orden === "legajo") {
+    copia.sort((a, b) => collator.compare(String(a.legajo ?? ""), String(b.legajo ?? "")));
+  } else if (orden === "ingreso") {
+    // Fechas "YYYY-MM-DD..." se comparan bien como texto. Más reciente primero.
+    copia.sort((a, b) =>
+      String(b.fechaIngreso || "").slice(0, 10).localeCompare(String(a.fechaIngreso || "").slice(0, 10)) ||
+      porApellido(a, b)
+    );
+  } else {
+    copia.sort(porApellido);
+  }
+  return copia;
+}
+
 export const FILTROS_VACIOS = {
   puesto: "", sector: "", lugarTrabajo: "", estado: "", estadoPeriodoPrueba: "", antiguedad: "",
 };

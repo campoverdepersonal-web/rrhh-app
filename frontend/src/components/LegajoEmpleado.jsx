@@ -292,7 +292,7 @@ export default function LegajoEmpleado({ empleado, onDecisionRegistrada, usuario
           <div>
             <div className="fact-label">👤 Estado laboral</div>
             <div className="fact-value">
-              {pp.estado === "EN_PRUEBA" ? "En período de prueba" : pp.estado === "PERSONAL_EFECTIVO" ? "Personal efectivo" : "Baja"}
+              {pp.ingresoFuturo && pp.estado === "EN_PRUEBA" ? "Ingreso programado" : pp.estado === "EN_PRUEBA" ? "En período de prueba" : pp.estado === "PERSONAL_EFECTIVO" ? "Personal efectivo" : "Baja"}
             </div>
           </div>
         </div>
@@ -301,6 +301,14 @@ export default function LegajoEmpleado({ empleado, onDecisionRegistrada, usuario
           {pp.etiqueta.emoji} {pp.etiqueta.texto}
         </span>
       </div>
+
+      {pp.ingresoFuturo && (
+        <div className="info-banner">
+          🔵 Ingreso programado: empieza a trabajar el <strong>{formatFecha(pp.fechaIngreso)}</strong>
+          {" "}({pp.diasParaIngreso === 1 ? "mañana" : `en ${pp.diasParaIngreso} días`}). El período de prueba
+          y la antigüedad empiezan a contar desde ese día. Si la fecha no es correcta, corregila editando el legajo.
+        </div>
+      )}
 
       {pp.alerta && (
         <div className="alert-banner">

@@ -18,6 +18,8 @@
   --color-teal-soft: #DFEEE5;
   --color-red: #B3433A;
   --color-red-soft: #F7E5E2;
+  --color-blue: #3A6A8C;
+  --color-blue-soft: #E2ECF3;
 
   /* Tipografía: Manrope (geométrica, con carácter) para titulares, Inter
      para el texto de uso diario, IBM Plex Mono para datos (legajo, CUIL,
@@ -254,6 +256,7 @@ button, input, select {
 .dot.amber { background: var(--color-amber); }
 .dot.teal { background: var(--color-teal); }
 .dot.red { background: var(--color-red); }
+.dot.blue { background: var(--color-blue); }
 
 .employee-list-item .name {
   font-size: 0.88rem;
@@ -390,6 +393,7 @@ button, input, select {
 .status-pill.amber { background: var(--color-amber-soft); color: #8A5C05; }
 .status-pill.teal { background: var(--color-teal-soft); color: #075D4D; }
 .status-pill.red { background: var(--color-red-soft); color: #8C2D26; }
+.status-pill.blue { background: var(--color-blue-soft); color: #24506E; }
 
 .alert-banner {
   margin-top: 16px;
@@ -651,4 +655,48 @@ button, input, select {
   cursor: pointer;
   padding: 0;
   text-decoration: underline;
+}
+
+/* Aviso informativo (azul) — p. ej. ingreso programado a futuro */
+.info-banner {
+  margin-top: 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--color-blue-soft);
+  border: 1px solid #B9CFE0;
+  color: #24506E;
+  padding: 12px 16px;
+  border-radius: var(--radius-sm);
+  font-size: 0.9rem;
+}
+
+/* Advertencias de importación (filas cargadas, pero con algo para revisar) */
+.import-advertencias {
+  margin-top: 14px;
+  background: var(--color-amber-soft);
+  border: 1px solid #EBCE93;
+  border-radius: var(--radius-sm);
+  padding: 12px 16px;
+}
+.import-advertencias h2 { color: #7A5000; margin-top: 0; }
+.import-advertencias .history-row { border-color: #EBCE93; }
+
+/* Selector de orden del listado de legajos */
+.orden-listado {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin: -2px 2px 4px;
+  font-size: 0.76rem;
+}
+.orden-listado select {
+  font-size: 0.76rem;
+  padding: 3px 6px;
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  background: var(--color-surface);
+  color: var(--color-ink);
+  max-width: 60%;
 }

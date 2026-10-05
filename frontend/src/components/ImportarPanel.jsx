@@ -303,6 +303,25 @@ export default function ImportarPanel({ onImportado }) {
                 </div>
               </div>
 
+              {resultado.advertencias?.length > 0 && (
+                <div className="import-advertencias">
+                  <h2 style={{ fontSize: "0.85rem" }}>
+                    ⚠️ Filas cargadas con fechas para revisar ({resultado.advertencias.length})
+                  </h2>
+                  {resultado.advertencias.map((a, i) => (
+                    <div className="history-row" key={i}>
+                      <span>Fila {a.fila}{a.legajo ? ` (${a.legajo})` : ""}</span>
+                      <span className="muted">{a.motivo}</span>
+                    </div>
+                  ))}
+                  <p className="muted" style={{ fontSize: "0.78rem", marginTop: 10, marginBottom: 0 }}>
+                    Estas filas <strong>sí se cargaron</strong>. Si alguna fecha está mal, podés corregirla
+                    editando el legajo, o arreglarla en el Excel y volver a importar (la importación de
+                    empleados actualiza por legajo, no duplica).
+                  </p>
+                </div>
+              )}
+
               {tipo.mostrarDuplicados && resultado.duplicados?.length > 0 && (
                 <>
                   <h2 style={{ fontSize: "0.85rem" }}>Filas que ya existían (no se cargaron de nuevo)</h2>

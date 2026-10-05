@@ -30,7 +30,11 @@ dashboardRouter.get("/rrhh", async (req, res) => {
       periodoPrueba: calcularPeriodoPrueba(e.fecha_ingreso, evalPPPorEmpleado[e.id] || null),
     }));
 
-    const enPeriodoPrueba = conPeriodoPrueba.filter((e) => e.periodoPrueba.estado === "EN_PRUEBA");
+    // Quien tiene fecha de ingreso futura todavía no empezó el período de
+    // prueba: no se cuenta acá.
+    const enPeriodoPrueba = conPeriodoPrueba.filter(
+      (e) => e.periodoPrueba.estado === "EN_PRUEBA" && !e.periodoPrueba.ingresoFuturo
+    );
     const proximosAVencer = enPeriodoPrueba
       .filter((e) => e.periodoPrueba.alerta)
       .map((e) => ({

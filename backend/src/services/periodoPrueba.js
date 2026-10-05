@@ -1,3 +1,5 @@
+import { diasHastaIngreso } from "./antiguedad.js";
+
 const DIAS_PERIODO_PRUEBA = Number(process.env.PERIODO_PRUEBA_DIAS) || 180;
 const DIAS_ALERTA = 15;
 const MS_POR_DIA = 1000 * 60 * 60 * 24;
@@ -52,15 +54,23 @@ export function calcularPeriodoPrueba(fechaIngreso, ultimaEvaluacion = null, aho
     estado = "EN_PRUEBA";
   }
 
+  const diasParaIngreso = Math.max(0, diasHastaIngreso(ingreso, ahora));
+  const ingresoFuturo = diasParaIngreso > 0;
+
   const enPrueba = estado === "EN_PRUEBA";
   const diasRestantes = enPrueba ? Math.max(0, diasParaFinalizar) : 0;
-  const alerta = enPrueba && diasRestantes <= DIAS_ALERTA;
+  const alerta = enPrueba && !ingresoFuturo && diasRestantes <= DIAS_ALERTA;
 
   const etiquetas = {
     EN_PRUEBA: { texto: "En período de prueba", emoji: "🟡", color: "amber" },
     PERSONAL_EFECTIVO: { texto: "Personal efectivo", emoji: "🟢", color: "teal" },
     BAJA: { texto: "Baja", emoji: "🔴", color: "red" },
   };
+  // Ingreso programado (fecha de ingreso futura, sin decisión cargada):
+  // se muestra con su propia etiqueta en vez de "En período de prueba".
+  const etiqueta = ingresoFuturo && estado === "EN_PRUEBA"
+    ? { texto: "Ingreso programado", emoji: "🔵", color: "blue" }
+    : etiquetas[estado];
 
   return {
     fechaIngreso: toISODate(ingreso),
@@ -71,7 +81,10 @@ export function calcularPeriodoPrueba(fechaIngreso, ultimaEvaluacion = null, aho
     estado,
     motivoUltimaDecision: motivo,
     alerta,
-    etiqueta: etiquetas[estado],
+    etiqueta,
     progreso: Math.min(1, diasTranscurridos / DIAS_PERIODO_PRUEBA),
+    // Ingreso programado a futuro: el período de prueba todavía no empezó.
+    ingresoFuturo,
+    diasParaIngreso,
   };
 }

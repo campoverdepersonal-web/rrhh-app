@@ -89,6 +89,9 @@ alertasRouter.get("/", async (req, res) => {
         : null;
 
       const periodoPrueba = calcularPeriodoPrueba(emp.fecha_ingreso);
+      // Quien todavía no ingresó (fecha de ingreso futura) no puede tener
+      // evaluaciones ni sanciones: no genera ninguna alerta.
+      if (periodoPrueba.ingresoFuturo) continue;
       const enPeriodoPrueba = periodoPrueba.estado === "EN_PRUEBA";
       const umbralSinEvaluacion = enPeriodoPrueba ? DIAS_SIN_EVALUACION_PRUEBA : DIAS_SIN_EVALUACION_EFECTIVO;
 

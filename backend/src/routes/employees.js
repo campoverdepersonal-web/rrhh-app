@@ -37,7 +37,7 @@ employeesRouter.post("/importar", upload.single("archivo"), async (req, res) => 
       return res.status(400).json({ error: "El archivo no tiene filas de datos" });
     }
 
-    const resultado = { insertados: 0, actualizados: 0, errores: [] };
+    const resultado = { insertados: 0, actualizados: 0, errores: [], advertencias: [] };
 
     for (let i = 0; i < filas.length; i++) {
       const numeroFila = i + 2; // fila 1 = encabezados
@@ -69,6 +69,9 @@ employeesRouter.post("/importar", upload.single("archivo"), async (req, res) => 
 
         if (upsert.rows[0].insertado) resultado.insertados++;
         else resultado.actualizados++;
+
+        const aviso = revisarFechaIngreso(fila.fechaIngreso);
+        if (aviso) resultado.advertencias.push({ fila: numeroFila, legajo: fila.legajo, motivo: aviso });
       } catch (err) {
         if (err.code === "23505") {
           resultado.errores.push({ fila: numeroFila, legajo: fila.legajo, motivo: `El CUIL ${fila.cuil} ya pertenece a otro legajo` });
@@ -276,7 +279,7 @@ employeesRouter.post("/importar-bajas", upload.single("archivo"), async (req, re
       return "";
     };
 
-    const resultado = { insertados: 0, actualizados: 0, errores: [] };
+    const resultado = { insertados: 0, actualizados: 0, errores: [], advertencias: [] };
 
     for (let i = 0; i < filas.length; i++) {
       const numeroFila = i + 2;
@@ -293,6 +296,16 @@ employeesRouter.post("/importar-bajas", upload.single("archivo"), async (req, re
 
       if (!legajo) { resultado.errores.push({ fila: numeroFila, motivo: "Falta el Legajo" }); continue; }
       if (!fechaBaja) { resultado.errores.push({ fila: numeroFila, legajo, motivo: "Fecha de baja vacía o con formato inválido (usar DD/MM/AAAA)" }); continue; }
+
+      // Avisos (no frenan la carga): fechas que conviene revisar.
+      const avisoAlta = fechaAlta ? revisarFechaIngreso(fechaAlta, "alta") : null;
+      if (avisoAlta) resultado.advertencias.push({ fila: numeroFila, legajo, motivo: avisoAlta });
+      if (fechaAlta && fechaAlta > fechaBaja) {
+        resultado.advertencias.push({
+          fila: numeroFila, legajo,
+          motivo: `La fecha de baja (${formatearDDMMAAAA(fechaBaja)}) es anterior a la fecha de alta (${formatearDDMMAAAA(fechaAlta)}). Revisá si no están invertidas.`,
+        });
+      }
 
       const existente = await pool.query(`SELECT id FROM employees WHERE legajo = $1`, [legajo]);
 
@@ -348,6 +361,34 @@ employeesRouter.post("/importar-bajas", upload.single("archivo"), async (req, re
     res.status(500).json({ error: "Error al importar las bajas" });
   }
 });
+
+// ---------------------------------------------------------------------------
+// Avisos sobre fechas de ingreso sospechosas. No frenan la importación (el
+// empleado se carga igual), pero se informan para que RRHH las revise.
+// ---------------------------------------------------------------------------
+function hoyArgentinaISO() {
+  // "YYYY-MM-DD" de hoy en hora argentina (el servidor corre en UTC).
+  return new Intl.DateTimeFormat("en-CA", { timeZone: "America/Argentina/Buenos_Aires" }).format(new Date());
+}
+
+function formatearDDMMAAAA(iso) {
+  const [y, m, d] = iso.split("-");
+  return `${d}/${m}/${y}`;
+}
+
+function revisarFechaIngreso(fechaISO, etiqueta = "ingreso") {
+  if (!fechaISO) return null;
+  const hoy = hoyArgentinaISO();
+  if (fechaISO > hoy) {
+    const dias = Math.round((Date.parse(fechaISO) - Date.parse(hoy)) / 86400000);
+    return `La fecha de ${etiqueta} (${formatearDDMMAAAA(fechaISO)}) es futura: ${dias === 1 ? "falta 1 día" : `faltan ${dias} días`}. ` +
+      `Si es un ingreso programado está bien; si no, revisá que no tenga un error de tipeo o el día y el mes invertidos.`;
+  }
+  if (Number(fechaISO.slice(0, 4)) < 1960) {
+    return `La fecha de ${etiqueta} (${formatearDDMMAAAA(fechaISO)}) parece incorrecta (es muy antigua). Revisá el formato de esa celda en el Excel.`;
+  }
+  return null;
+}
 
 function validarFila(fila) {
   if (!fila.legajo) return "Falta el Legajo";

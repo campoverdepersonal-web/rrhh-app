@@ -2,6 +2,7 @@ const COLORS = {
   amber: "#C9820A",
   teal: "#2E7D5B",
   red: "#B3433A",
+  blue: "#3A6A8C",
 };
 
 export default function ProgressRing({ progreso, colorKey, centerLabel, centerSub }) {

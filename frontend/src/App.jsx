@@ -1,9 +1,9 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { api, setOnUnauthorized } from "./api.js";
 import LegajoEmpleado from "./components/LegajoEmpleado.jsx";
 import DashboardRRHH from "./components/DashboardRRHH.jsx";
 import ComparativosDashboard from "./components/ComparativosDashboard.jsx";
-import FiltrosPanel, { useEmpleadosFiltrados, FILTROS_VACIOS } from "./components/FiltrosPanel.jsx";
+import FiltrosPanel, { useEmpleadosFiltrados, FILTROS_VACIOS, ORDEN_OPCIONES, ordenarEmpleados } from "./components/FiltrosPanel.jsx";
 import LoginScreen from "./components/LoginScreen.jsx";
 import UsuariosPanel from "./components/UsuariosPanel.jsx";
 import ImportarPanel from "./components/ImportarPanel.jsx";
@@ -13,6 +13,7 @@ import BajasPanel from "./components/BajasPanel.jsx";
 import NineBoxPanel from "./components/NineBoxPanel.jsx";
 import NineBoxConfigPanel from "./components/NineBoxConfigPanel.jsx";
 import TopNav from "./components/TopNav.jsx";
+import { formatFecha } from "./dateUtils.js";
 
 export default function App() {
   const [usuario, setUsuario] = useState(() => api.getUsuarioActual());
@@ -22,6 +23,7 @@ export default function App() {
   const [detalle, setDetalle] = useState(null);
   const [busqueda, setBusqueda] = useState("");
   const [filtros, setFiltros] = useState(FILTROS_VACIOS);
+  const [orden, setOrden] = useState("apellido");
   const [cargando, setCargando] = useState(true);
   const [errorCarga, setErrorCarga] = useState(null);
 
@@ -50,7 +52,8 @@ export default function App() {
     api.getEmployee(seleccionadoId).then(setDetalle).catch((err) => setErrorCarga(err.message));
   }, [seleccionadoId, usuario]);
 
-  const filtrados = useEmpleadosFiltrados(empleados, busqueda, filtros);
+  const soloFiltrados = useEmpleadosFiltrados(empleados, busqueda, filtros);
+  const filtrados = useMemo(() => ordenarEmpleados(soloFiltrados, orden), [soloFiltrados, orden]);
   const hayBusquedaActiva = busqueda.trim() !== "" || Object.values(filtros).some(Boolean);
 
   if (!usuario) {
@@ -96,9 +99,12 @@ export default function App() {
 
             {hayBusquedaActiva && (
               <>
-                <p className="muted" style={{ fontSize: "0.76rem", margin: "-2px 2px 4px" }}>
-                  {filtrados.length} de {empleados.length} empleados
-                </p>
+                <div className="orden-listado">
+                  <span className="muted">{filtrados.length} de {empleados.length} empleados</span>
+                  <select value={orden} onChange={(e) => setOrden(e.target.value)} aria-label="Ordenar listado">
+                    {ORDEN_OPCIONES.map((o) => <option key={o.value} value={o.value}>{o.label}</option>)}
+                  </select>
+                </div>
                 <ul className="employee-list">
                   {filtrados.map((e) => (
                     <li key={e.id}>
@@ -110,7 +116,11 @@ export default function App() {
                         <span className={`dot ${e.periodoPrueba.etiqueta.color}`} />
                         <span>
                           <div className="name">{e.nombre} {e.apellido}</div>
-                          <div className="role">{e.puesto}</div>
+                          <div className="role">
+                            {orden === "legajo" && <span style={{ fontFamily: "var(--font-mono)" }}>#{e.legajo} · </span>}
+                            {e.puesto}
+                            {e.periodoPrueba.ingresoFuturo && <span style={{ color: "var(--color-blue)" }}> · ingresa {formatFecha(e.fechaIngreso)}</span>}
+                          </div>
                         </span>
                       </button>
                     </li>
