@@ -37,6 +37,10 @@ function importarArchivo(path, file) {
 }
 
 export const api = {
+  // --- Puestos (cambio de denominación en toda la app) ---
+  listPuestos: () => request("/puestos"),
+  renombrarPuesto: (actual, nuevo) => post("/puestos/renombrar", { actual, nuevo }),
+
   // --- Autenticación ---
   login: async (email, password) => {
     const data = await request("/auth/login", {
@@ -88,6 +92,7 @@ export const api = {
 
   // --- Uniformes ---
   getCatalogoUniformes: () => request("/uniformes/catalogo"),
+  getReporteTalles: () => request("/uniformes/reporte-talles"),
   getTallesUniforme: (employeeId) => request(`/employees/${employeeId}/talles-uniforme`),
   guardarTallesUniforme: (employeeId, data) => put(`/employees/${employeeId}/talles-uniforme`, data),
   listEntregasUniforme: (employeeId) => request(`/employees/${employeeId}/entregas-uniforme`),

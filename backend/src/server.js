@@ -18,6 +18,7 @@ import { historialRouter } from "./routes/historial.js";
 import { importarUniformesRouter } from "./routes/importarUniformes.js";
 import { nineBoxRouter, nineBoxEmpleadoRouter } from "./routes/nineBox.js";
 import { importarNineBoxRouter } from "./routes/importarNineBox.js";
+import { puestosRouter } from "./routes/puestos.js";
 import { requireAuth } from "./middleware/auth.js";
 
 dotenv.config();
@@ -46,6 +47,7 @@ app.use("/api/competencias", requireAuth, competenciasRouter);
 app.use("/api/uniformes", requireAuth, catalogoRouter);
 app.use("/api/alertas", requireAuth, alertasRouter);
 app.use("/api/historial", requireAuth, historialRouter);
+app.use("/api/puestos", requireAuth, puestosRouter);
 app.use("/api/employees", requireAuth, importarEvaluacionesCompetenciasRouter);
 
 app.use((req, res) => res.status(404).json({ error: "No encontrado" }));

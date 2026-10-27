@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import {
   Contact, LayoutDashboard, GitCompare, TriangleAlert, UserMinus,
-  Settings, Upload, BookOpen, UserCog, ChevronDown, LogOut, Grid3x3, SlidersHorizontal,
+  Settings, Upload, BookOpen, UserCog, ChevronDown, LogOut, Grid3x3, SlidersHorizontal, Briefcase, Shirt,
 } from "lucide-react";
 
 const PRINCIPALES = [
@@ -11,6 +11,7 @@ const PRINCIPALES = [
   { id: "ninebox", label: "Nine Box", Icon: Grid3x3 },
   { id: "alertas", label: "Alertas", Icon: TriangleAlert },
   { id: "bajas", label: "Bajas", Icon: UserMinus },
+  { id: "uniformes", label: "Uniformes", Icon: Shirt },
 ];
 
 export default function TopNav({ vista, setVista, usuario, cerrarSesion }) {
@@ -20,6 +21,7 @@ export default function TopNav({ vista, setVista, usuario, cerrarSesion }) {
   const ADMIN_ITEMS = [
     { id: "importar", label: "Importar", Icon: Upload },
     { id: "competencias", label: "Competencias", Icon: BookOpen },
+    ...(usuario.rol !== "LIDER" ? [{ id: "puestos", label: "Puestos", Icon: Briefcase }] : []),
     { id: "ninebox-config", label: "Configuración de Nine Box", Icon: SlidersHorizontal },
     ...(usuario.rol === "ADMIN" ? [{ id: "usuarios", label: "Usuarios", Icon: UserCog }] : []),
   ];

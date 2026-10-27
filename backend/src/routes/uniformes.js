@@ -45,6 +45,43 @@ catalogoRouter.get("/catalogo", (req, res) => {
 });
 
 // ---------------------------------------------------------------------------
+// GET /api/uniformes/reporte-talles — talles de todo el personal ACTIVO (una
+// fila por persona, tenga o no talles cargados). El resumen por prenda y la
+// descarga en Excel se arman en el frontend a partir de esta lista, así los
+// filtros (lugar, sector, puesto) se aplican al instante.
+// ---------------------------------------------------------------------------
+catalogoRouter.get("/reporte-talles", async (req, res) => {
+  try {
+    const { rows } = await pool.query(`
+      SELECT e.id, e.legajo, e.nombre, e.apellido, e.puesto, e.sector, e.lugar_trabajo,
+             (t.id IS NOT NULL) AS tiene_talles,
+             t.remera, t.buzo, t.pantalon_nautico, t.pantalon_cargo, t.calzado, t.faja
+      FROM employees e
+      LEFT JOIN talles_uniforme t ON t.employee_id = e.id
+      WHERE e.estado = 'ACTIVO'
+      ORDER BY e.lugar_trabajo, e.apellido, e.nombre
+    `);
+    res.json(rows.map((r) => ({
+      id: r.id,
+      legajo: r.legajo,
+      nombre: r.nombre,
+      apellido: r.apellido,
+      puesto: r.puesto,
+      sector: r.sector,
+      lugarTrabajo: r.lugar_trabajo,
+      tieneTalles: r.tiene_talles,
+      talles: {
+        remera: r.remera, buzo: r.buzo, pantalonNautico: r.pantalon_nautico,
+        pantalonCargo: r.pantalon_cargo, calzado: r.calzado, faja: r.faja,
+      },
+    })));
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Error al armar el reporte de talles" });
+  }
+});
+
+// ---------------------------------------------------------------------------
 // GET /api/employees/:employeeId/talles-uniforme
 // ---------------------------------------------------------------------------
 uniformesRouter.get("/talles-uniforme", async (req, res) => {

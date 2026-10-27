@@ -56,7 +56,7 @@ button, input, select {
 .topnav {
   display: flex;
   align-items: center;
-  gap: 28px;
+  gap: 18px;
   padding: 10px 28px;
   min-height: 60px;
   background: var(--color-surface);
@@ -116,8 +116,8 @@ button, input, select {
 .topnav-link {
   display: inline-flex;
   align-items: center;
-  gap: 7px;
-  padding: 8px 12px;
+  gap: 6px;
+  padding: 8px 10px;
   border-radius: var(--radius-sm);
   border: none;
   background: none;
@@ -699,4 +699,74 @@ button, input, select {
   background: var(--color-surface);
   color: var(--color-ink);
   max-width: 60%;
+}
+
+/* ---------------------------------------------------------------------------
+   Reporte de talles de uniforme
+   --------------------------------------------------------------------------- */
+.talles-filtros {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 14px;
+}
+.talles-filtros .filtro-label { min-width: 190px; flex: 1; }
+.talles-cobertura { font-size: 0.88rem; color: var(--color-ink-soft); margin: 16px 2px 12px; }
+.talles-cobertura strong { color: var(--color-ink); }
+.talles-faltantes { color: var(--color-amber); font-weight: 600; }
+.talles-sin-cargar { margin: 0 0 16px; align-items: flex-start; }
+.talles-sin-cargar-lista { display: flex; flex-wrap: wrap; gap: 4px 14px; margin-top: 8px; }
+.talles-sin-cargar-lista .link-button { font-size: 0.82rem; }
+
+.talles-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 16px;
+}
+.talles-prenda { margin: 0; }
+.talles-prenda header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  border-bottom: 1px solid var(--color-border);
+  padding-bottom: 8px;
+  margin-bottom: 8px;
+}
+.talles-prenda h2 { margin: 0; }
+.talles-total {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 1.5rem;
+  color: var(--color-primary);
+}
+.talles-tabla { width: 100%; border-collapse: collapse; }
+.talles-tabla th {
+  text-align: left;
+  font-family: var(--font-mono);
+  font-weight: 600;
+  font-size: 0.85rem;
+  width: 4.5em;
+  padding: 4px 0;
+}
+.talles-barra-celda { padding: 4px 10px 4px 0; }
+.talles-barra {
+  display: block;
+  height: 10px;
+  min-width: 3px;
+  border-radius: 3px;
+  background: var(--color-accent);
+}
+.talles-cantidad {
+  text-align: right;
+  font-family: var(--font-mono);
+  font-weight: 600;
+  font-size: 0.88rem;
+  width: 3em;
+}
+.talles-nc { font-size: 0.78rem; margin: 8px 0 0; }
+
+/* Con 7 secciones en el menú, en pantallas de notebook se oculta el nombre
+   de usuario (queda "Cerrar sesión") para que el menú entre en un renglón. */
+@media (max-width: 1420px) {
+  .topnav-account-name { display: none; }
 }
