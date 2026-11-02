@@ -14,7 +14,7 @@ export const CATALOGO_PRENDAS = {
   "Faja Lumbar": [],
   "Borcegos": ["Blancos", "Negros"],
   "Botas de Goma": ["Blancas"],
-  "Guantes": ["Congelados", "Térmicos", "Obra"],
+  "Guantes": ["Congelados", "Térmicos", "Obra", "p/ armado de pedidos"],
   "Delantal PVC": ["Corto", "Largo"],
   "Delantal": ["Azul"],
   "Cuello Polar": ["Azul", "Blanco"],

@@ -2,10 +2,11 @@ import { Router } from "express";
 import multer from "multer";
 import * as XLSX from "xlsx";
 import { pool } from "../db/pool.js";
+import { parsearFecha, detectarFormatoFechas } from "../services/importarExcel.js";
 
 export const importarEvaluacionesCompetenciasRouter = Router();
 
-const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 5 * 1024 * 1024 } });
+const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 20 * 1024 * 1024 } });
 
 const MAPA_RESPUESTA = {
   malo: 1,
@@ -30,18 +31,6 @@ function buscarCrudo(raw, ...nombresPosibles) {
   return "";
 }
 
-function parsearFecha(valor) {
-  if (!valor && valor !== 0) return null;
-  if (valor instanceof Date && !isNaN(valor)) return valor.toISOString().slice(0, 10);
-  const texto = String(valor).trim();
-  if (/^\d{4}-\d{2}-\d{2}/.test(texto)) return texto.slice(0, 10);
-  const match = texto.match(/^(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})/);
-  if (match) {
-    const [, d, m, y] = match;
-    return `${y}-${m.padStart(2, "0")}-${d.padStart(2, "0")}`;
-  }
-  return null;
-}
 
 function normalizar(texto) {
   return texto
@@ -90,36 +79,58 @@ importarEvaluacionesCompetenciasRouter.post("/importar-evaluaciones-competencias
     const errores = [];
     const grupos = new Map(); // clave "legajo|fecha|evaluador" -> { legajo, fecha, evaluador, filas: [] }
 
+    // Algunos sistemas exportan las fechas como MM/DD/AAAA: se detecta
+    // mirando todo el archivo y se interpreta en consecuencia.
+    const formatoFechas = detectarFormatoFechas(filas.map((r) => buscarCrudo(r, "fecha de respuesta", "fecha")));
+
     filas.forEach((raw, i) => {
       const numeroFila = i + 2;
       const legajo = buscar(raw, "legajo");
-      const fecha = parsearFecha(buscarCrudo(raw, "fecha de respuesta", "fecha"));
+      const fecha = parsearFecha(buscarCrudo(raw, "fecha de respuesta", "fecha"), formatoFechas);
       const evaluador = buscar(raw, "evaluador");
       const tituloCompetencia = buscar(raw, "título de la competencia", "titulo de la competencia");
       const respuestaTexto = buscar(raw, "respuesta");
       const puntajeCrudo = buscarCrudo(raw, "puntaje");
 
-      if (!legajo || !fecha || !evaluador || !tituloCompetencia || !respuestaTexto) {
-        errores.push({ fila: numeroFila, motivo: "Falta Legajo, Fecha, Evaluador, Título de la competencia o Respuesta" });
+      const faltantes = [
+        !legajo && "Legajo",
+        String(buscarCrudo(raw, "fecha de respuesta", "fecha") ?? "").trim() === "" && "Fecha de respuesta",
+        !evaluador && "Evaluador",
+        !tituloCompetencia && "Título de la competencia",
+        !respuestaTexto && "Respuesta",
+      ].filter(Boolean);
+      if (faltantes.length > 0) {
+        errores.push({ fila: numeroFila, legajo, motivo: `Falta completar: ${faltantes.join(", ")}` });
+        return;
+      }
+      if (!fecha) {
+        errores.push({
+          fila: numeroFila, legajo,
+          motivo: `La fecha "${String(buscarCrudo(raw, "fecha de respuesta", "fecha")).trim()}" no es válida o no existe (usar DD/MM/AAAA)`,
+        });
+        return;
+      }
+      if (evaluador.length > 120) {
+        errores.push({ fila: numeroFila, legajo, motivo: "El nombre del evaluador es demasiado largo (máximo 120 caracteres)" });
         return;
       }
 
       const nivelAlcanzado = MAPA_RESPUESTA[normalizar(respuestaTexto)];
       if (!nivelAlcanzado) {
-        errores.push({ fila: numeroFila, motivo: `Respuesta desconocida: "${respuestaTexto}" (usar Malo, Regular, Bueno o Muy Bueno/Excelente)` });
+        errores.push({ fila: numeroFila, legajo, motivo: `Respuesta desconocida: "${respuestaTexto}" (usar Malo, Regular, Bueno o Muy Bueno/Excelente)` });
         return;
       }
 
       const { nombreBase, nivelEvaluado } = extraerNombreYNivel(tituloCompetencia);
       const competenciaId = competenciaPorNombre.get(normalizar(nombreBase));
       if (!competenciaId) {
-        errores.push({ fila: numeroFila, motivo: `No se encontró la competencia "${nombreBase}" en el diccionario` });
+        errores.push({ fila: numeroFila, legajo, motivo: `No se encontró la competencia "${nombreBase}" en el diccionario` });
         return;
       }
 
       const employeeId = employeeIdPorLegajo.get(legajo.toLowerCase());
       if (!employeeId) {
-        errores.push({ fila: numeroFila, motivo: `No existe ningún empleado con legajo "${legajo}"` });
+        errores.push({ fila: numeroFila, legajo, motivo: `No existe ningún empleado con legajo "${legajo}"` });
         return;
       }
 
@@ -127,12 +138,34 @@ importarEvaluacionesCompetenciasRouter.post("/importar-evaluaciones-competencias
       if (!grupos.has(clave)) {
         grupos.set(clave, { employeeId, legajo, fecha, evaluador, competencias: [] });
       }
-      grupos.get(clave).competencias.push({
+      const grupo = grupos.get(clave);
+
+      // Una misma competencia solo puede aparecer una vez por evaluación
+      // (mismo legajo + fecha + evaluador). Antes esto hacía fallar TODA la
+      // importación con un error genérico; ahora se informa la fila y se
+      // toma la primera aparición.
+      const repetida = grupo.competencias.find((c) => c.competenciaId === competenciaId);
+      if (repetida) {
+        errores.push({
+          fila: numeroFila, legajo,
+          motivo: `La competencia "${nombreBase}" ya aparece en la fila ${repetida.fila} para el mismo legajo, fecha y evaluador. ` +
+            `Se tomó solo la de la fila ${repetida.fila}.`,
+        });
+        return;
+      }
+
+      // El "Puntaje" del archivo es solo informativo (no se usa en ningún
+      // cálculo). Si no es un número válido para guardar, se ignora.
+      const puntajeNum = puntajeCrudo === "" ? null : Number(String(puntajeCrudo).replace(",", "."));
+      const puntaje = Number.isFinite(puntajeNum) && Math.abs(puntajeNum) < 100 ? puntajeNum : null;
+
+      grupo.competencias.push({
+        fila: numeroFila,
         competenciaId,
         nivelAlcanzado,
         nivelEvaluado,
-        respuesta: respuestaTexto,
-        puntaje: puntajeCrudo !== "" ? Number(puntajeCrudo) : null,
+        respuesta: respuestaTexto.slice(0, 30),
+        puntaje,
       });
     });
 
@@ -190,13 +223,15 @@ importarEvaluacionesCompetenciasRouter.post("/importar-evaluaciones-competencias
     res.json({
       evaluacionesCreadas,
       evaluacionesActualizadas,
-      totalCompetenciasCargadas: filas.length - errores.length,
+      totalCompetenciasCargadas: [...grupos.values()].reduce((n, g) => n + g.competencias.length, 0),
       errores,
     });
   } catch (err) {
-    await client.query("ROLLBACK");
+    await client.query("ROLLBACK").catch(() => {});
     console.error(err);
-    res.status(500).json({ error: "Error al procesar la importación" });
+    res.status(500).json({
+      error: `Error al procesar la importación. No se cargó nada. Detalle técnico: ${err.message}`,
+    });
   } finally {
     client.release();
   }

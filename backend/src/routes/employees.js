@@ -2,6 +2,7 @@ import { Router } from "express";
 import multer from "multer";
 import * as XLSX from "xlsx";
 import { pool } from "../db/pool.js";
+import { parsearFecha, detectarFormatoFechas } from "../services/importarExcel.js";
 import { calcularPeriodoPrueba } from "../services/periodoPrueba.js";
 import { calcularAntiguedad } from "../services/antiguedad.js";
 import { requireRole } from "../middleware/auth.js";
@@ -117,20 +118,6 @@ function normalizarFila(raw) {
   };
 }
 
-function parsearFecha(valor) {
-  if (!valor && valor !== 0) return null;
-  if (valor instanceof Date && !isNaN(valor)) {
-    return valor.toISOString().slice(0, 10);
-  }
-  const texto = String(valor).trim();
-  if (/^\d{4}-\d{2}-\d{2}$/.test(texto)) return texto;
-  const match = texto.match(/^(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})$/);
-  if (match) {
-    const [, d, m, y] = match;
-    return `${y}-${m.padStart(2, "0")}-${d.padStart(2, "0")}`;
-  }
-  return null;
-}
 
 // ---------------------------------------------------------------------------
 // POST /api/employees/importar-actualizar-puesto — actualiza SOLO el campo

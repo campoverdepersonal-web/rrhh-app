@@ -2,6 +2,7 @@ import { Router } from "express";
 import multer from "multer";
 import * as XLSX from "xlsx";
 import { pool } from "../db/pool.js";
+import { parsearFecha, detectarFormatoFechas } from "../services/importarExcel.js";
 import { CATALOGO_PRENDAS } from "./uniformes.js";
 
 export const importarUniformesRouter = Router();
@@ -27,18 +28,6 @@ function buscarCrudo(raw, ...nombres) {
   return "";
 }
 
-function parsearFecha(valor) {
-  if (!valor && valor !== 0) return null;
-  if (valor instanceof Date && !isNaN(valor)) return valor.toISOString().slice(0, 10);
-  const texto = String(valor).trim();
-  if (/^\d{4}-\d{2}-\d{2}/.test(texto)) return texto.slice(0, 10);
-  const match = texto.match(/^(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})/);
-  if (match) {
-    const [, d, m, y] = match;
-    return `${y}-${m.padStart(2, "0")}-${d.padStart(2, "0")}`;
-  }
-  return null;
-}
 
 async function mapaLegajoAId() {
   const { rows } = await pool.query(`SELECT id, legajo FROM employees`);
@@ -125,7 +114,7 @@ importarUniformesRouter.post("/importar-entregas-uniforme", upload.single("archi
       const employeeId = legajoAId.get(legajo);
       const fechaEntrega = parsearFecha(buscarCrudo(raw, "fecha de entrega", "fecha"));
       const tipoPrenda = buscar(raw, "tipo de prenda", "prenda");
-      const colorDetalle = buscar(raw, "color/detalle", "color / detalle", "color", "detalle") || null;
+      let colorDetalle = buscar(raw, "color/detalle", "color / detalle", "color", "detalle") || null;
       const marca = buscar(raw, "marca") || null;
       const talle = buscar(raw, "talle") || null;
       const cantidadCruda = buscar(raw, "cantidad");
@@ -143,9 +132,20 @@ importarUniformesRouter.post("/importar-entregas-uniforme", upload.single("archi
         resultado.errores.push({ fila: numeroFila, legajo, motivo: `${tipoPrenda} no tiene opciones de color/detalle` });
         continue;
       }
-      if (opciones.length > 0 && colorDetalle && !opciones.includes(colorDetalle)) {
-        resultado.errores.push({ fila: numeroFila, legajo, motivo: `"${colorDetalle}" no es una opción válida para ${tipoPrenda}` });
-        continue;
+      if (opciones.length > 0 && colorDetalle) {
+        // Se acepta aunque cambien mayúsculas, tildes o espacios (ej. Excel
+        // suele escribir "P/ armado de pedidos" con mayúscula) y se guarda
+        // con el texto exacto del catálogo.
+        const sinFormato = (t) => t.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/\s+/g, " ").trim();
+        const opcion = opciones.find((o) => sinFormato(o) === sinFormato(colorDetalle));
+        if (!opcion) {
+          resultado.errores.push({
+            fila: numeroFila, legajo,
+            motivo: `"${colorDetalle}" no es una opción válida para ${tipoPrenda} (opciones: ${opciones.join(", ")})`,
+          });
+          continue;
+        }
+        colorDetalle = opcion;
       }
       const estadoMapa = { NUEVA: "NUEVA", NUEVO: "NUEVA", USADA: "USADA", USADO: "USADA" };
       const estado = estadoMapa[estadoTexto];

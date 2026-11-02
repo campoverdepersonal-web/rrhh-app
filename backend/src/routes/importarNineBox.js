@@ -2,6 +2,7 @@ import { Router } from "express";
 import multer from "multer";
 import * as XLSX from "xlsx";
 import { pool } from "../db/pool.js";
+import { parsearFecha, detectarFormatoFechas } from "../services/importarExcel.js";
 
 export const importarNineBoxRouter = Router();
 
@@ -26,18 +27,6 @@ function buscarCrudo(raw, ...nombres) {
   return "";
 }
 
-function parsearFecha(valor) {
-  if (!valor && valor !== 0) return null;
-  if (valor instanceof Date && !isNaN(valor)) return valor.toISOString().slice(0, 10);
-  const texto = String(valor).trim();
-  if (/^\d{4}-\d{2}-\d{2}/.test(texto)) return texto.slice(0, 10);
-  const match = texto.match(/^(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})/);
-  if (match) {
-    const [, d, m, y] = match;
-    return `${y}-${m.padStart(2, "0")}-${d.padStart(2, "0")}`;
-  }
-  return null;
-}
 
 async function mapaLegajoAId() {
   const { rows } = await pool.query(`SELECT id, legajo FROM employees`);
@@ -154,6 +143,7 @@ importarNineBoxRouter.post("/importar-potencial", upload.single("archivo"), asyn
     }
 
     const resultado = { evaluacionesCreadas: 0, omitidas: [], errores: [] };
+    const formatoFechas = detectarFormatoFechas(filas.map((r) => buscarCrudo(r, "fecha de respuesta", "fecha")));
 
     await client.query("BEGIN");
 
@@ -162,7 +152,7 @@ importarNineBoxRouter.post("/importar-potencial", upload.single("archivo"), asyn
       const raw = filas[i];
 
       const legajo = buscar(raw, "legajo", "evaluado").toLowerCase();
-      const fecha = parsearFecha(buscarCrudo(raw, "fecha de respuesta", "fecha"));
+      const fecha = parsearFecha(buscarCrudo(raw, "fecha de respuesta", "fecha"), formatoFechas);
       const evaluador = buscar(raw, "evaluador") || null;
       const estado = buscar(raw, "estado de evaluación", "estado de evaluacion");
 
